@@ -135,7 +135,7 @@ body {
     font-size: 3.5rem;
     font-weight: 900;
     color: var(--white);
-    margin: 5px 0;
+    margin: -10px 0 5px; /* Pulls temperature closer to the icon */
 }
 
 .weather-current-desc {
