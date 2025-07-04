@@ -1,0 +1,252 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap');
+
+:root {
+    --epitech-blue: #007bff;
+    --epitech-red: #e40032;
+    --background-dark: #121212;
+    --widget-dark: #1e1e1e;
+    --light-grey: #a0a0a0;
+    --white: #ffffff;
+    --font-main: 'Roboto', sans-serif;
+    --border-radius: 12px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--background-dark);
+    color: var(--light-grey);
+    padding: 20px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 25px;
+}
+
+.widget {
+    background-color: var(--widget-dark);
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #2a2a2a;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.widget:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,123,255,0.2);
+}
+
+.widget-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--epitech-blue);
+    display: flex;
+    align-items: center;
+}
+
+.widget-title i {
+    margin-right: 12px;
+    color: var(--epitech-blue);
+}
+
+/* Header Widget */
+#header-widget {
+    grid-column: 1 / -1;
+    background: linear-gradient(45deg, #0d3c61, var(--epitech-blue));
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--white);
+}
+
+#logo {
+    height: 45px;
+}
+
+#time-date-widget {
+    text-align: right;
+}
+
+#time {
+    font-size: 3rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+#date {
+    font-size: 1.2rem;
+    font-weight: 300;
+    opacity: 0.9;
+}
+
+
+/* Weather Widget */
+#weather-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.weather-current {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.weather-icon-large {
+    width: 120px;
+    height: 120px;
+}
+
+.weather-current-temp {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--white);
+    margin: 5px 0;
+}
+
+.weather-current-desc {
+    font-size: 1.3rem;
+    font-weight: 300;
+}
+
+.weather-forecast {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: auto;
+}
+
+.forecast-day {
+    text-align: center;
+    flex-basis: 23%;
+}
+
+.weather-icon-small {
+    width: 60px;
+    height: 60px;
+}
+
+.forecast-day-name {
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--white);
+}
+
+.forecast-day-temp .temp-max {
+    font-weight: 700;
+}
+
+
+/* Quote Widget */
+#quote-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-grow: 1;
+    padding: 10px;
+}
+
+.quote-text {
+    font-size: 1.6rem;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    color: var(--white);
+}
+
+.quote-author {
+    font-size: 1.1rem;
+    font-weight: 700;
+    align-self: flex-end;
+    color: var(--epitech-blue);
+}
+
+/* GitHub Widget */
+.github-list, .history-list {
+    list-style: none;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.github-repo, .history-event {
+    border-bottom: 1px solid #2a2a2a;
+    padding: 12px 0;
+}
+
+.github-repo:last-child, .history-event:last-child {
+    border-bottom: none;
+}
+
+.repo-link {
+    text-decoration: none;
+    color: var(--white);
+}
+
+.repo-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.repo-link:hover .repo-name {
+    color: var(--epitech-red);
+}
+
+.repo-desc {
+    font-size: 0.95rem;
+    margin: 8px 0;
+    font-weight: 300;
+    line-height: 1.4;
+}
+
+.repo-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.repo-lang {
+    font-weight: bold;
+    color: var(--epitech-blue);
+}
+
+/* Tech History Widget */
+.history-event {
+    font-size: 1rem;
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+}
+
+.history-year {
+    font-weight: 900;
+    color: var(--epitech-blue);
+    margin-right: 10px;
+    min-width: 60px;
+}
+
+.history-text {
+    font-weight: 300;
+} 

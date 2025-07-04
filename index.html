@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Epitech Nancy - Daily</title>
+    <link rel="icon" type="image/png" href="epitech-logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="dashboard">
+        <!-- Header Widget -->
+        <div class="widget" id="header-widget" style="grid-column: 1 / -1; display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
+            <img src="logo_epitech.png" alt="Epitech Logo" id="logo">
+            <div id="time-date-widget">
+                <h2 id="time"></h2>
+                <p id="date"></p>
+            </div>
+        </div>
+
+        <!-- Weather Widget -->
+        <div class="widget" id="weather-widget">
+            <h2 class="widget-title"><i class="fa-solid fa-cloud-sun"></i> Météo à Nancy</h2>
+            <div id="weather-content"></div>
+        </div>
+
+        <!-- Quote Widget -->
+        <div class="widget" id="quote-widget">
+            <h2 class="widget-title"><i class="fa-solid fa-quote-left"></i> Citation du Jour</h2>
+            <div id="quote-content"></div>
+        </div>
+
+        <!-- Tech History Widget -->
+        <div class="widget" id="tech-history-widget">
+            <h2 class="widget-title"><i class="fa-solid fa-microchip"></i> Ce jour dans l'histoire de la Tech</h2>
+            <div id="tech-history-content"></div>
+        </div>
+
+        <!-- GitHub Trending Widget -->
+        <div class="widget" id="github-widget">
+            <h2 class="widget-title"><i class="fa-brands fa-github"></i> Tendances GitHub</h2>
+            <div id="github-content"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
