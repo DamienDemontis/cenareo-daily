@@ -2,22 +2,11 @@
 // All widget logic will be added here. 
 
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Time and Date Widget ---
-    const timeElement = document.getElementById('time');
+    // --- Date Widget ---
     const dateElement = document.getElementById('date');
 
-    function updateTime() {
+    function updateDate() {
         const now = new Date();
-
-        // Format time
-        const timeString = now.toLocaleTimeString('fr-FR', {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-        });
-        timeElement.textContent = timeString;
-
-        // Format date
         const dateString = now.toLocaleDateString('fr-FR', {
             weekday: 'long',
             year: 'numeric',
@@ -26,10 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         dateElement.textContent = dateString.charAt(0).toUpperCase() + dateString.slice(1);
     }
-
-    // Initial call and interval
-    updateTime();
-    setInterval(updateTime, 1000);
+    
+    updateDate();
 
     // --- Weather Widget ---
     const weatherContent = document.getElementById('weather-content');

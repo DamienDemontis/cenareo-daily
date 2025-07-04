@@ -107,16 +107,9 @@ body {
     text-align: right;
 }
 
-#time {
-    font-size: 3rem;
-    font-weight: 900;
-    letter-spacing: 1px;
-}
-
 #date {
-    font-size: 1.2rem;
-    font-weight: 300;
-    opacity: 0.9;
+    font-size: 1.8rem;
+    font-weight: 700;
 }
 
 
