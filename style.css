@@ -166,6 +166,10 @@ body {
     color: var(--white);
 }
 
+.forecast-day-temp {
+    font-size: 0.95rem; /* Slightly smaller to prevent cropping */
+}
+
 .forecast-day-temp .temp-max {
     font-weight: 700;
 }
