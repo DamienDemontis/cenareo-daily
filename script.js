@@ -262,5 +262,48 @@ document.addEventListener('DOMContentLoaded', () => {
      // Refresh history every hour
     setInterval(fetchTechHistory, 60 * 60 * 1000);
 
+    // --- XKCD Widget ---
+    const xkcdContent = document.getElementById('xkcd-content');
+    async function fetchXkcd() {
+        const url = 'https://xkcd.com/info.0.json';
+        const proxyUrl = 'https://vercel-cors-proxy.vercel.app/api?url=' + encodeURIComponent(url);
+        try {
+            const response = await fetch(proxyUrl);
+            const data = await response.json();
+            xkcdContent.innerHTML = `
+                <p class="xkcd-title">${data.safe_title}</p>
+                <img src="${data.img}" alt="${data.alt}" class="xkcd-image">
+            `;
+        } catch (error) {
+            console.error("Impossible de récupérer le comic XKCD:", error);
+            xkcdContent.innerHTML = `<p>Impossible de charger le comic du jour.</p>`;
+        }
+    }
+    fetchXkcd();
+    setInterval(fetchXkcd, 24 * 60 * 60 * 1000); // Refresh once a day
+
+    // --- NASA APOD Widget ---
+    const apodContent = document.getElementById('apod-content');
+    async function fetchApod() {
+        const url = 'https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY';
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            if (data.media_type === 'image') {
+                apodContent.innerHTML = `
+                    <img src="${data.url}" alt="${data.title}" class="apod-image">
+                    <p class="apod-title">${data.title}</p>
+                `;
+            } else {
+                apodContent.innerHTML = `<p>L'image du jour n'est pas disponible (c'est peut-être une vidéo).</p><a href="${data.url}" target="_blank">Voir ici</a>`;
+            }
+        } catch (error) {
+            console.error("Impossible de récupérer l'image de la NASA:", error);
+            apodContent.innerHTML = `<p>Impossible de charger l'image du jour.</p>`;
+        }
+    }
+    fetchApod();
+    setInterval(fetchApod, 24 * 60 * 60 * 1000); // Refresh once a day
+
     // Other widgets will be initialized here
 }); 

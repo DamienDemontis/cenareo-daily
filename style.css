@@ -24,12 +24,17 @@ body {
     padding: 20px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    height: 100vh;
+    overflow: hidden; /* Prevent page scrolling */
 }
 
 #dashboard {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto 1fr 1fr; /* Header row, 2 content rows */
+    gap: 20px;
+    height: 100%;
+    padding: 20px;
 }
 
 .widget {
@@ -41,6 +46,7 @@ body {
     flex-direction: column;
     border: 1px solid #2a2a2a;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden; /* Hide overflow by default */
 }
 
 .widget:hover {
@@ -62,6 +68,25 @@ body {
 .widget-title i {
     margin-right: 12px;
     color: var(--epitech-blue);
+}
+
+/* Specific Widget Layouts */
+#header-widget {
+    grid-column: 1 / -1; /* Span all 3 columns */
+}
+
+#xkcd-widget, #apod-widget, #github-widget, #tech-history-widget {
+    /* Let them take one cell by default */
+}
+
+#github-widget {
+    grid-column: span 1;
+    grid-row: span 2; /* Taller widget for the list */
+}
+
+#apod-widget {
+    grid-column: span 1;
+    grid-row: span 2; /* Taller widget for the photo */
 }
 
 /* Header Widget */
@@ -180,14 +205,11 @@ body {
     color: var(--epitech-blue);
 }
 
-/* GitHub Widget */
+/* List-based Widget Content Scrolling */
 .github-list, .history-list {
-    list-style: none;
-    padding: 0;
+    overflow-y: auto; /* Allow scrolling within the widget */
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+    padding-right: 10px; /* For scrollbar */
 }
 
 .github-repo, .history-event {
@@ -249,4 +271,79 @@ body {
 
 .history-text {
     font-weight: 300;
+}
+
+/* XKCD & APOD Widget Styles */
+#xkcd-content, #apod-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Align from the top */
+    align-items: center;
+    flex-grow: 1;
+    text-align: center;
+    min-height: 0; /* Prevents flexbox overflow */
+}
+
+.xkcd-image, .apod-image {
+    width: 100%;
+    flex: 1; /* Allows image to grow and shrink */
+    object-fit: contain;
+    border-radius: var(--border-radius);
+    margin-top: 15px;
+    min-height: 0; /* Crucial for shrinking */
+}
+
+.xkcd-title, .apod-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-top: auto; /* Pushes title to the bottom */
+    padding-top: 15px; /* Ensures space from image */
+    flex-shrink: 0; /* Prevents title from shrinking */
+}
+
+.xkcd-image {
+    background-color: var(--white); /* Add white background for transparent comics */
+}
+
+
+/* Hacker News Widget Styles */
+.hacker-news-list {
+    list-style: none;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.hacker-news-item {
+    border-bottom: 1px solid #2a2a2a;
+    padding: 12px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.hacker-news-item:last-child {
+    border-bottom: none;
+}
+
+.hacker-news-item a {
+    color: var(--light-grey);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.05rem;
+    flex-basis: 75%;
+}
+
+.hacker-news-item a:hover {
+    color: var(--epitech-red);
+}
+
+.hacker-news-item span {
+    font-size: 0.9rem;
+    color: #888;
+    white-space: nowrap;
+    margin-left: 10px;
 } 
