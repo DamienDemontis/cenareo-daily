@@ -307,28 +307,95 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchXkcd();
     setInterval(fetchXkcd, 24 * 60 * 60 * 1000); // Refresh once a day
 
-    // --- NASA APOD Widget ---
+    // --- Code Snippet Widget ---
     const apodContent = document.getElementById('apod-content');
-    async function fetchApod() {
-        const url = 'https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY';
+    
+            // Configuration Supabase depuis config.js
+        const SUPABASE_URL = window.SUPABASE_CONFIG?.URL || 'https://owjcgekrreywjegqshuk.supabase.co';
+        const SUPABASE_KEY = window.SUPABASE_CONFIG?.PUBLISHABLE_KEY || '';
+    
+    // Initialisation Supabase
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    
+    async function fetchCodeSnippet() {
+        const today = new Date().toISOString().split('T')[0];
+        
         try {
-            const response = await fetch(url);
-            const data = await response.json();
-            if (data.media_type === 'image') {
+            const { data, error } = await supabase
+                .from('snippets')
+                .select(`
+                    *,
+                    categories(name, color),
+                    programming_languages(display_name, syntax_highlight, color)
+                `)
+                .eq('date', today)
+                .single();
+
+            if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
+                throw error;
+            }
+
+            if (data) {
+                // Afficher le snippet
                 apodContent.innerHTML = `
-                    <img src="${data.url}" alt="${data.title}" class="apod-image">
-                    <p class="apod-title">${data.title}</p>
+                    <div class="code-snippet-widget">
+                        <div class="snippet-header">
+                            <span class="snippet-category" style="background: ${data.categories?.color || '#007bff'}">
+                                ${data.categories?.name || 'Code'}
+                            </span>
+                            <span class="snippet-difficulty">${data.difficulty}</span>
+                        </div>
+                        <h3 class="snippet-title">${data.title}</h3>
+                        <div class="snippet-code">
+                            <pre><code class="language-${data.programming_languages?.syntax_highlight || 'cpp'}">${escapeHtml(data.code)}</code></pre>
+                        </div>
+                        <p class="snippet-explanation">${escapeHtml(data.explanation)}</p>
+                        <div class="snippet-meta">
+                            <span class="snippet-language" style="color: ${data.programming_languages?.color || '#007bff'}">
+                                ${data.programming_languages?.display_name || 'Langage'}
+                            </span>
+                            <span class="snippet-date">${new Date(data.date).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' })}</span>
+                        </div>
+                    </div>
                 `;
+                
+                // Appliquer syntax highlighting
+                if (window.Prism) {
+                    window.Prism.highlightAll();
+                }
             } else {
-                apodContent.innerHTML = `<p>L'image du jour n'est pas disponible (c'est peut-être une vidéo).</p><a href="${data.url}" target="_blank">Voir ici</a>`;
+                // Fallback si pas de snippet pour aujourd'hui
+                apodContent.innerHTML = `
+                    <div class="code-snippet-fallback">
+                        <i class="fa-solid fa-code" style="font-size: 3rem; color: var(--epitech-blue); margin-bottom: 15px;"></i>
+                        <p style="color: var(--light-grey); margin-bottom: 10px;">Code Snippet du Jour</p>
+                        <p style="color: var(--white); font-size: 1.1rem; font-weight: 600;">Aucun snippet pour aujourd'hui</p>
+                        <p style="color: var(--light-grey); font-size: 0.9rem; margin-top: 10px;">
+                            Revenez demain pour un nouveau snippet !
+                        </p>
+                    </div>
+                `;
             }
         } catch (error) {
-            console.error("Impossible de récupérer l'image de la NASA:", error);
-            apodContent.innerHTML = `<p>Impossible de charger l'image du jour.</p>`;
+            console.error("Erreur chargement snippet:", error);
+            // Fallback en cas d'erreur
+            apodContent.innerHTML = `
+                <div class="code-snippet-fallback">
+                    <i class="fa-solid fa-code" style="font-size: 3rem; color: var(--epitech-blue); margin-bottom: 15px;"></i>
+                    <p style="color: var(--light-grey);">Code Snippet du Jour</p>
+                </div>
+            `;
         }
     }
-    fetchApod();
-    setInterval(fetchApod, 24 * 60 * 60 * 1000); // Refresh once a day
+    
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    fetchCodeSnippet();
+    setInterval(fetchCodeSnippet, 24 * 60 * 60 * 1000); // Refresh once a day
 
     // Other widgets will be initialized here
-}); 
+});

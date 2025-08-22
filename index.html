@@ -6,6 +6,10 @@
     <title>Epitech Nancy - Daily</title>
     <link rel="icon" type="image/png" href="epitech-logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    
+    <!-- Prism.js pour syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -48,12 +52,23 @@
             <div id="xkcd-content"></div>
         </div>
 
-        <!-- NASA APOD Widget -->
+        <!-- Code Snippet Widget -->
         <div class="widget" id="apod-widget">
-            <h2 class="widget-title"><i class="fa-solid fa-meteor"></i> Photo Astronomique du Jour</h2>
+            <h2 class="widget-title"><i class="fa-solid fa-code"></i> Code Snippet du Jour</h2>
             <div id="apod-content"></div>
         </div>
     </div>
+    
+    <!-- Prism.js pour syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Configuration -->
+    <script src="config.js"></script>
+    
     <script src="script.js"></script>
 </body>
 </html> 

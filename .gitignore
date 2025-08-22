@@ -1,0 +1,21 @@
+# Variables d'environnement
+.env
+.env.local
+.env.production
+
+# Fichiers de configuration sensibles
+config.local.js
+
+# Logs
+*.log
+
+# Dependencies
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
