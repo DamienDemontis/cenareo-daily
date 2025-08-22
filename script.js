@@ -200,54 +200,92 @@ document.addEventListener('DOMContentLoaded', () => {
     // Refresh trends every 30 minutes
     setInterval(fetchGithubTrends, 30 * 60 * 1000);
 
-    // --- Tech History Widget ---
+    // --- Tech News Widget ---
     const techHistoryContent = document.getElementById('tech-history-content');
 
-    async function fetchTechHistory() {
-        const now = new Date();
-        const month = now.getMonth() + 1;
-        const day = now.getDate();
-        const url = `https://history.muffinlabs.com/date/${month}/${day}`;
-
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`Erreur HTTP: ${response.status}`);
+    async function fetchTechNews() {
+        // Utilisation de l'API RSS2JSON pour parser les flux RSS de sites tech français
+        const rssUrls = [
+            'https://www.numerama.com/feed/',
+            'https://www.01net.com/feed/',
+            'https://www.lemonde.fr/technologies/rss_full.xml',
+            'https://www.usine-digitale.fr/feed/'
+        ];
+        
+        let allArticles = [];
+        
+        // Récupérer les articles de tous les flux RSS
+        for (const rssUrl of rssUrls) {
+            try {
+                const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+                const response = await fetch(apiUrl);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.status === 'ok' && data.items) {
+                        allArticles = allArticles.concat(data.items.map(item => ({
+                            ...item,
+                            source: data.feed.title
+                        })));
+                    }
+                }
+            } catch (error) {
+                console.error(`Erreur pour ${rssUrl}:`, error);
             }
-            const data = await response.json();
-            const events = data.data.Events;
-
-            const techKeywords = ['computer', 'internet', 'software', 'apple', 'microsoft', 'google', 'nasa', 'space', 'ibm'];
-            const techEvents = events.filter(event => 
-                techKeywords.some(keyword => event.text.toLowerCase().includes(keyword))
-            );
-
-            let html = '<ul class="history-list">';
-            if (techEvents.length > 0) {
-                techEvents.slice(0, 4).forEach(event => {
-                    html += `
-                        <li class="history-event">
-                            <span class="history-year">${event.year}</span>
-                            <p class="history-text">${event.text}</p>
-                        </li>
-                    `;
-                });
-            } else {
-                html += `<li class="history-event"><p class="history-text">Aucun événement tech majeur trouvé pour aujourd'hui.</p></li>`;
-            }
-            html += '</ul>';
-
-            techHistoryContent.innerHTML = html;
-
-        } catch (error) {
-            console.error("Impossible de récupérer l'histoire de la tech:", error);
-            techHistoryContent.innerHTML = `<p>Impossible de charger les éphémérides.</p>`;
         }
+        
+        // Trier par date et filtrer les articles tech
+        allArticles.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+        
+        let html = '<ul class="history-list">';
+        let techArticlesFound = 0;
+        
+        const techKeywords = ['informatique', 'technologie', 'software', 'hardware', 'programmation', 'développement', 'intelligence artificielle', 'ia', 'machine learning', 'blockchain', 'cybersécurité', 'startup', 'innovation', 'digital', 'numérique', 'app', 'application', 'web', 'mobile', 'cloud', 'data', 'données', 'algorithm', 'algorithme', 'code', 'coding', 'developer', 'développeur', 'tech', 'computer', 'internet', 'ai', 'artificial intelligence', 'chatgpt', 'openai', 'google', 'microsoft', 'apple', 'facebook', 'meta', 'amazon', 'netflix', 'uber', 'airbnb'];
+        
+        for (const article of allArticles) {
+            if (techArticlesFound >= 3) break;
+            
+            const isTechRelated = techKeywords.some(keyword => 
+                (article.title && article.title.toLowerCase().includes(keyword)) ||
+                (article.description && article.description.toLowerCase().includes(keyword))
+            );
+            
+            if (isTechRelated) {
+                // Nettoyer le titre
+                const cleanTitle = article.title
+                    .replace(/&amp;/g, '&')
+                    .replace(/&quot;/g, '"')
+                    .replace(/&#39;/g, "'")
+                    .replace(/&lt;/g, '<')
+                    .replace(/&gt;/g, '>')
+                    .replace(/<[^>]*>/g, ''); // Enlever les balises HTML
+                    
+                html += `
+                    <li class="tech-news-item">
+                        <div class="tech-news-header">
+                            <span class="tech-news-source">${article.source}</span>
+                            <span class="tech-news-date">${new Date(article.pubDate).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' })}</span>
+                        </div>
+                        <p class="tech-news-title">${cleanTitle}</p>
+                    </li>
+                `;
+                techArticlesFound++;
+            }
+        }
+        
+        if (techArticlesFound === 0) {
+            html += `<li class="tech-news-item"><p class="tech-news-title">Aucune actualité tech majeure disponible pour le moment.</p></li>`;
+        }
+        
+        html += '</ul>';
+        techHistoryContent.innerHTML = html;
     }
 
-    fetchTechHistory();
-     // Refresh history every hour
-    setInterval(fetchTechHistory, 60 * 60 * 1000);
+    // Suppression de la fonction de fallback pour forcer l'utilisation de l'API RSS
+
+    fetchTechNews();
+    // Refresh news every hour
+    setInterval(fetchTechNews, 60 * 60 * 1000);
 
     // --- XKCD Widget ---
     const xkcdContent = document.getElementById('xkcd-content');
