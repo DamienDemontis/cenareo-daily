@@ -1,0 +1,19 @@
+{
+  "name": "cenareo-daily",
+  "version": "1.0.0",
+  "description": "Epitech Nancy Daily Dashboard",
+  "main": "index.html",
+  "scripts": {
+    "build": "node build.js",
+    "dev": "npx serve .",
+    "test": "echo \"No tests specified\" && exit 0",
+    "install-mcp": "npm install @supabase/mcp-server"
+  },
+  "keywords": ["epitech", "dashboard", "supabase"],
+  "author": "Epitech Nancy",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "serve": "^14.2.0"
+  }
+}

@@ -204,12 +204,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const techHistoryContent = document.getElementById('tech-history-content');
 
     async function fetchTechNews() {
-        // Utilisation de l'API RSS2JSON pour parser les flux RSS de sites tech français
+        // Utilisation de l'API RSS2JSON pour parser les flux RSS de sites tech pour étudiants
         const rssUrls = [
-            'https://www.numerama.com/feed/',
-            'https://www.01net.com/feed/',
-            'https://www.lemonde.fr/technologies/rss_full.xml',
-            'https://www.usine-digitale.fr/feed/'
+            'https://www.wired.com/feed/rss',  // WIRED - Tech trends and culture
+            'https://feeds.arstechnica.com/arstechnica/index',  // Ars Technica main feed
+            'https://www.technologyreview.com/feed/',  // MIT Technology Review
+            'https://spectrum.ieee.org/feeds/feed.rss',  // IEEE Spectrum - Engineering & CS
+            'https://techcrunch.com/feed/',  // TechCrunch main feed
+            'https://thenextweb.com/feed'  // The Next Web - Digital culture & tech
         ];
         
         let allArticles = [];
@@ -240,15 +242,36 @@ document.addEventListener('DOMContentLoaded', () => {
         let html = '<ul class="history-list">';
         let techArticlesFound = 0;
         
-        const techKeywords = ['informatique', 'technologie', 'software', 'hardware', 'programmation', 'développement', 'intelligence artificielle', 'ia', 'machine learning', 'blockchain', 'cybersécurité', 'startup', 'innovation', 'digital', 'numérique', 'app', 'application', 'web', 'mobile', 'cloud', 'data', 'données', 'algorithm', 'algorithme', 'code', 'coding', 'developer', 'développeur', 'tech', 'computer', 'internet', 'ai', 'artificial intelligence', 'chatgpt', 'openai', 'google', 'microsoft', 'apple', 'facebook', 'meta', 'amazon', 'netflix', 'uber', 'airbnb'];
+        // Prioritize articles with these keywords for students
+        const priorityKeywords = ['ai', 'artificial intelligence', 'machine learning', 'programming', 'startup', 'innovation', 'breakthrough', 'research', 'google', 'microsoft', 'apple', 'meta', 'openai', 'developer', 'framework', 'language', 'cybersecurity', 'hack', 'data', 'cloud', 'quantum', 'robotics'];
+        
+        // Score and sort articles by relevance
+        allArticles.forEach(article => {
+            let score = 0;
+            const titleLower = (article.title || '').toLowerCase();
+            const descLower = (article.description || '').toLowerCase();
+            
+            priorityKeywords.forEach(keyword => {
+                if (titleLower.includes(keyword)) score += 2;
+                if (descLower.includes(keyword)) score += 1;
+            });
+            
+            article.relevanceScore = score;
+        });
+        
+        // Sort by relevance score and date
+        allArticles.sort((a, b) => {
+            if (b.relevanceScore !== a.relevanceScore) {
+                return b.relevanceScore - a.relevanceScore;
+            }
+            return new Date(b.pubDate) - new Date(a.pubDate);
+        });
         
         for (const article of allArticles) {
             if (techArticlesFound >= 3) break;
             
-            const isTechRelated = techKeywords.some(keyword => 
-                (article.title && article.title.toLowerCase().includes(keyword)) ||
-                (article.description && article.description.toLowerCase().includes(keyword))
-            );
+            // All articles from these sources are tech-related, just take the top scored ones
+            const isTechRelated = true;
             
             if (isTechRelated) {
                 // Nettoyer le titre
@@ -287,48 +310,252 @@ document.addEventListener('DOMContentLoaded', () => {
     // Refresh news every hour
     setInterval(fetchTechNews, 60 * 60 * 1000);
 
-    // --- XKCD Widget ---
-    const xkcdContent = document.getElementById('xkcd-content');
-    async function fetchXkcd() {
-        const url = 'https://xkcd.com/info.0.json';
-        const proxyUrl = 'https://vercel-cors-proxy.vercel.app/api?url=' + encodeURIComponent(url);
+
+    // --- Code Snippet Widget ---
+    const snippetContent = document.getElementById('snippet-content');
+    
+            // Configuration Supabase depuis config.js
+        const SUPABASE_URL = window.SUPABASE_CONFIG?.URL || 'https://owjcgekrreywjegqshuk.supabase.co';
+        const SUPABASE_KEY = window.SUPABASE_CONFIG?.PUBLISHABLE_KEY || '';
+    
+    // Initialisation Supabase
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    
+    async function fetchCodeSnippet() {
+        // Get today's date in YYYY-MM-DD format
+        const now = new Date();
+        const today = now.toISOString().split('T')[0]; // Format: 2025-08-29
+        
         try {
-            const response = await fetch(proxyUrl);
-            const data = await response.json();
-            xkcdContent.innerHTML = `
-                <p class="xkcd-title">${data.safe_title}</p>
-                <img src="${data.img}" alt="${data.alt}" class="xkcd-image">
-            `;
-        } catch (error) {
-            console.error("Impossible de récupérer le comic XKCD:", error);
-            xkcdContent.innerHTML = `<p>Impossible de charger le comic du jour.</p>`;
+            const { data, error } = await supabase
+                .from('snippets')
+                .select(`
+                    *,
+                    categories(name, color),
+                    programming_languages(display_name, syntax_highlight, color)
+                `)
+                .eq('date', today)
+                .single();
+
+            if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
+                throw error;
+            }
+
+            if (data) {
+                // Afficher le snippet - NO nested div, apply directly to snippet-content
+                snippetContent.innerHTML = `
+                    <div class="snippet-header">
+                        <div class="snippet-badges">
+                            <span class="snippet-category">${data.categories?.name || 'Code'}</span>
+                            <span class="snippet-language" style="background: rgba(${hexToRgb(data.programming_languages?.color || '#10b981')}, 0.2); color: ${data.programming_languages?.color || '#10b981'}; border: 1px solid rgba(${hexToRgb(data.programming_languages?.color || '#10b981')}, 0.4);">${data.programming_languages?.display_name || 'Langage'}</span>
+                            <span class="snippet-difficulty-badge ${data.difficulty?.toLowerCase() || 'intermédiaire'}">${data.difficulty}</span>
+                        </div>
+                    </div>
+                    <h3 class="snippet-title">${data.title}</h3>
+                    <div class="snippet-code">
+                        <pre><code class="language-${data.programming_languages?.syntax_highlight || 'cpp'}">${escapeHtml(data.code)}</code></pre>
+                    </div>
+                    <p class="snippet-explanation">${escapeHtml(data.explanation)}</p>
+                `;
+                
+                // Appliquer syntax highlighting
+                if (window.Prism) {
+                    window.Prism.highlightAll();
+                }
+                
+                // Force black background after Prism highlighting
+                setTimeout(() => {
+                    const codeElements = document.querySelectorAll('#code-snippet-widget .snippet-code, #code-snippet-widget .snippet-code pre');
+                    codeElements.forEach(el => {
+                        el.style.background = '#1e1e1e';
+                        el.style.backgroundColor = '#1e1e1e';
+                    });
+                }, 100);
+                
+                // Auto-adjust font size to fit content
+                adjustSnippetFontSize();
+            } else {
+                // Fallback avec un snippet exemple si pas de snippet pour aujourd'hui
+                const exampleSnippets = [
+                    {
+                        title: "Hello World en Python",
+                        code: `def hello_world():
+    """Fonction classique Hello World"""
+    message = "Hello, Epitech Nancy!"
+    print(f"🎓 {message}")
+    return message
+
+if __name__ == "__main__":
+    hello_world()`,
+                        explanation: "Le classique 'Hello World' avec une touche Python moderne utilisant les f-strings. Un rappel que tout grand projet commence par une simple ligne de code.",
+                        language: "Python",
+                        syntax: "python",
+                        category: "Basics",
+                        difficulty: "Débutant"
+                    },
+                    {
+                        title: "Fibonacci Récursif avec Mémoïzation",
+                        code: `function fibonacci(n, memo = {}) {
+    if (n in memo) return memo[n];
+    if (n <= 2) return 1;
+    
+    memo[n] = fibonacci(n - 1, memo) + fibonacci(n - 2, memo);
+    return memo[n];
+}
+
+// Test avec les 10 premiers nombres
+for (let i = 1; i <= 10; i++) {
+    console.log(\`F(\${i}) = \${fibonacci(i)}\`);
+}`,
+                        explanation: "Implémentation optimisée de Fibonacci utilisant la mémoïzation pour éviter les calculs redondants. Complexité réduite de O(2^n) à O(n).",
+                        language: "JavaScript",
+                        syntax: "javascript",
+                        category: "Algorithmes",
+                        difficulty: "Intermédiaire"
+                    },
+                    {
+                        title: "Quick Sort en C++",
+                        code: `#include <vector>
+#include <iostream>
+
+void quickSort(std::vector<int>& arr, int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+int partition(std::vector<int>& arr, int low, int high) {
+    int pivot = arr[high];
+    int i = (low - 1);
+    
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            std::swap(arr[i], arr[j]);
         }
     }
-    fetchXkcd();
-    setInterval(fetchXkcd, 24 * 60 * 60 * 1000); // Refresh once a day
+    std::swap(arr[i + 1], arr[high]);
+    return (i + 1);
+}`,
+                        explanation: "Implémentation du tri rapide (Quick Sort), un algorithme de tri efficace avec une complexité moyenne de O(n log n). Utilise la stratégie diviser pour régner.",
+                        language: "C++",
+                        syntax: "cpp",
+                        category: "Algorithmes",
+                        difficulty: "Avancé"
+                    }
+                ];
 
-    // --- NASA APOD Widget ---
-    const apodContent = document.getElementById('apod-content');
-    async function fetchApod() {
-        const url = 'https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY';
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            if (data.media_type === 'image') {
-                apodContent.innerHTML = `
-                    <img src="${data.url}" alt="${data.title}" class="apod-image">
-                    <p class="apod-title">${data.title}</p>
+                // Sélectionner un snippet basé sur le jour
+                const exampleSnippet = exampleSnippets[dayOfYear % exampleSnippets.length];
+                
+                snippetContent.innerHTML = `
+                    <div class="snippet-header">
+                        <div class="snippet-badges">
+                            <span class="snippet-category" style="background: #6c757d">
+                                Exemple
+                            </span>
+                            <span class="snippet-language" style="background: var(--epitech-blue)20; color: var(--epitech-blue); border: 1px solid var(--epitech-blue)">
+                                ${exampleSnippet.language}
+                            </span>
+                            <span class="snippet-difficulty-badge ${exampleSnippet.difficulty?.toLowerCase() || 'intermediate'}">
+                                ${exampleSnippet.difficulty}
+                            </span>
+                        </div>
+                    </div>
+                    <h3 class="snippet-title">${exampleSnippet.title}</h3>
+                    <div class="snippet-code">
+                        <pre><code class="language-${exampleSnippet.syntax}">${escapeHtml(exampleSnippet.code)}</code></pre>
+                    </div>
+                    <p class="snippet-explanation">${escapeHtml(exampleSnippet.explanation)}</p>
+                    <div style="background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.3); padding: 10px; border-radius: 6px; margin-top: 15px;">
+                        <i class="fa-solid fa-info-circle" style="color: #ffc107; margin-right: 8px;"></i>
+                        <span style="color: #ffc107; font-size: 0.85rem;">
+                            Snippet exemple - Ajoutez le snippet du jour via l'interface admin
+                        </span>
+                    </div>
                 `;
-            } else {
-                apodContent.innerHTML = `<p>L'image du jour n'est pas disponible (c'est peut-être une vidéo).</p><a href="${data.url}" target="_blank">Voir ici</a>`;
+                
+                // Appliquer syntax highlighting
+                if (window.Prism) {
+                    window.Prism.highlightAll();
+                }
+                
+                // Force black background after Prism highlighting for fallback
+                setTimeout(() => {
+                    const codeElements = document.querySelectorAll('#code-snippet-widget .snippet-code, #code-snippet-widget .snippet-code pre');
+                    codeElements.forEach(el => {
+                        el.style.background = '#1e1e1e';
+                        el.style.backgroundColor = '#1e1e1e';
+                    });
+                }, 100);
             }
         } catch (error) {
-            console.error("Impossible de récupérer l'image de la NASA:", error);
-            apodContent.innerHTML = `<p>Impossible de charger l'image du jour.</p>`;
+            console.error("Erreur chargement snippet:", error);
+            // Fallback en cas d'erreur
+            snippetContent.innerHTML = `
+                <div class="code-snippet-fallback" style="padding: 40px; text-align: center;">
+                    <i class="fa-solid fa-exclamation-triangle" style="font-size: 3rem; color: var(--epitech-red); margin-bottom: 15px;"></i>
+                    <p style="color: var(--white); font-size: 1.1rem; font-weight: 600;">Erreur de chargement</p>
+                    <p style="color: var(--light-grey); font-size: 0.9rem; margin-top: 10px;">
+                        Impossible de charger le snippet du jour.<br>
+                        Veuillez rafraîchir la page ou contacter l'administrateur.
+                    </p>
+                </div>
+            `;
         }
     }
-    fetchApod();
-    setInterval(fetchApod, 24 * 60 * 60 * 1000); // Refresh once a day
+    
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    function hexToRgb(hex) {
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? 
+            `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : 
+            "16, 185, 129";
+    }
+    
+    function adjustSnippetFontSize() {
+        const widget = document.querySelector('#code-snippet-widget');
+        const codeBlock = widget?.querySelector('.snippet-code pre');
+        const explanation = widget?.querySelector('.snippet-explanation');
+        
+        if (!widget || !codeBlock) return;
+        
+        // Get available height for content
+        const widgetHeight = widget.offsetHeight;
+        const header = widget.querySelector('.snippet-header');
+        const title = widget.querySelector('.snippet-title');
+        const headerHeight = (header?.offsetHeight || 0) + (title?.offsetHeight || 0) + 60; // +margins
+        
+        const availableHeight = widgetHeight - headerHeight;
+        const codeHeight = codeBlock.scrollHeight;
+        const explanationHeight = explanation?.scrollHeight || 0;
+        const totalContentHeight = codeHeight + explanationHeight + 30; // +margins
+        
+        if (totalContentHeight > availableHeight) {
+            // Calculate scaling factor
+            const scale = Math.max(0.6, availableHeight / totalContentHeight);
+            const newFontSize = Math.max(0.6, 0.85 * scale);
+            
+            // Apply responsive sizing
+            codeBlock.style.fontSize = `${newFontSize}rem`;
+            codeBlock.style.lineHeight = scale < 0.8 ? '1.2' : '1.4';
+            
+            if (explanation) {
+                explanation.style.fontSize = `${Math.max(0.7, 0.9 * scale)}rem`;
+                explanation.style.lineHeight = '1.3';
+            }
+        }
+    }
+    
+    fetchCodeSnippet();
+    setInterval(fetchCodeSnippet, 24 * 60 * 60 * 1000); // Refresh once a day
 
     // Other widgets will be initialized here
-}); 
+});
