@@ -5,6 +5,7 @@
 
 # Fichiers de configuration sensibles
 config.local.js
+mcp-config.json
 
 # Logs
 *.log
@@ -15,7 +16,19 @@ node_modules/
 # IDE
 .vscode/
 .idea/
+.claude/
 
 # OS
 .DS_Store
 Thumbs.db
+
+# Generated files
+epitech-365-snippet-plan.json
+snippet_plan.json
+generate_snippets.py
+january-snippets.sql
+
+# Test files
+test-connection.html
+admin-new.html
+admin-new.js

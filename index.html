@@ -5,12 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Epitech Nancy - Daily</title>
     <link rel="icon" type="image/png" href="epitech-logo.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <!-- Shoelace Components (same as admin) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.14.0/cdn/themes/dark.css" />
     
     <!-- Prism.js pour syntax highlighting -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
     
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    
+    <!-- Shared snippet widget styles -->
+    <link rel="stylesheet" href="snippet-widget.css">
+    
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Debug: Force exact same CSS variables and background as admin -->
+    <style>
+        :root {
+            --epitech-blue: #007bff;
+            --epitech-red: #e40032;
+            --background-dark: #0a0a0a;
+            --card-dark: #1a1a1a;
+            --widget-dark: #252525;
+            --light-grey: #9ca3af;
+            --white: #ffffff;
+            --border-color: #374151;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+        }
+        
+        /* Force snippet background exactly like admin */
+        .code-snippet-widget .snippet-code {
+            background: #1e1e1e !important;
+        }
+    </style>
 </head>
 <body>
     <div id="dashboard">
@@ -46,16 +75,10 @@
             <div id="github-content"></div>
         </div>
 
-        <!-- XKCD Widget -->
-        <div class="widget" id="xkcd-widget">
-            <h2 class="widget-title"><i class="fa-solid fa-face-laugh-wink"></i> Comic du Jour : XKCD</h2>
-            <div id="xkcd-content"></div>
-        </div>
-
         <!-- Code Snippet Widget -->
-        <div class="widget" id="apod-widget">
+        <div class="widget code-snippet-widget" id="code-snippet-widget">
             <h2 class="widget-title"><i class="fa-solid fa-code"></i> Code Snippet du Jour</h2>
-            <div id="apod-content"></div>
+            <div id="snippet-content"></div>
         </div>
     </div>
     
