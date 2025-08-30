@@ -322,9 +322,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     
     async function fetchCodeSnippet() {
-        // Get today's date in YYYY-MM-DD format
+        // Get today's month and day
         const now = new Date();
-        const today = now.toISOString().split('T')[0]; // Format: 2025-08-29
+        const currentMonth = now.getMonth() + 1; // getMonth() returns 0-11, we need 1-12
+        const currentDay = now.getDate();
         
         try {
             const { data, error } = await supabase
@@ -334,7 +335,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     categories(name, color),
                     programming_languages(display_name, syntax_highlight, color)
                 `)
-                .eq('date', today)
+                .eq('month', currentMonth)
+                .eq('day', currentDay)
                 .single();
 
             if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
