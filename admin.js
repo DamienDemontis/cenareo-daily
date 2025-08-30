@@ -37,7 +37,7 @@ class ModernSnippetManager {
                     *,
                     categories(name, color),
                     programming_languages(display_name, syntax_highlight, color)
-                `).order('date')
+                `).order('month', { ascending: true }).order('day', { ascending: true })
             ]);
 
             if (categoriesResult.error) throw categoriesResult.error;
@@ -47,12 +47,14 @@ class ModernSnippetManager {
             this.categories = categoriesResult.data || [];
             this.languages = languagesResult.data || [];
             
-            // Map snippets by day of year (convert from date)
+            // Map snippets by day of year (convert from month/day)
             this.snippets.clear();
             if (snippetsResult.data) {
                 snippetsResult.data.forEach(snippet => {
-                    const dayOfYear = this.dateStringToDayOfYear(snippet.date);
-                    this.snippets.set(dayOfYear, snippet);
+                    if (snippet.month && snippet.day) {
+                        const dayOfYear = this.monthDayToDayOfYear(snippet.month, snippet.day);
+                        this.snippets.set(dayOfYear, snippet);
+                    }
                 });
             }
 
@@ -305,8 +307,10 @@ class ModernSnippetManager {
     async saveSnippet() {
         if (!this.validateForm()) return;
 
+        const date = this.getDayOfYearDate(this.currentDay);
         const snippetData = {
-            date: this.dayOfYearToDateString(this.currentDay),
+            month: date.getMonth() + 1,
+            day: date.getDate(),
             title: document.getElementById('title-input').value.trim(),
             code: document.getElementById('code-input').value.trim(),
             explanation: document.getElementById('explanation-input').value.trim(),
@@ -602,6 +606,14 @@ class ModernSnippetManager {
         return Math.floor(diff / (1000 * 60 * 60 * 24));
     }
 
+    monthDayToDayOfYear(month, day) {
+        const year = new Date().getFullYear();
+        const date = new Date(year, month - 1, day);
+        const start = new Date(year, 0, 0);
+        const diff = date - start;
+        return Math.floor(diff / (1000 * 60 * 60 * 24));
+    }
+
     dayOfYearToDateString(dayOfYear) {
         const year = new Date().getFullYear();
         const date = new Date(year, 0, dayOfYear);
@@ -709,8 +721,9 @@ class ModernSnippetManager {
                 dayCell.textContent = day;
                 
                 // Check if this day has a snippet
-                const dateString = `${year}-${String(monthIndex + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                const hasSnippet = Array.from(this.snippets.values()).some(s => s.date === dateString);
+                const hasSnippet = Array.from(this.snippets.values()).some(s => 
+                    s.month === (monthIndex + 1) && s.day === day
+                );
                 
                 dayCell.style.cssText = `
                     text-align: center;
@@ -791,7 +804,19 @@ class ModernSnippetManager {
         
         listContainer.innerHTML = '';
         
+        // Calculate language usage percentages
+        const totalSnippets = this.snippets.length;
+        const languageCounts = {};
+        
+        this.snippets.forEach(snippet => {
+            const langId = snippet.programming_language_id;
+            languageCounts[langId] = (languageCounts[langId] || 0) + 1;
+        });
+        
         this.languages.forEach(language => {
+            const count = languageCounts[language.id] || 0;
+            const percentage = totalSnippets > 0 ? Math.round((count / totalSnippets) * 100) : 0;
+            
             const item = document.createElement('div');
             item.style.cssText = `
                 display: flex;
@@ -806,6 +831,7 @@ class ModernSnippetManager {
                     <div style="width: 20px; height: 20px; background: ${language.color}; border-radius: 4px;"></div>
                     <span style="color: var(--white); font-weight: 500;">${language.display_name}</span>
                     <span style="color: var(--light-grey); font-size: 0.85rem;">(${language.name})</span>
+                    <span style="color: var(--accent-color); font-weight: 600; font-size: 0.85rem;">${percentage}%</span>
                 </div>
                 <button onclick="window.snippetManager.deleteLanguage(${language.id})" style="
                     background: var(--danger-color);
