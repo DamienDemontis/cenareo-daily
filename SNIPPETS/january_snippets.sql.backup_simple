@@ -1,0 +1,213 @@
+-- January Snippets: Advanced Data Structures & System Programming (Complete Month 1-31) - FIXED
+INSERT INTO snippets (month, day, title, code, explanation, language_id, category_id) VALUES
+(1, 1, 'C New Year Programming Goals', '#include <stdio.h>\n\nint main() {
+    // New Year Goals for Epitech Students\n    char* goals[] = {
+        "Master C memory management",
+        "Learn modern C++ features",\n        "Contribute to open source",\n        "Build amazing projects",\n        "Ace the technical interviews"\n    };
+    \n    printf("2024 Programming Goals:\\n");\n    for (int i = 0; i < 5; i++) {\n        printf("%d. %s\\n", i+1, goals[i]);\n    }\n    \n    return 0;\n}', 'Start 2024 with clear programming goals! Arrays of strings for organization. Loop through objectives. Motivation through code. Happy New Year!', 2, 10),
+(1, 2, 'Python Advanced List Comprehensions', '# List comprehensions\nsquares = [x**2 for x in range(10) if x % 2 == 0]\n\n# Nested comprehensions\nmatrix = [[i*j for j in range(3)] for i in range(3)]\n\n# Dictionary comprehension\nword_len = {word: len(word) for word in words}
+\n# Set comprehension\nunique = {x % 10 for x in numbers}
+\n# Generator expression (memory efficient)
+sum_squares = sum(x**2 for x in range(1000000))\n\n# Multiple conditions\nfiltered = [x for x in data if x > 0 and x < 100]', 'Advanced comprehension techniques. Nested loops create matrices. Generator expressions save memory. Multiple conditions filter effectively. Pythonic code patterns.', 1, 3),
+(1, 3, 'C Doubly Linked List', 'struct Node {
+    int data;
+    struct Node *prev, *next;
+};
+\nvoid insert_front(struct Node** head, int data) {
+    struct Node* new = malloc(sizeof(struct Node));
+    new->data = data;
+    new->prev = NULL;
+    new->next = *head;
+    if (*head) (*head)->prev = new;
+    *head = new;
+}
+\nvoid delete_node(struct Node** head, struct Node* del) {
+    if (!*head || !del) return;
+    if (*head == del) *head = del->next;
+    if (del->next) del->next->prev = del->prev;
+    if (del->prev) del->prev->next = del->next;
+    free(del);
+}', 'Doubly linked lists have forward and backward links. Easier deletion but more memory overhead. Update both directions when modifying.', 2, 3),
+(1, 4, 'C Array Pointers', 'int arr[5] = {10, 20, 30, 40, 50};
+int *p = arr;  // Points to first element\n\n// Different ways to access\nprintf("%d\\n", arr[2]);     // 30\nprintf("%d\\n", *(arr + 2)); // 30\nprintf("%d\\n", *(p + 2));   // 30\nprintf("%d\\n", p[2]);       // 30\n\n// Pointer arithmetic\np++;  // Now points to arr[1]\nprintf("%d\\n", *p);  // 20\n\n// Array of pointers\nint *ptrs[3];\nfor (int i = 0; i < 3; i++)\n    ptrs[i] = &arr[i];', 'Arrays decay to pointers. Pointer arithmetic moves by element size. arr[i] equals *(arr+i). Arrays and pointers interchangeable in many contexts.', 2, 2),
+(1, 5, 'Python Lambda Functions', '# Simple lambda\nsquare = lambda x: x ** 2\nprint(square(5))  # 25\n\n# Lambda in sort\nstudents = [(''Alice'', 85), (''Bob'', 75), (''Charlie'', 95)]\nstudents.sort(key=lambda x: x[1], reverse=True)\n\n# Map with lambda\nnums = [1, 2, 3, 4, 5]\nsquared = list(map(lambda x: x**2, nums))\n\n# Filter with lambda\nevens = list(filter(lambda x: x % 2 == 0, nums))\n\n# Reduce with lambda\nfrom functools import reduce\nproduct = reduce(lambda x, y: x * y, nums)', 'Lambda creates anonymous functions. Single expression only. Useful with map, filter, sort. Concise for simple operations. Not always more readable.', 1, 9),
+(1, 6, 'C++ References', 'void swap(int& a, int& b) {
+    int temp = a;
+    a = b;
+    b = temp;
+}
+\nint main() {
+    int x = 5, y = 10;
+    swap(x, y);  // x=10, y=5\n    \n    // Reference must be initialized\n    int& ref = x;  // ref is alias for x
+    ref = 20;      // x is now 20\n    \n    // Const reference\n    const int& cref = 100;  // Can bind to temporary
+    \n    // Return by reference\n    int& get_element(int arr[], int i) { return arr[i]; }
+}', 'References are aliases to objects. Cannot be null or reassigned. Pass by reference avoids copies. Const references bind to temporaries.', 3, 2),
+(1, 7, 'Shell Scripting Basics', '#!/bin/bash\n\n# Variables\nNAME="Epitech"\nYEAR=2024\n\n# Conditionals\nif [ -f "file.txt" ]; then\n    echo "File exists"\nfi\n\n# Loops\nfor i in {1..5}; do\n    echo "Count: $i"\ndone\n\n# Functions\ngreet() {
+    echo "Hello, $1!"\n}
+\ngreet "$NAME"\n\n# Command substitution\nFILES=$(ls *.c 2>/dev/null | wc -l)\necho "C files: $FILES"', 'Shell scripts automate tasks. Variables with $. Conditionals with [ ]. Loops iterate. Functions organize code. Command substitution with $().', 14, 7),
+(1, 8, 'JavaScript Closures', 'function counter() {
+    let count = 0;
+    return {
+        increment: () => ++count,\n        decrement: () => --count,\n        get: () => count\n    };
+}
+\nconst c = counter();
+console.log(c.increment()); // 1\nconsole.log(c.increment()); // 2\nconsole.log(c.get());       // 2\n\n// Closure in loop fix\nfor (let i = 0; i < 3; i++) {
+    setTimeout(() => console.log(i), 100);  // 0, 1, 2\n}', 'Closures capture outer variables. Private variables pattern. Functions remember environment. let creates block scope. Common interview topic.', 5, 9),
+(1, 9, 'C Structures Padding', 'struct Example1 {
+    char a;    // 1 byte + 3 padding\n    int b;     // 4 bytes\n    char c;    // 1 byte + 3 padding\n};  // Total: 12 bytes\n\nstruct Example2 {
+    char a;    // 1 byte\n    char c;    // 1 byte + 2 padding\n    int b;     // 4 bytes\n};  // Total: 8 bytes
+
+#pragma pack(1)\nstruct Packed {
+    char a;    // 1 byte
+    int b;     // 4 bytes\n    char c;    // 1 byte\n};  // Total: 6 bytes\n#pragma pack()', 'Compiler adds padding for alignment. Order affects struct size. Pack pragma removes padding. Trade-off: memory vs performance. Important for protocols.', 2, 3),
+(1, 10, 'Python Decorators Advanced', 'import functools\nimport time\n\ndef timer(func):\n    @functools.wraps(func)\n    def wrapper(*args, **kwargs):\n        start = time.perf_counter()\n        result = func(*args, **kwargs)\n        end = time.perf_counter()\n        print(f"{func.__name__} took {end-start:.4f}s")\n        return result\n    return wrapper\n\n@timer\ndef slow_function():\n    time.sleep(1)\n    return "Done"\n\n# Decorator with arguments\ndef repeat(times):\n    def decorator(func):\n        def wrapper(*args, **kwargs):\n            for _ in range(times):\n                func(*args, **kwargs)\n        return wrapper\n    return decorator', 'Decorators modify function behavior. @functools.wraps preserves metadata. Can accept arguments. Useful for logging, timing, validation.', 1, 9),
+(1, 11, 'C Volatile Keyword', '#include <signal.h>\n\nvolatile int flag = 0;
+\nvoid signal_handler(int sig) {
+    flag = 1;  // Modified by signal\n}
+\nint main() {
+    signal(SIGINT, signal_handler);
+    \n    // Without volatile, compiler might optimize this\n    while (!flag) {
+        // Wait for signal
+    }
+    \n    // Hardware register (embedded)\n    volatile uint32_t* GPIO = (uint32_t*)0x40020000;
+    *GPIO = 0x01;  // Write to hardware\n    \n    return 0;
+}', 'Volatile prevents optimization. Used for hardware registers, signals, multi-threading. Tells compiler value can change unexpectedly. Not thread-safe alone.', 2, 2),
+(1, 12, 'Database Indexing', 'CREATE INDEX idx_email ON users(email);
+CREATE INDEX idx_composite ON orders(user_id, created_at);
+CREATE UNIQUE INDEX idx_unique ON products(sku);
+\n-- Analyze query performance\nEXPLAIN ANALYZE\nSELECT * FROM orders\nWHERE user_id = 123\nAND created_at > ''2024-01-01'';
+\n-- Full-text index\nCREATE INDEX idx_search ON articles\nUSING GIN(to_tsvector(''english'', title || '' '' || content));
+\n-- Drop unused index\nDROP INDEX idx_old;', 'Indexes speed up queries. B-tree for equality/range. GIN for full-text. Composite for multiple columns. Trade-off: faster reads, slower writes.', 10, 3),
+(1, 13, 'C++ Move Semantics', 'class String {
+    char* data;
+    size_t size;
+public:\n    // Move constructor\n    String(String&& other) noexcept\n        : data(other.data), size(other.size) {
+        other.data = nullptr;
+        other.size = 0;
+    }
+    \n    // Move assignment\n    String& operator=(String&& other) noexcept {
+        if (this != &other) {
+            delete[] data;
+            data = other.data;
+            size = other.size;
+            other.data = nullptr;
+        }
+        return *this;
+    }
+};', 'Move semantics avoid unnecessary copies. && indicates rvalue reference. noexcept enables optimizations. Transfers ownership of resources.', 3, 9),
+(1, 14, 'Git Advanced', '# Interactive rebase\ngit rebase -i HEAD~3\n\n# Stash changes\ngit stash save "WIP: feature"\ngit stash pop\n\n# Cherry-pick commit\ngit cherry-pick abc123\n\n# Reset types\ngit reset --soft HEAD~1   # Keep changes staged\ngit reset --mixed HEAD~1  # Keep changes unstaged\ngit reset --hard HEAD~1   # Discard changes\n\n# Bisect to find bug\ngit bisect start\ngit bisect bad HEAD\ngit bisect good v1.0\n# Test and mark good/bad until found', 'Advanced Git techniques. Rebase rewrites history. Stash saves work temporarily. Cherry-pick applies specific commits. Bisect finds bugs systematically.', 14, 7),
+(1, 15, 'Python Context Managers', 'from contextlib import contextmanager\nimport os\n\n@contextmanager\ndef change_dir(path):\n    old_path = os.getcwd()\n    try:\n        os.chdir(path)\n        yield\n    finally:\n        os.chdir(old_path)\n\n# Usage\nwith change_dir(''/tmp''):\n    print(os.getcwd())  # /tmp\n# Back to original dir\n\n@contextmanager\ndef timing():\n    start = time.time()\n    yield
+    print(f"Took {time.time() - start:.2f}s")', 'Context managers ensure cleanup. @contextmanager decorator simplifies creation. yield separates setup/teardown. finally ensures cleanup. Resource management pattern.', 1, 9),
+(1, 16, 'C Enums and Unions', 'enum Status { SUCCESS = 0, ERROR = -1, PENDING = 1 };
+\nunion Value {
+    int i;
+    float f;
+    char str[20];
+};
+\nstruct Message {
+    enum { INT, FLOAT, STRING } type;
+    union Value value;
+};
+\nvoid print_message(struct Message* msg) {
+    switch (msg->type) {
+        case INT: printf("%d\\n", msg->value.i); break;\n        case FLOAT: printf("%.2f\\n", msg->value.f); break;\n        case STRING: printf("%s\\n", msg->value.str); break;\n    }\n}', 'Enums create named constants. Unions save memory for variants. Tagged unions track active member. Common in protocols and parsers.', 2, 3),
+(1, 17, 'Web Security Basics', '// XSS Prevention\nfunction escapeHtml(text) {
+    const map = {
+        ''&'': ''&amp;'',\n        ''<'': ''&lt;'',\n        ''>'': ''&gt;'',\n        ''"'': ''&quot;'',\n        "''": ''&#039;''\n    };
+    return text.replace(/[&<>"'']/g, m => map[m]);
+}
+\n// SQL Injection Prevention\nconst query = ''SELECT * FROM users WHERE id = ?'';
+db.query(query, [userId]);
+\n// CSRF Token\napp.use(csrf());
+app.get(''/form'', (req, res) => {
+    res.render(''form'', { csrfToken: req.csrfToken() });
+});', 'Web security essentials. Escape user input for XSS. Parameterized queries prevent SQL injection. CSRF tokens verify requests. Never trust user input.', 5, 8),
+(1, 18, 'C++ Templates Advanced', 'template<typename T, size_t N>\nclass Array {
+    T data[N];
+public:\n    T& operator[](size_t i) { return data[i]; }
+    constexpr size_t size() { return N; }
+};
+\n// Variadic template\ntemplate<typename... Args>\nvoid print(Args... args) {
+    ((cout << args << " "), ...);\n}\n\n// SFINAE\ntemplate<typename T>\ntypename enable_if<is_integral<T>::value, T>::type\nsafe_divide(T a, T b) {\n    return b != 0 ? a / b : 0;\n}', 'Advanced template techniques. Non-type parameters for compile-time values. Variadic templates for variable arguments. SFINAE for conditional compilation.', 3, 9),
+(1, 19, 'Network Programming', 'import socket\nimport threading\n\ndef handle_client(conn, addr):\n    print(f"Connected: {addr}")\n    while True:\n        data = conn.recv(1024)\n        if not data: break\n        conn.send(data.upper())\n    conn.close()\n\nserver = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\nserver.bind((''localhost'', 8080))\nserver.listen(5)\n\nwhile True:\n    conn, addr = server.accept()\n    thread = threading.Thread(target=handle_client, args=(conn, addr))\n    thread.start()', 'TCP server with threading. Each client gets separate thread. Echo server pattern. accept blocks until connection. Handle multiple clients concurrently.', 1, 11),
+(1, 20, 'Memory Management', '#include <string.h>\n\nvoid* my_realloc(void* ptr, size_t old_size, size_t new_size) {
+    if (new_size == 0) {
+        free(ptr);
+        return NULL;
+    }
+    if (!ptr) return malloc(new_size);
+    \n    void* new_ptr = malloc(new_size);
+    if (!new_ptr) return NULL;
+    \n    size_t copy_size = old_size < new_size ? old_size : new_size;
+    memcpy(new_ptr, ptr, copy_size);
+    free(ptr);
+    \n    return new_ptr;
+}', 'Custom memory reallocation. Handle edge cases: NULL, zero size. Copy minimum of old/new size. Free old memory. Error checking essential.', 2, 5),
+(1, 21, 'Regex Patterns', 'import re\n\n# Common patterns\npatterns = {
+    ''email'': r''^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'',\n    ''phone'': r''^\\+?1?\\d{9,15}$'',\n    ''url'': r''^https?://[\\w.-]+\\.[a-z]{2,}(/.*)?$'',\n    ''ipv4'': r''^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$''\n}
+\n# Extract and validate\ntext = "Contact: john@email.com or call 555-1234"\nemail = re.search(patterns[''email''], text)\n\n# Replace with groups\nformatted = re.sub(r''(\\d{3})(\\d{3})(\\d{4})'', r''(\\1) \\2-\\3'', "5551234567")', 'Regular expressions match patterns. ^ and $ anchor start/end. \\d digits, \\w word chars. Groups with (). Powerful but use carefully.', 1, 4),
+(1, 22, 'C Preprocessor Advanced', '#define STRINGIFY(x) #x\n#define CONCAT(a, b) a##b\n#define FOREACH(arr, size) \\\n    for(int CONCAT(i, __LINE__) = 0; CONCAT(i, __LINE__) < size; CONCAT(i, __LINE__)++)\n\n#if defined(__linux__)\n    #define PLATFORM "Linux"\n#elif defined(_WIN32)\n    #define PLATFORM "Windows"\n#elif defined(__APPLE__)\n    #define PLATFORM "macOS"\n#endif\n\n#define MIN(a, b) ({ \\\n    typeof(a) _a = (a); \\\n    typeof(b) _b = (b); \\\n    _a < _b ? _a : _b; \\\n})', 'Advanced preprocessor techniques. # stringifies, ## concatenates. Platform detection. Statement expressions (GCC). __LINE__ for unique names.', 2, 2),
+(1, 23, 'Async JavaScript', 'async function fetchWithRetry(url, retries = 3) {
+    for (let i = 0; i < retries; i++) {
+        try {
+            const response = await fetch(url);
+            if (response.ok) return await response.json();
+        } catch (error) {
+            if (i === retries - 1) throw error;
+            await new Promise(r => setTimeout(r, 1000 * Math.pow(2, i)));
+        }
+    }
+}
+\n// Parallel requests\nconst [user, posts] = await Promise.all([\n    fetch(''/api/user'').then(r => r.json()),\n    fetch(''/api/posts'').then(r => r.json())\n]);', 'Async patterns in JavaScript. Retry with exponential backoff. Promise.all for parallel. Error handling in async. Modern JavaScript patterns.', 5, 11),
+(1, 24, 'C++ STL Algorithms', '#include <algorithm>\n#include <numeric>\n#include <vector>\n\nvector<int> v = {3, 1, 4, 1, 5, 9};
+
+// Common algorithms
+sort(v.begin(), v.end());
+auto it = find(v.begin(), v.end(), 4);
+int sum = accumulate(v.begin(), v.end(), 0);
+\n// Remove duplicates\nv.erase(unique(v.begin(), v.end()), v.end());
+\n// Partition\nauto pivot = partition(v.begin(), v.end(),\n                      [](int x) { return x < 5; });
+\n// Transform\ntransform(v.begin(), v.end(), v.begin(),\n         [](int x) { return x * 2; });', 'STL algorithms operate on ranges. Iterator-based design. Lambda expressions for predicates. Functional programming style. Efficient and tested.', 3, 3),
+(1, 25, 'Docker Basics', '# Dockerfile\nFROM python:3.9-slim\nWORKDIR /app\nCOPY requirements.txt .\nRUN pip install --no-cache-dir -r requirements.txt\nCOPY . .\nCMD ["python", "app.py"]\n\n# Build image\ndocker build -t myapp .\n\n# Run container\ndocker run -d -p 8080:8080 --name app myapp\n\n# Docker compose\nversion: ''3''\nservices:\n  web:\n    build: .\n    ports:\n      - "8080:8080"\n  db:\n    image: postgres:13\n    environment:\n      POSTGRES_PASSWORD: secret', 'Docker containerizes applications. Dockerfile defines image. Layers cache for efficiency. Compose manages multi-container apps. Portable deployments.', 16, 7),
+(1, 26, 'Testing Strategies', 'import unittest\nfrom unittest.mock import Mock, patch\n\nclass TestCalculator(unittest.TestCase):\n    def setUp(self):\n        self.calc = Calculator()\n    \n    def test_addition(self):\n        self.assertEqual(self.calc.add(2, 3), 5)\n    \n    def test_division_by_zero(self):\n        with self.assertRaises(ZeroDivisionError):\n            self.calc.divide(10, 0)\n    \n    @patch(''requests.get'')\n    def test_api_call(self, mock_get):\n        mock_get.return_value.json.return_value = {''result'': 42}
+        result = fetch_data()\n        self.assertEqual(result, 42)', 'Unit testing best practices. Setup/teardown for test isolation. Mock external dependencies. Test edge cases. Assertions verify behavior.', 1, 10),
+(1, 27, 'Optimization Techniques', '#include <immintrin.h>  // SIMD\n\n// Loop unrolling\nvoid sum_array(int* arr, int n) {
+    int sum = 0;
+    int i;
+    for (i = 0; i < n - 3; i += 4) {
+        sum += arr[i] + arr[i+1] + arr[i+2] + arr[i+3];
+    }
+    for (; i < n; i++) sum += arr[i];
+}
+\n// SIMD vectorization\nvoid add_vectors(float* a, float* b, float* c, int n) {
+    for (int i = 0; i < n; i += 8) {
+        __m256 va = _mm256_load_ps(&a[i]);
+        __m256 vb = _mm256_load_ps(&b[i]);
+        __m256 vc = _mm256_add_ps(va, vb);
+        _mm256_store_ps(&c[i], vc);
+    }
+}', 'Performance optimization techniques. Loop unrolling reduces overhead. SIMD processes multiple data. Compiler flags: -O3 -march=native. Profile first.', 2, 10),
+(1, 28, 'Design Patterns Review', '// Singleton\nclass Logger {
+    static Logger* instance;
+    Logger() {}
+public:\n    static Logger* getInstance() {
+        if (!instance) instance = new Logger();
+        return instance;
+    }
+};
+\n// Factory\nclass ShapeFactory {
+public:\n    static Shape* createShape(string type) {
+        if (type == "circle") return new Circle();
+        if (type == "square") return new Square();
+        return nullptr;
+    }
+};
+\n// Observer\nclass Subject {
+    vector<Observer*> observers;
+public:\n    void notify() {
+        for (auto obs : observers) obs->update();
+    }
+};', 'Common design patterns. Singleton: one instance. Factory: object creation. Observer: event handling. Patterns solve recurring problems.', 3, 9),
+(1, 29, 'Cryptography Basics', 'import hashlib\nimport secrets\nfrom cryptography.fernet import Fernet\n\n# Hashing (one-way)\npassword = "secret123"\nhashed = hashlib.pbkdf2_hmac(''sha256'', \n    password.encode(), b''salt'', 100000)\n\n# Symmetric encryption\nkey = Fernet.generate_key()\ncipher = Fernet(key)\nencrypted = cipher.encrypt(b"Secret message")\ndecrypted = cipher.decrypt(encrypted)\n\n# Secure random\ntoken = secrets.token_urlsafe(32)\nnonce = secrets.randbits(128)', 'Cryptography fundamentals. Hashing for passwords (one-way). Symmetric encryption (same key). Use established libraries. Never roll your own crypto.', 1, 8),
+(1, 30, 'Performance Profiling', 'import cProfile\nimport pstats\n\ndef profile_code():\n    profiler = cProfile.Profile()\n    profiler.enable()\n    \n    # Code to profile\n    expensive_operation()\n    \n    profiler.disable()\n    stats = pstats.Stats(profiler)\n    stats.sort_stats(''cumulative'')\n    stats.print_stats(10)\n\n# Memory profiling\nfrom memory_profiler import profile\n\n@profile\ndef memory_intensive():\n    large_list = [i for i in range(1000000)]\n    return sum(large_list)', 'Profile to find bottlenecks. CPU profiling shows time distribution. Memory profiling tracks allocations. Optimize hotspots first. Measure improvements.', 1, 10),
+(1, 31, 'Month End Review', '/* January Learning Summary:\n * ✓ Memory management fundamentals\n * ✓ Advanced data structures\n * ✓ Network programming basics\n * ✓ Design patterns overview\n * ✓ Testing strategies\n * ✓ Performance optimization\n * \n * Next Month Goals:\n * - Deepen algorithm knowledge\n * - Practice system design\n * - Contribute to open source\n * - Build portfolio project\n */\n\nprintf("January complete! 31 days of learning.\\n");\nprintf("Ready for February challenges!\\n");', 'Monthly review and planning. Celebrate progress made. Identify areas for improvement. Set concrete goals. Continuous learning mindset. Keep coding!', 2, 7);

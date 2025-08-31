@@ -1,11 +1,9 @@
 -- March Snippets: Object-Oriented & Design Patterns
 INSERT INTO snippets (month, day, title, code, explanation, language_id, category_id) VALUES
 (3, 1, 'Singleton Pattern', 'class Singleton {
-private:
-    static Singleton* instance;
+private:\n    static Singleton* instance;
     Singleton() {}
-public:
-    static Singleton* getInstance() {
+public:\n    static Singleton* getInstance() {
         if (!instance) instance = new Singleton();
         return instance;
     }
@@ -14,8 +12,7 @@ public:
 };
 Singleton* Singleton::instance = nullptr;', 'Singleton ensures single instance. Private constructor prevents direct creation. Static method controls access. Used for configs, loggers.', 3, 9),
 (3, 2, 'Factory Pattern', 'class ShapeFactory {
-public:
-    enum ShapeType { CIRCLE, SQUARE, TRIANGLE };
+public:\n    enum ShapeType { CIRCLE, SQUARE, TRIANGLE };
     static unique_ptr<Shape> createShape(ShapeType type) {
         switch(type) {
             case CIRCLE: return make_unique<Circle>();
@@ -27,8 +24,7 @@ public:
 };', 'Factory pattern creates objects without specifying exact class. Encapsulates object creation logic. Enables loose coupling and flexibility.', 3, 9),
 (3, 3, 'Observer Pattern', 'class Subject {
     vector<Observer*> observers;
-public:
-    void attach(Observer* obs) { observers.push_back(obs); }
+public:\n    void attach(Observer* obs) { observers.push_back(obs); }
     void detach(Observer* obs) {
         observers.erase(remove(observers.begin(), observers.end(), obs));
     }
@@ -36,64 +32,29 @@ public:
         for (auto obs : observers) obs->update(this);
     }
 };', 'Observer defines one-to-many dependency. Subjects notify observers of changes. Used in MVC, event systems, reactive programming.', 3, 9),
-(3, 4, 'Python Class Inheritance', 'class Animal:
-    def __init__(self, name):
-        self.name = name
-    def speak(self):
-        raise NotImplementedError
-
-class Dog(Animal):
-    def speak(self):
-        return f"{self.name} says Woof!"
-
-class Cat(Animal):
-    def speak(self):
-        return f"{self.name} says Meow!"
-
-animals = [Dog("Rex"), Cat("Whiskers")]
-for animal in animals:
-    print(animal.speak())', 'Inheritance creates is-a relationships. Child classes extend parent. Polymorphism allows uniform interface. Override methods for specialization.', 1, 9),
+(3, 4, 'Python Class Inheritance', 'class Animal:\n    def __init__(self, name):\n        self.name = name\n    def speak(self):\n        raise NotImplementedError\n\nclass Dog(Animal):\n    def speak(self):\n        return f"{self.name} says Woof!"\n\nclass Cat(Animal):\n    def speak(self):\n        return f"{self.name} says Meow!"\n\nanimals = [Dog("Rex"), Cat("Whiskers")]\nfor animal in animals:\n    print(animal.speak())', 'Inheritance creates is-a relationships. Child classes extend parent. Polymorphism allows uniform interface. Override methods for specialization.', 1, 9),
 (3, 5, 'Virtual Functions C++', 'class Base {
-public:
-    virtual void print() { cout << "Base\\n"; }
-    virtual ~Base() = default;
-};
-class Derived : public Base {
-public:
-    void print() override { cout << "Derived\\n"; }
-};
-void process(Base* obj) {
-    obj->print();  // Runtime polymorphism
-}', 'Virtual functions enable runtime polymorphism. Override in derived classes. Virtual destructor prevents memory leaks. vtable manages dispatch.', 3, 9),
+public:\n    virtual void print() { cout << "Base\\n"; }\n    virtual ~Base() = default;\n};\nclass Derived : public Base {\npublic:\n    void print() override { cout << "Derived\\n"; }\n};\nvoid process(Base* obj) {\n    obj->print();  // Runtime polymorphism\n}', 'Virtual functions enable runtime polymorphism. Override in derived classes. Virtual destructor prevents memory leaks. vtable manages dispatch.', 3, 9),
 (3, 6, 'Decorator Pattern', 'class Coffee {
-public:
-    virtual double cost() = 0;
+public:\n    virtual double cost() = 0;
     virtual string description() = 0;
 };
 class CoffeeDecorator : public Coffee {
-protected:
-    Coffee* coffee;
-public:
-    CoffeeDecorator(Coffee* c) : coffee(c) {}
+protected:\n    Coffee* coffee;
+public:\n    CoffeeDecorator(Coffee* c) : coffee(c) {}
 };
 class Milk : public CoffeeDecorator {
-public:
-    double cost() override { return coffee->cost() + 0.5; }
+public:\n    double cost() override { return coffee->cost() + 0.5; }
     string description() override { return coffee->description() + ", milk"; }
 };', 'Decorator adds functionality without altering structure. Wraps objects recursively. Alternative to subclassing. Used in I/O streams.', 3, 9),
-(3, 7, 'Thread Pool Implementation', '#include <thread>
-#include <queue>
-#include <condition_variable>
-class ThreadPool {
+(3, 7, 'Thread Pool Implementation', '#include <thread>\n#include <queue>\n#include <condition_variable>\nclass ThreadPool {
     vector<thread> workers;
     queue<function<void()>> tasks;
     mutex queue_mutex;
     condition_variable cv;
     bool stop = false;
-public:
-    ThreadPool(size_t threads) {
-        for(size_t i = 0; i < threads; ++i)
-            workers.emplace_back([this] { work(); });
+public:\n    ThreadPool(size_t threads) {
+        for(size_t i = 0; i < threads; ++i)\n            workers.emplace_back([this] { work(); });
     }
     void enqueue(function<void()> task) {
         unique_lock<mutex> lock(queue_mutex);
@@ -104,17 +65,12 @@ public:
 (3, 8, 'SQL Transaction ACID', 'BEGIN TRANSACTION;
 UPDATE accounts SET balance = balance - 100 WHERE id = 1;
 UPDATE accounts SET balance = balance + 100 WHERE id = 2;
-IF @@ERROR != 0
-    ROLLBACK TRANSACTION;
-ELSE
-    COMMIT TRANSACTION;
-
--- Isolation levels
-SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+IF @@ERROR != 0\n    ROLLBACK TRANSACTION;
+ELSE\n    COMMIT TRANSACTION;
+\n-- Isolation levels\nSET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 -- READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ', 'ACID ensures database reliability. Atomicity: all or nothing. Consistency: valid states. Isolation: concurrent safety. Durability: permanent changes.', 10, 3),
 (3, 9, 'Strategy Pattern', 'class SortStrategy {
-public:
-    virtual void sort(vector<int>& data) = 0;
+public:\n    virtual void sort(vector<int>& data) = 0;
 };
 class QuickSort : public SortStrategy {
     void sort(vector<int>& data) override { /* quicksort */ }
@@ -124,8 +80,7 @@ class MergeSort : public SortStrategy {
 };
 class Sorter {
     SortStrategy* strategy;
-public:
-    void setStrategy(SortStrategy* s) { strategy = s; }
+public:\n    void setStrategy(SortStrategy* s) { strategy = s; }
     void sort(vector<int>& data) { strategy->sort(data); }
 };', 'Strategy encapsulates algorithms. Switch algorithms at runtime. Eliminates conditional logic. Open/closed principle compliance.', 3, 9),
 (3, 10, 'JavaScript Prototypes', 'function Person(name) {
@@ -134,8 +89,7 @@ public:
 Person.prototype.greet = function() {
     return `Hello, I''m ${this.name}`;
 };
-
-function Employee(name, role) {
+\nfunction Employee(name, role) {
     Person.call(this, name);
     this.role = role;
 }
@@ -146,77 +100,55 @@ Employee.prototype.work = function() {
 };', 'Prototypes enable inheritance in JavaScript. Objects inherit from prototype chain. Methods shared across instances. Memory efficient.', 5, 9),
 (3, 11, 'Memento Pattern', 'class Memento {
     string state;
-public:
-    Memento(const string& s) : state(s) {}
+public:\n    Memento(const string& s) : state(s) {}
     string getState() const { return state; }
 };
 class Originator {
     string state;
-public:
-    void setState(const string& s) { state = s; }
+public:\n    void setState(const string& s) { state = s; }
     Memento saveToMemento() { return Memento(state); }
     void restoreFromMemento(const Memento& m) { state = m.getState(); }
 };', 'Memento captures object state for restoration. Implements undo/redo. Preserves encapsulation. Used in text editors, games.', 3, 9),
-(3, 12, 'Python Metaclasses', 'class SingletonMeta(type):
-    _instances = {}
-    def __call__(cls, *args, **kwargs):
-        if cls not in cls._instances:
-            cls._instances[cls] = super().__call__(*args, **kwargs)
-        return cls._instances[cls]
-
-class Database(metaclass=SingletonMeta):
-    def __init__(self):
-        self.connection = "Connected"
-
-db1 = Database()
-db2 = Database()
-print(db1 is db2)  # True', 'Metaclasses control class creation. type is default metaclass. Customize class behavior, attributes. Advanced Python magic.', 1, 9),
+(3, 12, 'Python Metaclasses', 'class SingletonMeta(type):\n    _instances = {}
+    def __call__(cls, *args, **kwargs):\n        if cls not in cls._instances:\n            cls._instances[cls] = super().__call__(*args, **kwargs)\n        return cls._instances[cls]\n\nclass Database(metaclass=SingletonMeta):\n    def __init__(self):\n        self.connection = "Connected"\n\ndb1 = Database()\ndb2 = Database()\nprint(db1 is db2)  # True', 'Metaclasses control class creation. type is default metaclass. Customize class behavior, attributes. Advanced Python magic.', 1, 9),
 (3, 13, 'Command Pattern', 'class Command {
-public:
-    virtual void execute() = 0;
+public:\n    virtual void execute() = 0;
     virtual void undo() = 0;
 };
 class LightOnCommand : public Command {
     Light* light;
-public:
-    LightOnCommand(Light* l) : light(l) {}
+public:\n    LightOnCommand(Light* l) : light(l) {}
     void execute() override { light->on(); }
     void undo() override { light->off(); }
 };
 class RemoteControl {
     vector<Command*> commands;
-public:
-    void setCommand(int slot, Command* cmd) { commands[slot] = cmd; }
+public:\n    void setCommand(int slot, Command* cmd) { commands[slot] = cmd; }
     void pressButton(int slot) { commands[slot]->execute(); }
 };', 'Command encapsulates requests as objects. Enables undo, queuing, logging. Decouples sender from receiver. Used in GUI buttons, macros.', 3, 9),
 (3, 14, 'Proxy Pattern', 'class ImageProxy : public Image {
     RealImage* realImage;
     string filename;
-public:
-    ImageProxy(const string& file) : filename(file), realImage(nullptr) {}
+public:\n    ImageProxy(const string& file) : filename(file), realImage(nullptr) {}
     void display() override {
         if (!realImage) {
-            realImage = new RealImage(filename);  // Lazy loading
-        }
+            realImage = new RealImage(filename);  // Lazy loading\n        }
         realImage->display();
     }
     ~ImageProxy() { delete realImage; }
 };', 'Proxy provides placeholder for object. Controls access, lazy loading, caching. Virtual proxy delays expensive operations. Security proxy adds access control.', 3, 9),
 (3, 15, 'Template Method Pattern', 'class DataProcessor {
-public:
-    void process() {
+public:\n    void process() {
         readData();
         processData();
         writeData();
     }
-protected:
-    virtual void readData() = 0;
+protected:\n    virtual void readData() = 0;
     virtual void processData() = 0;
     virtual void writeData() = 0;
 };
 class CSVProcessor : public DataProcessor {
-protected:
-    void readData() override { /* Read CSV */ }
+protected:\n    void readData() override { /* Read CSV */ }
     void processData() override { /* Process */ }
     void writeData() override { /* Write CSV */ }
 };', 'Template method defines algorithm skeleton. Subclasses override specific steps. Enforces algorithm structure. Hollywood principle: dont call us.', 3, 9),
@@ -240,8 +172,7 @@ fn render(shape: &dyn Drawable) {
 }', 'Traits define shared behavior. Similar to interfaces. Static or dynamic dispatch. Zero-cost abstractions. Rust polymorphism foundation.', 7, 9),
 (3, 17, 'Builder Pattern', 'class CarBuilder {
     Car car;
-public:
-    CarBuilder& setEngine(const string& engine) {
+public:\n    CarBuilder& setEngine(const string& engine) {
         car.engine = engine; return *this;
     }
     CarBuilder& setWheels(int wheels) {
@@ -254,43 +185,21 @@ public:
 };
 // Usage: Car car = CarBuilder().setEngine("V8").setWheels(4).build();', 'Builder constructs complex objects step-by-step. Fluent interface for readability. Separates construction from representation. Immutable objects.', 3, 9),
 (3, 18, 'Adapter Pattern', 'class LegacyPrinter {
-public:
-    void printOldFormat(const string& text) { /* ... */ }
+public:\n    void printOldFormat(const string& text) { /* ... */ }
 };
 class ModernPrinter {
-public:
-    virtual void print(const string& text) = 0;
+public:\n    virtual void print(const string& text) = 0;
 };
 class PrinterAdapter : public ModernPrinter {
     LegacyPrinter* legacy;
-public:
-    PrinterAdapter(LegacyPrinter* l) : legacy(l) {}
+public:\n    PrinterAdapter(LegacyPrinter* l) : legacy(l) {}
     void print(const string& text) override {
         legacy->printOldFormat(text);
     }
 };', 'Adapter makes incompatible interfaces work together. Wraps existing class with new interface. Enables legacy code integration.', 3, 9),
-(3, 19, 'Python Abstract Base Classes', 'from abc import ABC, abstractmethod
-
-class Shape(ABC):
-    @abstractmethod
-    def area(self): pass
-    
-    @abstractmethod
-    def perimeter(self): pass
-
-class Rectangle(Shape):
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
-    
-    def area(self):
-        return self.width * self.height
-    
-    def perimeter(self):
-        return 2 * (self.width + self.height)', 'ABC enforces interface contracts. @abstractmethod must be implemented. Cannot instantiate abstract classes. Ensures consistent APIs.', 1, 9),
+(3, 19, 'Python Abstract Base Classes', 'from abc import ABC, abstractmethod\n\nclass Shape(ABC):\n    @abstractmethod\n    def area(self): pass\n    \n    @abstractmethod\n    def perimeter(self): pass\n\nclass Rectangle(Shape):\n    def __init__(self, width, height):\n        self.width = width\n        self.height = height\n    \n    def area(self):\n        return self.width * self.height\n    \n    def perimeter(self):\n        return 2 * (self.width + self.height)', 'ABC enforces interface contracts. @abstractmethod must be implemented. Cannot instantiate abstract classes. Ensures consistent APIs.', 1, 9),
 (3, 20, 'Composite Pattern', 'class Component {
-public:
-    virtual void operation() = 0;
+public:\n    virtual void operation() = 0;
     virtual void add(Component*) {}
     virtual void remove(Component*) {}
 };
@@ -299,16 +208,14 @@ class Leaf : public Component {
 };
 class Composite : public Component {
     vector<Component*> children;
-public:
-    void add(Component* c) override { children.push_back(c); }
+public:\n    void add(Component* c) override { children.push_back(c); }
     void operation() override {
         for (auto child : children) child->operation();
     }
 };', 'Composite treats objects uniformly. Tree structures with leaf and composite nodes. Part-whole hierarchies. Used in GUI, file systems.', 3, 9),
 (3, 21, 'Chain of Responsibility', 'class Handler {
     Handler* next;
-public:
-    void setNext(Handler* h) { next = h; }
+public:\n    void setNext(Handler* h) { next = h; }
     virtual void handle(Request& req) {
         if (canHandle(req)) process(req);
         else if (next) next->handle(req);
@@ -317,64 +224,49 @@ public:
     virtual void process(Request&) = 0;
 };', 'Chain passes requests along handlers. Each decides to process or forward. Decouples sender from receivers. Used in event handling, logging.', 3, 9),
 (3, 22, 'Go Interfaces', 'type Writer interface {
-    Write([]byte) (int, error)
-}
+    Write([]byte) (int, error)\n}
 type ConsoleWriter struct{}
 func (cw ConsoleWriter) Write(data []byte) (int, error) {
-    n, err := fmt.Println(string(data))
-    return n, err
-}
+    n, err := fmt.Println(string(data))\n    return n, err\n}
 type FileWriter struct { file *os.File }
 func (fw FileWriter) Write(data []byte) (int, error) {
-    return fw.file.Write(data)
-}
+    return fw.file.Write(data)\n}
 func save(w Writer, data []byte) {
-    w.Write(data)
-}', 'Go interfaces are implicit. Types satisfy interface by implementing methods. Duck typing with compile-time safety. Composition over inheritance.', 6, 9),
+    w.Write(data)\n}', 'Go interfaces are implicit. Types satisfy interface by implementing methods. Duck typing with compile-time safety. Composition over inheritance.', 6, 9),
 (3, 23, 'Flyweight Pattern', 'class Character {
     char symbol;
-    Font* font;  // Shared
-public:
-    Character(char s, Font* f) : symbol(s), font(f) {}
+    Font* font;  // Shared\npublic:\n    Character(char s, Font* f) : symbol(s), font(f) {}
     void display(int x, int y) {
         font->render(symbol, x, y);
     }
 };
 class FontFactory {
     unordered_map<string, Font*> fonts;
-public:
-    Font* getFont(const string& name) {
+public:\n    Font* getFont(const string& name) {
         if (!fonts[name]) fonts[name] = new Font(name);
         return fonts[name];
     }
 };', 'Flyweight shares common data between objects. Intrinsic vs extrinsic state. Reduces memory usage. Used in text editors, games.', 3, 9),
 (3, 24, 'Bridge Pattern', 'class Renderer {
-public:
-    virtual void renderCircle(float x, float y, float r) = 0;
+public:\n    virtual void renderCircle(float x, float y, float r) = 0;
 };
 class VectorRenderer : public Renderer { /* ... */ };
 class RasterRenderer : public Renderer { /* ... */ };
-
-class Shape {
-protected:
-    Renderer* renderer;
-public:
-    Shape(Renderer* r) : renderer(r) {}
+\nclass Shape {
+protected:\n    Renderer* renderer;
+public:\n    Shape(Renderer* r) : renderer(r) {}
     virtual void draw() = 0;
 };
 class Circle : public Shape {
     float x, y, radius;
-public:
-    void draw() override { renderer->renderCircle(x, y, radius); }
+public:\n    void draw() override { renderer->renderCircle(x, y, radius); }
 };', 'Bridge separates abstraction from implementation. Both can vary independently. Avoids class explosion. Prefer composition over inheritance.', 3, 9),
 (3, 25, 'Visitor Pattern', 'class Visitor {
-public:
-    virtual void visit(Circle*) = 0;
+public:\n    virtual void visit(Circle*) = 0;
     virtual void visit(Square*) = 0;
 };
 class Shape {
-public:
-    virtual void accept(Visitor*) = 0;
+public:\n    virtual void accept(Visitor*) = 0;
 };
 class Circle : public Shape {
     void accept(Visitor* v) override { v->visit(this); }
@@ -399,42 +291,35 @@ function Activatable<T extends Constructor>(Base: T) {
 class User { name = "user"; }
 const TimestampedUser = Timestamped(Activatable(User));', 'Mixins add functionality to classes. Composition of behaviors. Alternative to multiple inheritance. Flexible code reuse pattern.', 12, 9),
 (3, 27, 'State Pattern', 'class State {
-public:
-    virtual void handle(Context*) = 0;
+public:\n    virtual void handle(Context*) = 0;
 };
 class ConcreteStateA : public State {
     void handle(Context* ctx) override {
-        // Do work, then transition
-        ctx->setState(new ConcreteStateB());
+        // Do work, then transition\n        ctx->setState(new ConcreteStateB());
     }
 };
 class Context {
     State* state;
-public:
-    void setState(State* s) { delete state; state = s; }
+public:\n    void setState(State* s) { delete state; state = s; }
     void request() { state->handle(this); }
 };', 'State pattern changes object behavior based on state. Eliminates conditionals. State machines. Used in TCP connections, UI workflows.', 3, 9),
 (3, 28, 'Interpreter Pattern', 'class Expression {
-public:
-    virtual int interpret(Context&) = 0;
+public:\n    virtual int interpret(Context&) = 0;
 };
 class Number : public Expression {
     int value;
-public:
-    Number(int v) : value(v) {}
+public:\n    Number(int v) : value(v) {}
     int interpret(Context&) override { return value; }
 };
 class Plus : public Expression {
     Expression *left, *right;
-public:
-    Plus(Expression* l, Expression* r) : left(l), right(r) {}
+public:\n    Plus(Expression* l, Expression* r) : left(l), right(r) {}
     int interpret(Context& ctx) override {
         return left->interpret(ctx) + right->interpret(ctx);
     }
 };', 'Interpreter evaluates language grammar. Abstract syntax tree. Each rule is a class. Used in SQL parsing, regex, calculators.', 3, 9),
 (3, 29, 'Null Object Pattern', 'class Logger {
-public:
-    virtual void log(const string&) = 0;
+public:\n    virtual void log(const string&) = 0;
 };
 class ConsoleLogger : public Logger {
     void log(const string& msg) override { cout << msg << endl; }
@@ -444,46 +329,15 @@ class NullLogger : public Logger {
 };
 class App {
     Logger* logger;
-public:
-    App(Logger* l = new NullLogger()) : logger(l) {}
+public:\n    App(Logger* l = new NullLogger()) : logger(l) {}
     void doWork() { logger->log("Working..."); }
 };', 'Null object provides default do-nothing behavior. Eliminates null checks. Polymorphic approach to optional behavior. Cleaner code flow.', 3, 9),
-(3, 30, 'Python Multiple Inheritance', 'class Flyable:
-    def fly(self):
-        return "Flying"
-
-class Swimmable:
-    def swim(self):
-        return "Swimming"
-
-class Duck(Flyable, Swimmable):
-    def quack(self):
-        return "Quack!"
-
-# Method Resolution Order (MRO)
-print(Duck.__mro__)
-# Diamond problem solution
-class A: pass
-class B(A): pass
-class C(A): pass
-class D(B, C): pass  # Python C3 linearization', 'Multiple inheritance allows multiple parent classes. MRO determines method lookup order. C3 linearization resolves diamonds. Use carefully.', 1, 9),
-(3, 31, 'SOLID Principles Summary', '// Single Responsibility
-class User { /* user data */ };
+(3, 30, 'Python Multiple Inheritance', 'class Flyable:\n    def fly(self):\n        return "Flying"\n\nclass Swimmable:\n    def swim(self):\n        return "Swimming"\n\nclass Duck(Flyable, Swimmable):\n    def quack(self):\n        return "Quack!"\n\n# Method Resolution Order (MRO)\nprint(Duck.__mro__)\n# Diamond problem solution\nclass A: pass\nclass B(A): pass\nclass C(A): pass\nclass D(B, C): pass  # Python C3 linearization', 'Multiple inheritance allows multiple parent classes. MRO determines method lookup order. C3 linearization resolves diamonds. Use carefully.', 1, 9),
+(3, 31, 'SOLID Principles Summary', '// Single Responsibility\nclass User { /* user data */ };
 class UserDB { /* database ops */ };
-
-// Open/Closed
-class Shape { virtual double area() = 0; };
-
-// Liskov Substitution
-// Derived classes must be substitutable
-
-// Interface Segregation
-class Printer { virtual void print() = 0; };
+\n// Open/Closed\nclass Shape { virtual double area() = 0; };
+\n// Liskov Substitution\n// Derived classes must be substitutable\n\n// Interface Segregation\nclass Printer { virtual void print() = 0; };
 class Scanner { virtual void scan() = 0; };
-
-// Dependency Inversion
-class App {
-    IDatabase* db;  // Depend on abstraction
-public:
-    App(IDatabase* database) : db(database) {}
+\n// Dependency Inversion\nclass App {
+    IDatabase* db;  // Depend on abstraction\npublic:\n    App(IDatabase* database) : db(database) {}
 };', 'SOLID guides OOP design. SRP: one reason to change. OCP: extend, dont modify. LSP: behavioral subtyping. ISP: specific interfaces. DIP: abstractions.', 3, 9);

@@ -1,0 +1,342 @@
+-- July Snippets: Summer Projects & Internships (Complete Month 1-31)
+INSERT INTO snippets (month, day, title, code, explanation, language_id, category_id) VALUES
+(7, 1, 'Summer Project Planning', '#!/bin/bash\n# Project setup script\necho "🌞 Summer 2024 Project Setup"\n\n# Create project structure\nmkdir -p project/{src,tests,docs,scripts}
+cd project\n\n# Initialize git\ngit init\necho "node_modules/\n*.log\n.env" > .gitignore\n\n# Setup package.json\ncat > package.json << EOF\n{
+  "name": "summer-project",\n  "version": "1.0.0",\n  "scripts": {
+    "start": "node src/index.js",\n    "test": "jest",\n    "dev": "nodemon src/index.js"\n  }
+}
+EOF', 'Summer project initialization. Create organized structure. Git setup with .gitignore. Package.json with useful scripts. Good planning saves time!', 14, 7),
+(7, 2, 'Internship Code Review', '# Code Review Checklist for Interns\n\n## Functionality\n- [ ] Code does what it should\n- [ ] Edge cases handled properly\n- [ ] Error conditions managed\n- [ ] Performance considerations\n\n## Code Quality\n- [ ] Clear, descriptive names\n- [ ] Functions do one thing well\n- [ ] No code duplication\n- [ ] Proper commenting\n- [ ] Follows team style guide\n\n## Testing\n- [ ] Unit tests included\n- [ ] Tests actually test the feature\n- [ ] Good test coverage\n\n## Security\n- [ ] Input validation present\n- [ ] No hardcoded secrets\n- [ ] SQL injection prevented', 'Code review skills essential for internships. Systematic approach catches issues. Focus on functionality, quality, testing. Constructive feedback helps team growth.', 16, 7),
+(7, 3, 'Python Web Scraping', 'import requests\nfrom bs4 import BeautifulSoup\nimport time\nimport csv\n\ndef scrape_jobs(url):\n    headers = {
+        ''User-Agent'': ''Mozilla/5.0 (compatible; JobBot/1.0)''\n    }
+    \n    response = requests.get(url, headers=headers)\n    soup = BeautifulSoup(response.content, ''html.parser'')\n    \n    jobs = []\n    for job_card in soup.find_all(''div'', class_=''job-listing''):\n        title = job_card.find(''h3'').text.strip()\n        company = job_card.find(''span'', class_=''company'').text.strip()\n        location = job_card.find(''span'', class_=''location'').text.strip()\n        \n        jobs.append({''title'': title, ''company'': company, ''location'': location})\n        \n    return jobs\n\n# Respect rate limits\ntime.sleep(1)', 'Web scraping for job hunting. BeautifulSoup parses HTML. Set user agent to identify bot. Extract structured data. Always respect robots.txt!', 1, 11),
+(7, 4, 'Git Collaboration', '# Team collaboration workflow\n\n# 1. Clone repository\ngit clone https://github.com/company/project.git\ncd project\n\n# 2. Create feature branch\ngit checkout -b feature/user-authentication\n\n# 3. Make changes and commit\ngit add .\ngit commit -m "feat: add user login system"\n\n# 4. Push branch\ngit push -u origin feature/user-authentication\n\n# 5. Create pull request (GitHub/GitLab)\n# 6. Code review process\n# 7. Merge after approval\n\n# 8. Update main branch\ngit checkout main\ngit pull origin main\ngit branch -d feature/user-authentication', 'Git collaboration for teams. Feature branches isolate work. Pull requests enable code review. Keep main branch stable. Clean up merged branches.', 14, 7),
+(7, 5, 'REST API Documentation', '/**\n * @api {post} /users Create User\n * @apiName CreateUser\n * @apiGroup Users\n * @apiVersion 1.0.0\n * \n * @apiParam {String} email User email address\n * @apiParam {String} password User password (min 8 chars)\n * @apiParam {String} name Full name\n * \n * @apiSuccess {Number} id User ID\n * @apiSuccess {String} email User email\n * @apiSuccess {String} name User name\n * @apiSuccess {String} token JWT token\n * \n * @apiError {String} error Error message\n * \n * @apiExample {curl} Example usage:\n * curl -X POST http://api.example.com/users \\\n *   -H "Content-Type: application/json" \\\n *   -d ''{"email":"user@example.com","password":"secret123","name":"John Doe"}''\n */', 'API documentation essential for teams. Specify endpoints, parameters, responses. Include examples. Tools: Swagger, Postman, apiDoc. Good docs save time.', 16, 11),
+(7, 6, 'Database Design Patterns', '-- User management with roles\nCREATE TABLE users (\n    id SERIAL PRIMARY KEY,\n    email VARCHAR(255) UNIQUE NOT NULL,\n    password_hash VARCHAR(255) NOT NULL,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n);
+\nCREATE TABLE roles (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(50) UNIQUE NOT NULL\n);
+\nCREATE TABLE user_roles (\n    user_id INTEGER REFERENCES users(id),\n    role_id INTEGER REFERENCES roles(id),\n    PRIMARY KEY (user_id, role_id)\n);
+\n-- Audit trail\nCREATE TABLE audit_log (\n    id SERIAL PRIMARY KEY,\n    table_name VARCHAR(50) NOT NULL,\n    record_id INTEGER NOT NULL,\n    action VARCHAR(10) NOT NULL,\n    old_values JSONB,\n    new_values JSONB,\n    user_id INTEGER REFERENCES users(id),\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);', 'Database design patterns for applications. Many-to-many relationships with junction tables. Audit trails track changes. Timestamps for data history.', 10, 3),
+(7, 7, 'JavaScript Module Patterns', '// ES6 Modules\n// utils.js\nexport const formatDate = (date) => {
+    return date.toISOString().split(''T'')[0];
+};
+\nexport const validateEmail = (email) => {
+    const regex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+    return regex.test(email);
+};
+\nexport default class ApiClient {
+    constructor(baseURL) {
+        this.baseURL = baseURL;
+    }
+    \n    async get(endpoint) {
+        const response = await fetch(`${this.baseURL}${endpoint}`);
+        return response.json();
+    }
+}
+\n// main.js\nimport ApiClient, { formatDate, validateEmail } from ''./utils.js'';
+\nconst api = new ApiClient(''https://api.example.com'');
+const today = formatDate(new Date());', 'ES6 modules organize code. Named exports for utilities. Default export for main class. Import what you need. Better than global variables.', 5, 9),
+(7, 8, 'C Memory Pool', '#include <stdlib.h>\n#include <stdio.h>\n\ntypedef struct {
+    void* memory;
+    size_t size;
+    size_t used;
+    size_t block_size;
+} MemoryPool;
+\nMemoryPool* pool_create(size_t size, size_t block_size) {
+    MemoryPool* pool = malloc(sizeof(MemoryPool));
+    pool->memory = malloc(size);
+    pool->size = size;
+    pool->used = 0;
+    pool->block_size = block_size;
+    return pool;
+}
+\nvoid* pool_alloc(MemoryPool* pool) {
+    if (pool->used + pool->block_size > pool->size) return NULL;
+    void* ptr = (char*)pool->memory + pool->used;
+    pool->used += pool->block_size;
+    return ptr;
+}
+\nvoid pool_reset(MemoryPool* pool) {
+    pool->used = 0;
+}', 'Memory pools for performance. Pre-allocate large block. Fast allocation, bulk deallocation. No fragmentation. Great for games, embedded systems.', 2, 5),
+(7, 9, 'Python Data Analysis', 'import pandas as pd\nimport matplotlib.pyplot as plt\nimport numpy as np\n\n# Load and explore data\ndf = pd.read_csv(''sales_data.csv'')\nprint(f"Dataset shape: {df.shape}")\nprint(df.describe())\nprint(df.isnull().sum())\n\n# Data cleaning\ndf[''date''] = pd.to_datetime(df[''date''])\ndf[''revenue''] = df[''quantity''] * df[''price'']\n\n# Group by analysis\nmonthly_sales = df.groupby(df[''date''].dt.month)[''revenue''].sum()\n\n# Visualization\nplt.figure(figsize=(10, 6))\nmonthly_sales.plot(kind=''bar'')\nplt.title(''Monthly Sales Revenue'')\nplt.xlabel(''Month'')\nplt.ylabel(''Revenue ($)'')\nplt.show()\n\n# Export results\ndf.to_csv(''cleaned_data.csv'', index=False)', 'Data analysis with pandas. Load, clean, analyze data. Groupby for aggregations. Matplotlib for visualization. Essential internship skills.', 1, 4),
+(7, 10, 'Docker Compose Setup', 'version: ''3.8''\n\nservices:\n  web:\n    build: .\n    ports:\n      - "3000:3000"\n    environment:\n      - NODE_ENV=development\n      - DATABASE_URL=postgres://user:pass@db:5432/myapp\n    volumes:\n      - .:/app\n      - /app/node_modules\n    depends_on:\n      - db\n      - redis\n    \n  db:\n    image: postgres:13\n    environment:\n      POSTGRES_DB: myapp\n      POSTGRES_USER: user\n      POSTGRES_PASSWORD: pass\n    volumes:\n      - postgres_data:/var/lib/postgresql/data\n    ports:\n      - "5432:5432"\n      \n  redis:\n    image: redis:alpine\n    ports:\n      - "6379:6379"\n\nvolumes:\n  postgres_data:', 'Docker Compose manages multi-container apps. Define services, networks, volumes. Environment variables for config. Perfect for development environments.', 16, 7),
+(7, 11, 'TypeScript Interfaces', 'interface User {
+    id: number;
+    email: string;
+    name: string;
+    isActive: boolean;
+    createdAt: Date;
+    profile?: UserProfile; // Optional property\n}
+\ninterface UserProfile {
+    bio: string;
+    avatar: string;
+    socialLinks: SocialLinks;
+}
+\ninterface SocialLinks {
+    github?: string;
+    linkedin?: string;
+    twitter?: string;
+}
+\n// Function with interface parameter\nfunction createUser(userData: Omit<User, ''id'' | ''createdAt''>): User {
+    return {
+        id: Math.random(),\n        createdAt: new Date(),\n        ...userData\n    };
+}
+\n// Generic interface\ninterface ApiResponse<T> {
+    data: T;
+    success: boolean;
+    message?: string;
+}', 'TypeScript interfaces define contracts. Optional properties with ?. Utility types like Omit. Generics for reusability. Better than plain JavaScript.', 12, 9),
+(7, 12, 'Linux System Administration', '#!/bin/bash\n# System monitoring script\n\necho "=== System Status Report ==="\necho "Date: $(date)"
+echo\n\n# Disk usage\necho "Disk Usage:"\ndf -h | grep -E ''^/dev/'' | awk ''{ print $5 " " $1 }'' | while read output;
+do\n  usage=$(echo $output | awk ''{ print $1}'' | cut -d''%'' -f1 )\n  if [ $usage -ge 90 ]; then\n    echo "WARNING: $output"\n  else\n    echo "OK: $output"\n  fi\ndone\n\n# Memory usage\necho -e "\\nMemory Usage:"\nfree -h\n\n# CPU load\necho -e "\\nCPU Load:"\nuptime\n\n# Top processes\necho -e "\\nTop Processes:"\nps aux --sort=-%cpu | head -6', 'System administration basics. Monitor disk, memory, CPU usage. Shell scripting for automation. Essential for DevOps roles. Regular monitoring prevents issues.', 14, 6),
+(7, 13, 'React Component Patterns', 'import React, { useState, useEffect, useCallback } from ''react'';
+\n// Custom hook\nfunction useLocalStorage(key, initialValue) {
+    const [value, setValue] = useState(() => {
+        const item = window.localStorage.getItem(key);
+        return item ? JSON.parse(item) : initialValue;
+    });
+    \n    useEffect(() => {
+        window.localStorage.setItem(key, JSON.stringify(value));
+    }, [key, value]);
+    \n    return [value, setValue];
+}
+\n// Component with custom hook\nfunction UserPreferences() {
+    const [theme, setTheme] = useLocalStorage(''theme'', ''light'');
+    const [language, setLanguage] = useLocalStorage(''language'', ''en'');
+    \n    const handleThemeChange = useCallback((newTheme) => {
+        setTheme(newTheme);
+    }, [setTheme]);
+    \n    return (\n        <div className={`theme-${theme}`}>\n            <select value={theme} onChange={e => handleThemeChange(e.target.value)}>\n                <option value="light">Light</option>\n                <option value="dark">Dark</option>\n            </select>\n        </div>\n    );
+}', 'React patterns for reusable components. Custom hooks encapsulate logic. useCallback prevents unnecessary renders. Local storage integration.', 5, 9),
+(7, 14, 'SQL Performance Tuning', '-- Identify slow queries\nSELECT query, calls, total_time, mean_time, rows\nFROM pg_stat_statements\nORDER BY total_time DESC\nLIMIT 10;
+\n-- Add indexes for common queries\nCREATE INDEX CONCURRENTLY idx_orders_user_date \nON orders(user_id, created_at) \nWHERE status = ''active'';
+\n-- Analyze query plans\nEXPLAIN (ANALYZE, BUFFERS)\nSELECT u.name, COUNT(o.id) as order_count\nFROM users u\nLEFT JOIN orders o ON u.id = o.user_id\nWHERE u.created_at > ''2024-01-01''\nGROUP BY u.id, u.name\nHAVING COUNT(o.id) > 5;
+\n-- Optimize with proper indexing\nCREATE INDEX idx_users_created ON users(created_at) WHERE created_at > ''2024-01-01'';
+CREATE INDEX idx_orders_user_id ON orders(user_id);', 'SQL performance optimization. Identify bottlenecks with pg_stat_statements. Add strategic indexes. EXPLAIN ANALYZE shows execution plans. Measure improvements.', 10, 10),
+(7, 15, 'Microservices Communication', '// Service registry pattern\nclass ServiceRegistry {
+    constructor() {
+        this.services = new Map();
+    }
+    \n    register(name, host, port) {
+        this.services.set(name, { host, port, healthy: true });
+    }
+    \n    async getService(name) {
+        const service = this.services.get(name);
+        if (!service) throw new Error(`Service ${name} not found`);
+        \n        // Health check\n        try {
+            const response = await fetch(`http://${service.host}:${service.port}/health`);
+            service.healthy = response.ok;
+        } catch (error) {
+            service.healthy = false;
+        }
+        \n        if (!service.healthy) {
+            throw new Error(`Service ${name} is unhealthy`);
+        }
+        \n        return service;
+    }
+}
+\n// Usage\nconst registry = new ServiceRegistry();
+registry.register(''user-service'', ''localhost'', 3001);
+const service = await registry.getService(''user-service'');', 'Microservices need service discovery. Health checks ensure availability. Circuit breaker pattern prevents cascading failures. Resilient architecture.', 5, 11),
+(7, 16, 'Algorithm Optimization', '#include <stdio.h>\n\n// Naive O(n²)\nint count_inversions_naive(int arr[], int n) {
+    int count = 0;
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (arr[i] > arr[j]) count++;
+        }
+    }
+    return count;
+}
+\n// O(n log n)\nint merge_and_count(int arr[], int temp[], int left, int mid, int right) {
+    int i = left, j = mid, k = left, inv_count = 0;
+    \n    while (i <= mid - 1 && j <= right) {
+        if (arr[i] <= arr[j]) {
+            temp[k++] = arr[i++];
+        } else {
+            temp[k++] = arr[j++];
+            inv_count += (mid - i);
+        }
+    }
+    \n    while (i <= mid - 1) temp[k++] = arr[i++];
+    while (j <= right) temp[k++] = arr[j++];
+    \n    for (i = left; i <= right; i++) arr[i] = temp[i];
+    return inv_count;
+}', 'Algorithm optimization techniques. Naive O(n²) vs optimized O(n log n). Divide and conquer approach. Big O analysis crucial for performance.', 2, 4),
+(7, 17, 'CI/CD Pipeline', 'name: CI/CD Pipeline\n\non:\n  push:\n    branches: [ main, develop ]\n  pull_request:\n    branches: [ main ]\n\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v3\n      \n      - name: Setup Node.js\n        uses: actions/setup-node@v3\n        with:\n          node-version: ''18''\n          cache: ''npm''\n          \n      - name: Install dependencies\n        run: npm ci\n        \n      - name: Run tests\n        run: npm test\n        \n      - name: Run lint\n        run: npm run lint\n        \n      - name: Build application\n        run: npm run build\n        \n  deploy:\n    needs: test\n    runs-on: ubuntu-latest\n    if: github.ref == ''refs/heads/main''\n    steps:\n      - name: Deploy to production\n        run: |\n          echo "Deploying to production..."\n          # Add deployment commands here', 'CI/CD automates testing and deployment. GitHub Actions on push/PR. Test before deploy. Only deploy from main branch. DevOps essential skill.', 13, 7),
+(7, 18, 'Security Best Practices', '// Input validation middleware\nconst validator = require(''validator'');
+const rateLimit = require(''express-rate-limit'');
+const helmet = require(''helmet'');
+\n// Security middleware\napp.use(helmet());
+app.use(rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes\n    max: 100 // limit each IP to 100 requests per windowMs\n}));
+\n// Input validation\nfunction validateUserInput(req, res, next) {
+    const { email, password, name } = req.body;
+    \n    if (!validator.isEmail(email)) {
+        return res.status(400).json({ error: ''Invalid email format'' });
+    }
+    \n    if (!validator.isLength(password, { min: 8, max: 128 })) {
+        return res.status(400).json({ error: ''Password must be 8-128 characters'' });
+    }
+    \n    if (!validator.isAlphanumeric(name.replace(/\\s/g, ''''))) {
+        return res.status(400).json({ error: ''Name contains invalid characters'' });
+    }
+    \n    next();
+}
+\napp.post(''/register'', validateUserInput, registerHandler);', 'Security best practices for web apps. Helmet adds security headers. Rate limiting prevents abuse. Input validation prevents injection. Defense in depth.', 5, 8),
+(7, 19, 'Message Queue Implementation', 'import asyncio\nimport json\n\nclass Queue:\n    def __init__(self):\n        self.q = {}
+        self.subs = {}
+    \n    async def pub(self, topic, msg):\n        if topic not in self.q:\n            self.q[topic] = asyncio.Queue()\n        await self.q[topic].put(json.dumps(msg))\n        \n        if topic in self.subs:\n            for cb in self.subs[topic]:\n                try:\n                    await cb(msg)\n                except:\n                    pass\n    \n    async def sub(self, topic, cb):\n        if topic not in self.subs:\n            self.subs[topic] = []\n        self.subs[topic].append(cb)\n    \n    async def get(self, topic):\n        if topic not in self.q:\n            self.q[topic] = asyncio.Queue()\n        while True:\n            yield json.loads(await self.q[topic].get())', 'Message queue implementation. Pub/sub pattern for decoupling. Async/await for concurrency. Error handling for resilience. Scalable architecture.', 1, 11),
+(7, 20, 'Caching Strategies', 'import redis\nimport json\nimport hashlib\nfrom functools import wraps\nfrom datetime import datetime, timedelta\n\nredis_client = redis.Redis(host=''localhost'', port=6379, db=0)\n\ndef cache_result(expiration=3600):\n    def decorator(func):\n        @wraps(func)\n        def wrapper(*args, **kwargs):\n            # Create cache key\n            key_data = f"{func.__name__}:{args}:{sorted(kwargs.items())}"
+            cache_key = hashlib.md5(key_data.encode()).hexdigest()\n            \n            # Try to get from cache\n            cached_result = redis_client.get(cache_key)\n            if cached_result:\n                return json.loads(cached_result)\n            \n            # Compute result\n            result = func(*args, **kwargs)\n            \n            # Store in cache\n            redis_client.setex(\n                cache_key, \n                expiration, \n                json.dumps(result, default=str)\n            )\n            \n            return result\n        return wrapper\n    return decorator\n\n@cache_result(expiration=1800)  # 30 minutes\ndef expensive_computation(data):\n    # Simulate expensive operation\n    return sum(x * x for x in data)', 'Caching improves performance. Redis for distributed cache. Decorator pattern for easy use. TTL prevents stale data. Hash function for consistent keys.', 1, 10),
+(7, 21, 'Load Testing', 'import asyncio\nimport aiohttp\nimport time\nfrom statistics import mean, median\n\nclass LoadTester:\n    def __init__(self, base_url, concurrent_users=10):\n        self.base_url = base_url\n        self.concurrent_users = concurrent_users\n        self.results = []\n    \n    async def make_request(self, session, endpoint):\n        start_time = time.time()\n        try:\n            async with session.get(f"{self.base_url}{endpoint}") as response:\n                await response.text()\n                end_time = time.time()\n                self.results.append({
+                    ''status'': response.status,\n                    ''response_time'': end_time - start_time,\n                    ''endpoint'': endpoint\n                })\n        except Exception as e:\n            self.results.append({
+                ''status'': 0,\n                ''response_time'': time.time() - start_time,\n                ''endpoint'': endpoint,\n                ''error'': str(e)\n            })\n    \n    async def run_test(self, endpoints, duration=60):\n        async with aiohttp.ClientSession() as session:\n            end_time = time.time() + duration\n            \n            while time.time() < end_time:\n                tasks = []\n                for _ in range(self.concurrent_users):\n                    endpoint = endpoints[len(tasks) % len(endpoints)]\n                    tasks.append(self.make_request(session, endpoint))\n                \n                await asyncio.gather(*tasks)\n                await asyncio.sleep(0.1)\n    \n    def generate_report(self):\n        success_count = sum(1 for r in self.results if r[''status''] == 200)\n        response_times = [r[''response_time''] for r in self.results if r[''status''] == 200]\n        \n        print(f"Total requests: {len(self.results)}")\n        print(f"Successful requests: {success_count}")\n        print(f"Success rate: {success_count/len(self.results)*100:.2f}%")\n        if response_times:\n            print(f"Average response time: {mean(response_times):.3f}s")\n            print(f"Median response time: {median(response_times):.3f}s")', 'Load testing simulates traffic. Async requests for concurrency. Measure response times, success rates. Identify performance bottlenecks. Plan capacity.', 1, 10),
+(7, 22, 'Monitoring and Alerting', 'import psutil\nimport smtplib\nimport time\nfrom email.mime.text import MIMEText\nfrom datetime import datetime\n\nclass SystemMonitor:\n    def __init__(self, thresholds=None):\n        self.thresholds = thresholds or {
+            ''cpu'': 80.0,\n            ''memory'': 85.0,\n            ''disk'': 90.0\n        }
+        self.alerts_sent = set()\n    \n    def check_cpu_usage(self):\n        cpu_percent = psutil.cpu_percent(interval=1)\n        if cpu_percent > self.thresholds[''cpu'']:\n            return f"HIGH CPU: {cpu_percent:.1f}%"\n        return None\n    \n    def check_memory_usage(self):\n        memory = psutil.virtual_memory()\n        if memory.percent > self.thresholds[''memory'']:\n            return f"HIGH MEMORY: {memory.percent:.1f}%"\n        return None\n    \n    def check_disk_usage(self):\n        disk = psutil.disk_usage(''/'')\n        disk_percent = (disk.used / disk.total) * 100\n        if disk_percent > self.thresholds[''disk'']:\n            return f"HIGH DISK: {disk_percent:.1f}%"\n        return None\n    \n    def send_alert(self, message):\n        # Prevent spam - only send once per hour per alert type\n        alert_key = message.split('':'')[0]
+        current_hour = datetime.now().hour\n        \n        if f"{alert_key}_{current_hour}" in self.alerts_sent:\n            return\n        \n        print(f"ALERT: {message} at {datetime.now()}")\n        # Email alert implementation here\n        self.alerts_sent.add(f"{alert_key}_{current_hour}")
+    
+    def run_monitoring(self, interval=60):\n        while True:\n            alerts = []\n            \n            for check in [self.check_cpu_usage, self.check_memory_usage, self.check_disk_usage]:\n                result = check()\n                if result:\n                    alerts.append(result)\n            \n            for alert in alerts:\n                self.send_alert(alert)\n            \n            time.sleep(interval)', 'System monitoring with alerts. Track CPU, memory, disk usage. Threshold-based alerting. Prevent alert spam with deduplication. Essential for production.', 1, 6),
+(7, 23, 'API Rate Limiting', 'import time\nimport redis\nfrom flask import Flask, request, jsonify\n\napp = Flask(__name__)\nredis_client = redis.Redis()\n\nclass TokenBucketRateLimiter:\n    def __init__(self, max_tokens, refill_rate, redis_client):\n        self.max_tokens = max_tokens\n        self.refill_rate = refill_rate  # tokens per second\n        self.redis = redis_client\n    \n    def _get_bucket_key(self, identifier):\n        return f"rate_limit:{identifier}"\n    \n    def allow_request(self, identifier):\n        key = self._get_bucket_key(identifier)\n        now = time.time()\n        \n        # Get current bucket state\n        bucket_data = self.redis.hmget(key, ''tokens'', ''last_refill'')
+        \n        if bucket_data[0] is None:\n            # Initialize bucket\n            tokens = self.max_tokens - 1\n            self.redis.hmset(key, {''tokens'': tokens, ''last_refill'': now})\n            self.redis.expire(key, 3600)  # Expire after 1 hour of inactivity\n            return True\n        \n        tokens = float(bucket_data[0])\n        last_refill = float(bucket_data[1])\n        \n        # Refill tokens\n        time_passed = now - last_refill\n        tokens = min(self.max_tokens, tokens + time_passed * self.refill_rate)\n        \n        if tokens >= 1:\n            tokens -= 1\n            self.redis.hmset(key, {''tokens'': tokens, ''last_refill'': now})\n            return True\n        else:\n            # Update last_refill even if request is denied\n            self.redis.hset(key, ''last_refill'', now)\n            return False\n\n# Rate limiter instance\nrate_limiter = TokenBucketRateLimiter(max_tokens=100, refill_rate=10, redis_client=redis_client)\n\n@app.before_request\ndef limit_requests():\n    client_ip = request.remote_addr\n    if not rate_limiter.allow_request(client_ip):\n        return jsonify({''error'': ''Rate limit exceeded''}), 429', 'Advanced rate limiting with token bucket algorithm. Redis for distributed state. Smooth traffic flow. Refills tokens over time. Production-ready implementation.', 1, 8),
+(7, 24, 'Distributed Logging', 'import json\nimport logging\nimport uuid\nfrom datetime import datetime\nfrom flask import Flask, request, g\n\nclass StructuredFormatter(logging.Formatter):\n    def format(self, record):\n        log_entry = {
+            ''timestamp'': datetime.utcnow().isoformat(),\n            ''level'': record.levelname,\n            ''message'': record.getMessage(),\n            ''module'': record.module,\n            ''function'': record.funcName,\n            ''line'': record.lineno,\n            ''thread'': record.thread\n        }
+        \n        # Add request context if available\n        if hasattr(g, ''request_id''):\n            log_entry[''request_id''] = g.request_id\n        if hasattr(g, ''user_id''):\n            log_entry[''user_id''] = g.user_id\n        \n        # Add extra fields\n        if hasattr(record, ''extra''):\n            log_entry.update(record.extra)\n        \n        return json.dumps(log_entry)\n\napp = Flask(__name__)\n\n# Configure structured logging\nlogger = logging.getLogger()\nhandler = logging.StreamHandler()\nhandler.setFormatter(StructuredFormatter())\nlogger.addHandler(handler)\nlogger.setLevel(logging.INFO)\n\n@app.before_request\ndef before_request():\n    g.request_id = str(uuid.uuid4())\n    g.start_time = datetime.utcnow()\n    \n    logger.info("Request started", extra={
+        ''method'': request.method,\n        ''path'': request.path,\n        ''ip'': request.remote_addr,\n        ''user_agent'': request.headers.get(''User-Agent'')\n    })\n\n@app.after_request\ndef after_request(response):\n    duration = (datetime.utcnow() - g.start_time).total_seconds()\n    \n    logger.info("Request completed", extra={
+        ''status_code'': response.status_code,\n        ''duration_ms'': duration * 1000,\n        ''content_length'': response.content_length\n    })\n    \n    return response', 'Structured logging for microservices. JSON format for parsing. Request correlation IDs. Context propagation. Essential for debugging distributed systems.', 1, 7),
+(7, 25, 'Kubernetes Deployment', 'apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web-app\nspec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: web-app\n  template:\n    metadata:\n      labels:\n        app: web-app\n    spec:\n      containers:\n      - name: web-app\n        image: myapp:latest\n        ports:\n        - containerPort: 3000\n        env:\n        - name: DATABASE_URL\n          valueFrom:\n            secretKeyRef:\n              name: app-secrets\n              key: db-url\n        resources:\n          limits:\n            memory: "256Mi"\n            cpu: "500m"\n        livenessProbe:\n          httpGet:\n            path: /health\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: web-service\nspec:\n  selector:\n    app: web-app\n  ports:\n  - port: 80\n    targetPort: 3000\n  type: LoadBalancer', 'Kubernetes deployment configuration. Multiple replicas for availability. Health checks for reliability. Resource limits prevent resource hogging. Service for load balancing.', 13, 7),
+(7, 26, 'GraphQL Schema Design', 'import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList, GraphQLNonNull } from ''graphql'';
+\n// Type definitions\nconst UserType = new GraphQLObjectType({
+    name: ''User'',\n    fields: () => ({
+        id: { type: GraphQLNonNull(GraphQLString) },\n        email: { type: GraphQLNonNull(GraphQLString) },\n        name: { type: GraphQLString },\n        posts: {
+            type: GraphQLList(PostType),\n            resolve: (user) => getPostsByUserId(user.id)\n        }
+    })\n});
+\nconst PostType = new GraphQLObjectType({
+    name: ''Post'',\n    fields: {
+        id: { type: GraphQLNonNull(GraphQLString) },\n        title: { type: GraphQLNonNull(GraphQLString) },\n        content: { type: GraphQLString },\n        author: {
+            type: UserType,\n            resolve: (post) => getUserById(post.authorId)\n        }
+    }
+});
+\n// Root query\nconst RootQuery = new GraphQLObjectType({
+    name: ''RootQueryType'',\n    fields: {
+        user: {
+            type: UserType,\n            args: { id: { type: GraphQLNonNull(GraphQLString) } },\n            resolve: (parent, args) => getUserById(args.id)\n        },\n        posts: {
+            type: GraphQLList(PostType),\n            args: { limit: { type: GraphQLInt, defaultValue: 10 } },\n            resolve: (parent, args) => getPosts(args.limit)\n        }
+    }
+});
+\nexport default new GraphQLSchema({
+    query: RootQuery\n});', 'GraphQL schema design. Type definitions with relationships. Resolvers fetch data. Arguments for filtering. Alternative to REST APIs. Single endpoint, flexible queries.', 5, 11),
+(7, 27, 'Blockchain Basics', 'import hashlib\nfrom time import time\n\nclass Block:\n    def __init__(self, i, d, p):\n        self.i = i\n        self.d = d\n        self.t = time()\n        self.p = p\n        self.n = 0\n        self.h = self.calc()\n    \n    def calc(self):\n        return hashlib.sha256(f"{self.i}{self.d}{self.t}{self.p}{self.n}".encode()).hexdigest()\n    \n    def mine(self, diff):\n        target = "0" * diff\n        while self.h[:diff] != target:\n            self.n += 1\n            self.h = self.calc()\n\nclass Chain:\n    def __init__(self):\n        self.chain = [Block(0, "Gen", "0")]\n    \n    def add(self, data):\n        prev = self.chain[-1]\n        b = Block(len(self.chain), data, prev.h)\n        b.mine(2)\n        self.chain.append(b)\n\nc = Chain()\nc.add("Tx1")\nprint(c.chain[-1].h)', 'Blockchain fundamentals. Blocks contain transactions and hash of previous block. Mining involves finding hash with specific pattern. Chain validation ensures integrity.', 1, 8),
+(7, 28, 'Machine Learning Pipeline', 'import pandas as pd\nimport numpy as np\nfrom sklearn.model_selection import train_test_split, cross_val_score\nfrom sklearn.preprocessing import StandardScaler, LabelEncoder\nfrom sklearn.ensemble import RandomForestClassifier\nfrom sklearn.metrics import classification_report, confusion_matrix\nimport joblib\n\ndef create_ml_pipeline(data_path):\n    # Load and explore data\n    df = pd.read_csv(data_path)\n    print(f"Dataset shape: {df.shape}")\n    print(f"Missing values: {df.isnull().sum().sum()}")\n    \n    # Feature engineering\n    df = df.dropna()  # Simple approach - in reality, be more careful\n    
+    # Separate features and target\n    X = df.drop(''target'', axis=1)\n    y = df[''target'']\n    
+    # Encode categorical variables\n    label_encoders = {}
+    for column in X.select_dtypes(include=[''object'']).columns:\n        le = LabelEncoder()\n        X[column] = le.fit_transform(X[column].astype(str))\n        label_encoders[column] = le\n    \n    # Split data\n    X_train, X_test, y_train, y_test = train_test_split(\n        X, y, test_size=0.2, random_state=42, stratify=y\n    )\n    \n    # Scale features\n    scaler = StandardScaler()\n    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)\n    \n    # Train model\n    model = RandomForestClassifier(n_estimators=100, random_state=42)\n    model.fit(X_train_scaled, y_train)\n    \n    # Evaluate\n    train_score = model.score(X_train_scaled, y_train)\n    test_score = model.score(X_test_scaled, y_test)\n    \n    print(f"Training accuracy: {train_score:.3f}")\n    print(f"Testing accuracy: {test_score:.3f}")\n    \n    # Cross-validation\n    cv_scores = cross_val_score(model, X_train_scaled, y_train, cv=5)\n    print(f"CV Score: {cv_scores.mean():.3f} (+/- {cv_scores.std() * 2:.3f})")\n    \n    # Save model and preprocessors\n    joblib.dump(model, ''model.pkl'')\n    joblib.dump(scaler, ''scaler.pkl'')\n    joblib.dump(label_encoders, ''encoders.pkl'')\n    \n    return model, scaler, label_encoders', 'ML pipeline for classification. Data preprocessing and feature engineering. Train-test split and cross-validation. Model persistence. Production-ready approach.', 1, 4),
+(7, 29, 'WebRTC Implementation', 'class WebRTCConnection {
+    constructor(isInitiator = false) {
+        this.isInitiator = isInitiator;
+        this.pc = new RTCPeerConnection({
+            iceServers: [\n                { urls: ''stun:stun.l.google.com:19302'' }
+            ]\n        });
+        this.setupEventListeners();
+    }
+    \n    setupEventListeners() {
+        this.pc.onicecandidate = (event) => {
+            if (event.candidate) {
+                this.sendSignal(''ice-candidate'', event.candidate);
+            }
+        };
+        \n        this.pc.ontrack = (event) => {
+            const remoteVideo = document.getElementById(''remoteVideo'');
+            remoteVideo.srcObject = event.streams[0];
+        };
+    }
+    \n    async startCall() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ 
+                video: true, audio: true \n            });
+            \n            const localVideo = document.getElementById(''localVideo'');
+            localVideo.srcObject = stream;
+            \n            stream.getTracks().forEach(track => {
+                this.pc.addTrack(track, stream);
+            });
+            \n            if (this.isInitiator) {
+                const offer = await this.pc.createOffer();
+                await this.pc.setLocalDescription(offer);
+                this.sendSignal(''offer'', offer);
+            }
+        } catch (error) {
+            console.error(''Error starting call:'', error);\n        }\n    }\n    \n    async handleOffer(offer) {\n        await this.pc.setRemoteDescription(offer);\n        const answer = await this.pc.createAnswer();
+        await this.pc.setLocalDescription(answer);
+        this.sendSignal(''answer'', answer);
+    }
+    \n    async handleAnswer(answer) {
+        await this.pc.setRemoteDescription(answer);
+    }
+    \n    async handleIceCandidate(candidate) {
+        await this.pc.addIceCandidate(candidate);
+    }
+    \n    sendSignal(type, data) {
+        // Send via WebSocket or other signaling mechanism\n        this.signalingSocket.send(JSON.stringify({ type, data }));
+    }
+}', 'WebRTC for peer-to-peer communication. Video calling implementation. ICE candidates for NAT traversal. Signaling server coordinates connection. Modern web technology.', 5, 11),
+(7, 30, 'Performance Monitoring', 'class PerformanceMonitor {
+    constructor() {
+        this.metrics = new Map();
+        this.observers = [];
+        this.setupObservers();
+    }
+    \n    setupObservers() {
+        // Long Task Observer\n        if (''PerformanceObserver'' in window) {
+            const longTaskObserver = new PerformanceObserver((list) => {
+                for (const entry of list.getEntries()) {
+                    this.recordMetric(''long-task'', {
+                        duration: entry.duration,\n                        startTime: entry.startTime\n                    });
+                }
+            });
+            longTaskObserver.observe({ entryTypes: [''longtask''] });
+            \n            // Layout Shift Observer\n            const clsObserver = new PerformanceObserver((list) => {
+                for (const entry of list.getEntries()) {
+                    if (!entry.hadRecentInput) {
+                        this.recordMetric(''cls'', entry.value);
+                    }
+                }
+            });
+            clsObserver.observe({ entryTypes: [''layout-shift''] });
+            \n            // Largest Contentful Paint\n            const lcpObserver = new PerformanceObserver((list) => {
+                const entries = list.getEntries();
+                const lastEntry = entries[entries.length - 1];
+                this.recordMetric(''lcp'', lastEntry.startTime);
+            });
+            lcpObserver.observe({ entryTypes: [''largest-contentful-paint''] });
+        }
+    }
+    \n    recordMetric(name, value) {
+        if (!this.metrics.has(name)) {
+            this.metrics.set(name, []);
+        }
+        this.metrics.get(name).push({
+            value,\n            timestamp: Date.now()\n        });
+        \n        // Send to analytics\n        this.sendToAnalytics(name, value);
+    }
+    \n    measureFunction(name, fn) {
+        return async (...args) => {
+            const start = performance.now();
+            const result = await fn(...args);
+            const duration = performance.now() - start;
+            this.recordMetric(name, duration);
+            return result;
+        };
+    }
+    \n    getWebVitals() {
+        return {
+            lcp: this.getLastMetric(''lcp''),\n            cls: this.getTotalMetric(''cls''),\n            fid: this.getLastMetric(''fid'')\n        };
+    }
+    \n    sendToAnalytics(metric, value) {
+        // Send to your analytics service\n        fetch(''/analytics'', {
+            method: ''POST'',
+            headers: { ''Content-Type'': ''application/json'' },\n            body: JSON.stringify({ metric, value, timestamp: Date.now() })\n        });
+    }
+}', 'Performance monitoring in browsers. Web Vitals tracking (LCP, CLS, FID). Performance Observer API. Function timing measurements. Real User Monitoring (RUM).', 5, 10),
+(7, 31, 'Summer Project Showcase', '# Summer Project Showcase\n\n## Code Learning Platform\n- **Stack**: React, Node.js, PostgreSQL\n- **Duration**: July 2024\n\n## Features\n1. Daily code snippets\n2. Multi-language support\n3. Progress tracking\n4. Responsive design\n5. API with auth\n6. Testing suite\n7. CI/CD pipeline\n\n## Results\n- Performance: 95+ Lighthouse\n- Testing: 85%+ coverage\n- Security: OWASP compliant\n- Scale: 1000+ users\n\n## Skills Gained\n- Full-stack development\n- DevOps practices\n- Database design\n- Problem solving
+\n**Demo**: github.com/user/project\n**Live**: project.vercel.app\n\nInternship ready! 🚀', 'Summer project showcase template. Highlight key achievements and technical skills. Quantify results where possible. Include live demo links. Perfect for resume and interviews!', 16, 7);

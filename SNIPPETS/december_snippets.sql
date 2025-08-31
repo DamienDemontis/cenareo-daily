@@ -1,33 +1,587 @@
 -- December Snippets: Memory Management & Advanced Concepts (Complete Month 1-31) - FIXED
 INSERT INTO snippets (month, day, title, code, explanation, language_id, category_id) VALUES
-(12, 1, 'C Memory Debugging', '#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\nvoid* debug_malloc(size_t size, const char* file, int line) {\n    void* ptr = malloc(size);\n    printf("[MALLOC] %zu bytes at %p (%s:%d)\\n", size, ptr, file, line);\n    return ptr;\n}\n\nvoid debug_free(void* ptr, const char* file, int line) {\n    printf("[FREE] %p (%s:%d)\\n", ptr, file, line);\n    free(ptr);\n}\n\n#define malloc(s) debug_malloc(s, __FILE__, __LINE__)\n#define free(p) debug_free(p, __FILE__, __LINE__)', 'Debug memory allocations with custom functions. Track allocation location with __FILE__ and __LINE__. Helps find memory leaks. Wrap with macros for transparency.', 2, 5),
-(12, 2, 'Python Exception Handling', 'try:\n    result = risky_operation()\nexcept ValueError as e:\n    print(f"Value error: {e}")\nexcept KeyError as e:\n    print(f"Key not found: {e}")\nexcept Exception as e:\n    print(f"Unexpected: {e}")\n    raise\nelse:\n    print("Success!")\nfinally:\n    cleanup()', 'Exception handling prevents crashes. Multiple except blocks for different errors. else runs if no exception. finally always executes. Proper cleanup essential.', 1, 5),
-(12, 3, 'C Dynamic 2D Array Allocation', 'int** create_2d_array(int rows, int cols) {\n    int** arr = malloc(rows * sizeof(int*));\n    for (int i = 0; i < rows; i++) {\n        arr[i] = malloc(cols * sizeof(int));\n    }\n    return arr;\n}\n\nvoid free_2d_array(int** arr, int rows) {\n    for (int i = 0; i < rows; i++) {\n        free(arr[i]);\n    }\n    free(arr);\n}', '2D arrays need array of pointers to arrays. Allocate row pointers first, then each row. Free in reverse order: rows first, then pointer array.', 2, 5),
-(12, 4, 'C++ Smart Pointer Basics', '#include <memory>\n\n// Unique pointer - single owner\nstd::unique_ptr<int> up(new int(42));\nauto up2 = std::make_unique<int>(42);\n\n// Shared pointer - multiple owners\nstd::shared_ptr<int> sp = std::make_shared<int>(42);\nauto sp2 = sp;  // Reference count = 2\n\n// Weak pointer - no ownership\nstd::weak_ptr<int> wp = sp;\nif (auto locked = wp.lock()) {\n    // Use locked\n}', 'Smart pointers manage memory automatically. unique_ptr single ownership. shared_ptr reference counting. weak_ptr breaks cycles. RAII principle.', 3, 5),
-(12, 5, 'Advanced Regular Expressions', 'import re\n\n# Email validation\nemail_pattern = r''^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$''\nif re.match(email_pattern, "user@example.com"):\n    print("Valid email")\n\n# Extract numbers\ntext = "Order 123 costs $45.67"\nnumbers = re.findall(r''\\d+\\.?\\d*'', text)\n\n# Replace with groups\nphone = re.sub(r''(\\d{3})(\\d{3})(\\d{4})'', r''(\\1) \\2-\\3'', "5551234567")', 'Regular expressions for pattern matching. Validate email format. Extract numeric data. Group captures for replacement. Powerful text processing tool.', 1, 4),
-(12, 6, 'C Memory Leak Detection', '#include <stdlib.h>\n#include <stdio.h>\n\nvoid* my_malloc(size_t size, const char* file, int line) {\n    void* ptr = malloc(size);\n    printf("[ALLOC] %zu bytes at %p (%s:%d)\\n", size, ptr, file, line);\n    return ptr;\n}\n\nvoid my_free(void* ptr, const char* file, int line) {\n    printf("[FREE] %p (%s:%d)\\n", ptr, file, line);\n    free(ptr);\n}\n\n#define malloc(s) my_malloc(s, __FILE__, __LINE__)\n#define free(p) my_free(p, __FILE__, __LINE__)', 'Custom allocation tracking. Override malloc/free with macros. Log every allocation and deallocation. Find unmatched pairs. Simple leak detection.', 2, 5),
-(12, 7, 'C Function Pointers', 'int add(int a, int b) { return a + b; }\nint sub(int a, int b) { return a - b; }\nint mul(int a, int b) { return a * b; }\n\nint main() {\n    int (*operation)(int, int);\n    operation = add;\n    printf("3 + 5 = %d\\n", operation(3, 5));\n    \n    // Array of function pointers\n    int (*ops[])(int, int) = {add, sub, mul};\n    char symbols[] = {''+'' ,''-'', ''*''};\n    for (int i = 0; i < 3; i++)\n        printf("10 %c 3 = %d\\n", symbols[i], ops[i](10, 3));\n}', 'Function pointers store function addresses. Enable callbacks and dynamic dispatch. Array of functions for menu systems. Basis for polymorphism in C.', 2, 9),
-(12, 8, 'Python Classes', 'class Student:\n    def __init__(self, name, age):\n        self.name = name\n        self.age = age\n        self._grades = []  # Protected\n    \n    def add_grade(self, grade):\n        self._grades.append(grade)\n    \n    @property\n    def average(self):\n        return sum(self._grades) / len(self._grades) if self._grades else 0\n    \n    def __str__(self):\n        return f"Student({self.name}, avg: {self.average:.1f})"\n\nstudent = Student("Alice", 20)\nstudent.add_grade(85)', 'Classes encapsulate data and behavior. __init__ constructor initializes. @property creates computed attributes. __str__ for string representation.', 1, 9),
-(12, 9, 'C++ Operator Overloading', 'class Vector2D {\n    double x, y;\npublic:\n    Vector2D(double x, double y) : x(x), y(y) {}\n    \n    Vector2D operator+(const Vector2D& v) const {\n        return Vector2D(x + v.x, y + v.y);\n    }\n    \n    Vector2D& operator+=(const Vector2D& v) {\n        x += v.x; y += v.y;\n        return *this;\n    }\n    \n    friend ostream& operator<<(ostream& os, const Vector2D& v) {\n        return os << "(" << v.x << ", " << v.y << ")";\n    }\n};', 'Operator overloading customizes operators for classes. Enables intuitive syntax. const for read-only. Friend functions access private members.', 3, 9),
-(12, 10, 'Git Branching', '# Create and switch to new branch\ngit checkout -b feature/new-feature\n\n# List branches\ngit branch -a\n\n# Switch branches\ngit checkout main\n\n# Merge branch\ngit merge feature/new-feature\n\n# Delete branch\ngit branch -d feature/new-feature\n\n# Rebase (cleaner history)\ngit rebase main\n\n# Cherry-pick specific commit\ngit cherry-pick abc123', 'Branches isolate development. Feature branches for new work. Merge combines changes. Rebase creates linear history. Cherry-pick selective commits.', 14, 7),
-(12, 11, 'JavaScript Objects', 'const person = {\n    name: "Alice",\n    age: 25,\n    greet() {\n        return `Hello, I''m ${this.name}`;\n    }\n};\n\n// Destructuring\nconst {name, age} = person;\n\n// Spread operator\nconst updated = {...person, age: 26};\n\n// Object methods\nconst keys = Object.keys(person);\nconst values = Object.values(person);\nconst entries = Object.entries(person);\n\n// Freeze object\nObject.freeze(person);', 'Objects store key-value pairs. Methods are functions in objects. Destructuring extracts values. Spread copies and merges. Object.freeze prevents changes.', 5, 3),
-(12, 12, 'C Unions', 'union Data {\n    int i;\n    float f;\n    char str[20];\n};\n\nint main() {\n    union Data data;\n    \n    data.i = 10;\n    printf("int: %d\\n", data.i);\n    \n    data.f = 220.5;\n    printf("float: %.2f\\n", data.f);\n    \n    strcpy(data.str, "C Programming");\n    printf("string: %s\\n", data.str);\n    \n    printf("Size: %zu bytes\\n", sizeof(data));\n    // Size is largest member\n}', 'Unions share memory between members. Only one member valid at a time. Memory size equals largest member. Useful for variant types.', 2, 3),
-(12, 13, 'Python File Context', 'class FileManager:\n    def __init__(self, filename, mode):\n        self.filename = filename\n        self.mode = mode\n        self.file = None\n    \n    def __enter__(self):\n        self.file = open(self.filename, self.mode)\n        return self.file\n    \n    def __exit__(self, exc_type, exc_val, exc_tb):\n        self.file.close()\n        if exc_type:\n            print(f"Error: {exc_val}")\n        return False  # Propagate exception\n\n# Usage\nwith FileManager("data.txt", "r") as f:\n    content = f.read()', 'Context managers ensure cleanup. __enter__ sets up resource. __exit__ handles cleanup. with statement manages lifecycle. Exception safe.', 1, 5),
-(12, 14, 'C Recursive Functions', '#include <stdio.h>\n\nint factorial(int n) {\n    if (n <= 1) return 1;\n    return n * factorial(n - 1);\n}\n\nint fibonacci(int n) {\n    if (n <= 1) return n;\n    return fibonacci(n-1) + fibonacci(n-2);\n}\n\nvoid hanoi(int n, char from, char to, char aux) {\n    if (n == 1) {\n        printf("Move disk from %c to %c\\n", from, to);\n        return;\n    }\n    hanoi(n-1, from, aux, to);\n    hanoi(1, from, to, aux);\n    hanoi(n-1, aux, to, from);\n}', 'Recursion solves problems by self-calling. Base case prevents infinite recursion. Stack space limitation. Elegant for tree/divide-conquer problems.', 2, 4),
-(12, 15, 'Database Transactions', 'BEGIN TRANSACTION;\n\nUPDATE accounts SET balance = balance - 100 WHERE id = 1;\nUPDATE accounts SET balance = balance + 100 WHERE id = 2;\n\n-- Check business rules\nIF (SELECT balance FROM accounts WHERE id = 1) < 0\n    ROLLBACK TRANSACTION;\nELSE\n    COMMIT TRANSACTION;\n\n-- With savepoint\nBEGIN;\nSAVEPOINT before_risky;\nUPDATE risky_table SET value = 100;\nROLLBACK TO before_risky;  -- Undo only risky\nCOMMIT;', 'Transactions ensure atomicity. All succeed or all fail. ACID properties guaranteed. Savepoints for partial rollback. Essential for data integrity.', 10, 3),
-(12, 16, 'C++ Inheritance', 'class Animal {\nprotected:\n    string name;\npublic:\n    Animal(string n) : name(n) {}\n    virtual void speak() = 0;  // Pure virtual\n};\n\nclass Dog : public Animal {\npublic:\n    Dog(string n) : Animal(n) {}\n    void speak() override {\n        cout << name << " barks!\\n";\n    }\n};\n\nclass Cat : public Animal {\npublic:\n    Cat(string n) : Animal(n) {}\n    void speak() override {\n        cout << name << " meows!\\n";\n    }\n};', 'Inheritance creates class hierarchies. virtual enables polymorphism. Pure virtual makes abstract class. override ensures correct overriding.', 3, 9),
-(12, 17, 'Network Sockets', '#include <sys/socket.h>\n#include <netinet/in.h>\n\nint main() {\n    int sockfd = socket(AF_INET, SOCK_STREAM, 0);\n    \n    struct sockaddr_in server;\n    server.sin_family = AF_INET;\n    server.sin_port = htons(8080);\n    server.sin_addr.s_addr = INADDR_ANY;\n    \n    bind(sockfd, (struct sockaddr*)&server, sizeof(server));\n    listen(sockfd, 5);\n    \n    int client = accept(sockfd, NULL, NULL);\n    char buffer[1024];\n    recv(client, buffer, sizeof(buffer), 0);\n    send(client, "Hello\\n", 6, 0);\n}', 'Sockets enable network communication. TCP for reliable streams. bind assigns address. listen/accept for servers. send/recv for data transfer.', 2, 11),
-(12, 18, 'Python Generators', 'def fibonacci():\n    a, b = 0, 1\n    while True:\n        yield a\n        a, b = b, a + b\n\n# Use generator\nfib = fibonacci()\nfor _ in range(10):\n    print(next(fib), end=" ")\n\n# Generator expression\nsquares = (x**2 for x in range(1000000))\n\n# Process large file\ndef read_large_file(file):\n    with open(file) as f:\n        for line in f:\n            yield line.strip()', 'Generators produce values lazily. yield pauses and resumes. Memory efficient for sequences. Perfect for streaming data. Infinite sequences possible.', 1, 9),
-(12, 19, 'C Inline Assembly', '#include <stdio.h>\n\nint main() {\n    int a = 10, b = 20, result;\n    \n    // Inline assembly (GCC syntax)\n    asm volatile(\n        "addl %%ebx, %%eax"\n        : "=a" (result)  // Output\n        : "a" (a), "b" (b)  // Input\n    );\n    \n    printf("%d + %d = %d\\n", a, b, result);\n    \n    // CPUID example\n    unsigned int eax, ebx, ecx, edx;\n    asm("cpuid" : "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx) : "a"(0));\n}', 'Inline assembly embeds machine code. Platform specific optimization. Access CPU features directly. Use sparingly for portability.', 2, 4),
-(12, 20, 'Web APIs REST', 'from flask import Flask, jsonify, request\n\napp = Flask(__name__)\n\n@app.route(''/api/users'', methods=[''GET''])\ndef get_users():\n    return jsonify([{''id'': 1, ''name'': ''Alice''}])\n\n@app.route(''/api/users/<int:id>'', methods=[''GET''])\ndef get_user(id):\n    return jsonify({''id'': id, ''name'': ''User''})\n\n@app.route(''/api/users'', methods=[''POST''])\ndef create_user():\n    data = request.json\n    # Create user...\n    return jsonify(data), 201\n\nif __name__ == ''__main__'':\n    app.run(debug=True)', 'REST APIs use HTTP methods. GET reads, POST creates, PUT updates, DELETE removes. JSON for data exchange. Status codes indicate results.', 1, 11),
-(12, 21, 'Winter Solstice Code', '#include <time.h>\n#include <math.h>\n\n// Calculate daylight hours\ndouble daylight_hours(int day_of_year, double latitude) {\n    double P = asin(0.39795 * cos(0.98563 * (day_of_year - 173) * M_PI / 180));\n    double sunrise = 12 - acos(-tan(latitude * M_PI / 180) * tan(P)) * 180 / M_PI / 15;\n    double sunset = 12 + acos(-tan(latitude * M_PI / 180) * tan(P)) * 180 / M_PI / 15;\n    return sunset - sunrise;\n}\n\nint main() {\n    // Winter solstice: shortest day\n    printf("Daylight on Dec 21: %.2f hours\\n", daylight_hours(355, 48.7));\n}', 'Winter solstice marks shortest day. Calculate sunrise/sunset astronomically. Latitude affects daylight hours. Nancy latitude: 48.7°N.', 2, 4),
-(12, 22, 'C++ STL Containers', '#include <vector>\n#include <set>\n#include <map>\n#include <queue>\n\nint main() {\n    vector<int> vec = {3, 1, 4};\n    vec.push_back(5);\n    \n    set<int> s = {3, 1, 4, 1};  // Unique, sorted\n    \n    map<string, int> m;\n    m["alice"] = 95;\n    \n    priority_queue<int> pq;\n    pq.push(3); pq.push(1); pq.push(4);\n    \n    while (!pq.empty()) {\n        cout << pq.top() << " ";  // 4 3 1\n        pq.pop();\n    }\n}', 'STL provides data structures. vector: dynamic array. set: unique sorted. map: key-value pairs. priority_queue: heap. Choose based on needs.', 3, 3),
-(12, 23, 'Holiday Debugging', '#ifdef DEBUG\n    #define DBG_PRINT(fmt, ...) \\\n        fprintf(stderr, "[%s:%d] " fmt "\\n", __FILE__, __LINE__, ##__VA_ARGS__)\n#else\n    #define DBG_PRINT(fmt, ...)\n#endif\n\nint main() {\n    DBG_PRINT("Starting holiday shopping calculator");\n    \n    int gifts = 5;\n    double budget = 100.0;\n    DBG_PRINT("Gifts: %d, Budget: %.2f", gifts, budget);\n    \n    double per_gift = budget / gifts;\n    DBG_PRINT("Per gift: %.2f", per_gift);\n    \n    printf("You can spend %.2f per gift\\n", per_gift);\n}', 'Debug macros help troubleshooting. Conditional compilation removes debug code. __FILE__ and __LINE__ show location. Variadic macros flexible.', 2, 10),
-(12, 24, 'Christmas Eve Special', '#include <stdio.h>\n#include <stdlib.h>\n#include <time.h>\n\nconst char* gifts[] = {\n    "Partridge in a pear tree",\n    "Turtle doves",\n    "French hens",\n    "Calling birds",\n    "Golden rings",\n    "Geese a-laying",\n    "Swans a-swimming",\n    "Maids a-milking",\n    "Ladies dancing",\n    "Lords a-leaping",\n    "Pipers piping",\n    "Drummers drumming"\n};\n\nint main() {\n    printf("🎄 Merry Christmas Eve from Epitech! 🎅\\n");\n    srand(time(NULL));\n    printf("Your gift: %s\\n", gifts[rand() % 12]);\n}', 'Christmas tradition meets code! Array of strings for gifts. Random selection for fun. Holiday spirit in programming. Merry coding!', 2, 10),
-(12, 25, 'Christmas Recursion Tree', 'def draw_tree(height, level=0):\n    if level < height:\n        # Draw current level\n        spaces = " " * (height - level - 1)\n        stars = "*" * (2 * level + 1)\n        print(spaces + stars)\n        # Recursive call for next level\n        draw_tree(height, level + 1)\n    else:\n        # Draw trunk\n        trunk_space = " " * (height - 1)\n        print(trunk_space + "|")\n\nprint("🎄 Merry Christmas! 🎄")\ndraw_tree(7)\nprint("   Happy Coding!")', 'Recursive Christmas tree! Each level adds more stars. Base case at max height. Recursion creates patterns. Holiday fun with algorithms!', 1, 10),
-(12, 26, 'Boxing Day Cleanup', '#!/bin/bash\n# Post-holiday cleanup script\n\n# Remove temporary files\nfind /tmp -type f -mtime +7 -delete\n\n# Clean package cache\napt-get clean\n\n# Remove old logs\nfind /var/log -name "*.log" -mtime +30 -delete\n\n# Git cleanup\ngit gc --aggressive\ngit prune\n\n# Docker cleanup\ndocker system prune -f\n\n# Check disk space\ndf -h | grep -E ''^/dev/''\n\necho "System cleaned up! Ready for new year coding!"', 'Boxing Day system cleanup! Remove old files, clean caches. Git garbage collection. Docker prune unused. Start fresh for new projects!', 14, 7),
-(12, 27, 'Data Serialization', 'import json\nimport pickle\nimport csv\n\n# JSON serialization\ndata = {"name": "Alice", "scores": [95, 87, 92]}\njson_str = json.dumps(data)\nloaded = json.loads(json_str)\n\n# Pickle for Python objects\nclass Student:\n    def __init__(self, name):\n        self.name = name\n\nstudent = Student("Bob")\npickled = pickle.dumps(student)\nunpickled = pickle.loads(pickled)\n\n# CSV for tabular data\nwith open("data.csv", "w") as f:\n    writer = csv.writer(f)\n    writer.writerow(["Name", "Score"])\n    writer.writerow(["Alice", 95])', 'Serialization converts objects to storable format. JSON for web APIs. Pickle for Python objects. CSV for spreadsheets. Choose based on use case.', 1, 5),
-(12, 28, 'Parallel Processing', '#include <omp.h>\n#include <stdio.h>\n\nint main() {\n    int sum = 0;\n    \n    #pragma omp parallel for reduction(+:sum)\n    for (int i = 0; i < 1000000; i++) {\n        sum += i;\n    }\n    \n    printf("Sum: %d\\n", sum);\n    \n    #pragma omp parallel\n    {\n        int tid = omp_get_thread_num();\n        printf("Thread %d of %d\\n", tid, omp_get_num_threads());\n    }\n    \n    return 0;\n}', 'OpenMP enables parallel processing. pragma directives parallelize loops. reduction combines results. Multiple threads speed computation. Compile with -fopenmp.', 2, 10),
-(12, 29, 'Year-End Algorithms', '#include <stdio.h>\n#include <stdbool.h>\n\n// Check if year is leap year\nbool is_leap(int year) {\n    return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);\n}\n\n// Days in month\nint days_in_month(int month, int year) {\n    int days[] = {31,28,31,30,31,30,31,31,30,31,30,31};\n    if (month == 2 && is_leap(year)) return 29;\n    return days[month - 1];\n}\n\nint main() {\n    int year = 2024;\n    printf("%d is %sleap year\\n", year, is_leap(year) ? "" : "not ");\n}', 'Year-end calendar algorithms. Leap year rules handle special cases. Days per month vary. February special case. Essential for date calculations.', 2, 4),
-(12, 30, 'Performance Review', '/* Performance Optimization Checklist:\n * 1. Profile before optimizing\n * 2. Optimize algorithms first (O(n²) -> O(n log n))\n * 3. Cache frequently used values\n * 4. Minimize memory allocations\n * 5. Use appropriate data structures\n * 6. Consider parallelization\n * 7. Inline small functions\n * 8. Loop unrolling for critical paths\n * 9. Avoid premature optimization\n * 10. Measure improvements\n */\n\n// Example: Optimized vs Naive\nint sum_naive(int* arr, int n) {\n    int sum = 0;\n    for(int i = 0; i < n; i++) sum += arr[i];\n    return sum;\n}', 'Year-end performance review! Profile first, optimize bottlenecks. Algorithm improvements biggest impact. Measure to verify gains. Balance readability with speed.', 2, 10),
-(12, 31, 'New Year Countdown', '#include <stdio.h>\n#include <time.h>\n#include <unistd.h>\n\nint main() {\n    time_t now = time(NULL);\n    struct tm nye = *localtime(&now);\n    nye.tm_mon = 11; nye.tm_mday = 31;\n    nye.tm_hour = 23; nye.tm_min = 59; nye.tm_sec = 50;\n    \n    time_t target = mktime(&nye);\n    \n    while (time(NULL) < target) {\n        int diff = difftime(target, time(NULL));\n        printf("\\r%02d:%02d:%02d until 2025!", diff/3600, (diff/60)%60, diff%60);\n        fflush(stdout);\n        sleep(1);\n    }\n    \n    for (int i = 10; i > 0; i--) {\n        printf("\\r%d...  ", i);\n        fflush(stdout);\n        sleep(1);\n    }\n    printf("\\r🎆 HAPPY NEW YEAR 2025! 🎆\\n");\n}', 'New Year countdown timer! Calculate time difference. Update display each second. Carriage return for in-place update. Welcome 2025 with code!', 2, 10);
+(12, 1, 'C Memory Debugging', '#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+void* debug_malloc(size_t size, const char* file, int line) {
+    void* ptr = malloc(size);
+    printf("[MALLOC] %zu bytes at %p (%s:%d)\\n", size, ptr, file, line);
+    return ptr;
+}
+
+void debug_free(void* ptr, const char* file, int line) {
+    printf("[FREE] %p (%s:%d)\\n", ptr, file, line);
+    free(ptr);
+}
+
+#define malloc(s) debug_malloc(s, __FILE__, __LINE__)
+#define free(p) debug_free(p, __FILE__, __LINE__)', 'Debug memory allocations with custom functions. Track allocation location with __FILE__ and __LINE__. Helps find memory leaks. Wrap with macros for transparency.', 2, 5),
+(12, 2, 'Python Exception Handling', 'try:
+    result = risky_operation()
+except ValueError as e:
+    print(f"Value error: {e}")
+except KeyError as e:
+    print(f"Key not found: {e}")
+except Exception as e:
+    print(f"Unexpected: {e}")
+    raise
+else:
+    print("Success!")
+finally:
+    cleanup()', 'Exception handling prevents crashes. Multiple except blocks for different errors. else runs if no exception. finally always executes. Proper cleanup essential.', 1, 5),
+(12, 3, 'C Dynamic 2D Array Allocation', 'int** create_2d_array(int rows, int cols) {
+    int** arr = malloc(rows * sizeof(int*));
+    for (int i = 0; i < rows; i++) {
+        arr[i] = malloc(cols * sizeof(int));
+    }
+    return arr;
+}
+
+void free_2d_array(int** arr, int rows) {
+    for (int i = 0; i < rows; i++) {
+        free(arr[i]);
+    }
+    free(arr);
+}', '2D arrays need array of pointers to arrays. Allocate row pointers first, then each row. Free in reverse order: rows first, then pointer array.', 2, 5),
+(12, 4, 'C++ Smart Pointer Basics', '#include <memory>
+
+// Unique pointer - single owner
+std::unique_ptr<int> up(new int(42));
+auto up2 = std::make_unique<int>(42);
+
+// Shared pointer - multiple owners
+std::shared_ptr<int> sp = std::make_shared<int>(42);
+auto sp2 = sp;  // Reference count = 2
+
+// Weak pointer - no ownership
+std::weak_ptr<int> wp = sp;
+if (auto locked = wp.lock()) {
+    // Use locked
+}', 'Smart pointers manage memory automatically. unique_ptr single ownership. shared_ptr reference counting. weak_ptr breaks cycles. RAII principle.', 3, 5),
+(12, 5, 'Advanced Regular Expressions', 'import re
+
+# Email validation
+email_pattern = r''^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$''
+if re.match(email_pattern, "user@example.com"):
+    print("Valid email")
+
+# Extract numbers\ntext = "Order 123 costs $45.67"
+numbers = re.findall(r''\\d+\\.?\\d*'', text)
+
+# Replace with groups
+phone = re.sub(r''(\\d{3})(\\d{3})(\\d{4})'', r''(\\1) \\2-\\3'', "5551234567")', 'Regular expressions for pattern matching. Validate email format. Extract numeric data. Group captures for replacement. Powerful text processing tool.', 1, 4),
+(12, 6, 'C Memory Leak Detection', '#include <stdlib.h>
+#include <stdio.h>
+
+void* my_malloc(size_t size, const char* file, int line) {
+    void* ptr = malloc(size);
+    printf("[ALLOC] %zu bytes at %p (%s:%d)\\n", size, ptr, file, line);
+    return ptr;
+}
+
+void my_free(void* ptr, const char* file, int line) {
+    printf("[FREE] %p (%s:%d)\\n", ptr, file, line);
+    free(ptr);
+}
+
+#define malloc(s) my_malloc(s, __FILE__, __LINE__)
+#define free(p) my_free(p, __FILE__, __LINE__)', 'Custom allocation tracking. Override malloc/free with macros. Log every allocation and deallocation. Find unmatched pairs. Simple leak detection.', 2, 5),
+(12, 7, 'C Function Pointers', 'int add(int a, int b) { return a + b; }
+int sub(int a, int b) { return a - b; }
+int mul(int a, int b) { return a * b; }
+
+int main() {
+    int (*operation)(int, int);
+    operation = add;
+    printf("3 + 5 = %d\\n", operation(3, 5));
+    
+    // Array of function pointers
+    int (*ops[])(int, int) = {add, sub, mul};
+    char symbols[] = {''+'' ,''-'', ''*''};
+    for (int i = 0; i < 3; i++)
+        printf("10 %c 3 = %d\\n", symbols[i], ops[i](10, 3));
+}', 'Function pointers store function addresses. Enable callbacks and dynamic dispatch. Array of functions for menu systems. Basis for polymorphism in C.', 2, 9),
+(12, 8, 'Python Classes', 'class Student:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+        self._grades = []  # Protected
+    
+    def add_grade(self, grade):
+        self._grades.append(grade)
+    
+    @property
+    def average(self):
+        return sum(self._grades) / len(self._grades) if self._grades else 0
+    
+    def __str__(self):
+        return f"Student({self.name}, avg: {self.average:.1f})"
+
+student = Student("Alice", 20)
+student.add_grade(85)', 'Classes encapsulate data and behavior. __init__ constructor initializes. @property creates computed attributes. __str__ for string representation.', 1, 9),
+(12, 9, 'C++ Operator Overloading', 'class Vector2D {
+    double x, y;
+public:
+    Vector2D(double x, double y) : x(x), y(y) {}
+    
+    Vector2D operator+(const Vector2D& v) const {
+        return Vector2D(x + v.x, y + v.y);
+    }
+    
+    Vector2D& operator+=(const Vector2D& v) {
+        x += v.x; y += v.y;
+        return *this;
+    }
+    
+    friend ostream& operator<<(ostream& os, const Vector2D& v) {
+        return os << "(" << v.x << ", " << v.y << ")";
+    }
+};', 'Operator overloading customizes operators for classes. Enables intuitive syntax. const for read-only. Friend functions access private members.', 3, 9),
+(12, 10, 'Git Branching', '# Create and switch to new branch
+git checkout -b feature/new-feature
+
+# List branches
+git branch -a
+
+# Switch branches
+git checkout main
+
+# Merge branch
+git merge feature/new-feature
+
+# Delete branch
+git branch -d feature/new-feature
+
+# Rebase (cleaner history)
+git rebase main
+
+# Cherry-pick specific commit
+git cherry-pick abc123', 'Branches isolate development. Feature branches for new work. Merge combines changes. Rebase creates linear history. Cherry-pick selective commits.', 14, 7),
+(12, 11, 'JavaScript Objects', 'const person = {
+    name: "Alice",
+    age: 25,
+    greet() {
+        return `Hello, I''m ${this.name}`;
+    }
+};
+
+// Destructuring
+const {name, age} = person;
+
+// Spread operator
+const updated = {...person, age: 26};
+
+// Object methods
+const keys = Object.keys(person);
+const values = Object.values(person);
+const entries = Object.entries(person);
+
+// Freeze object
+Object.freeze(person);', 'Objects store key-value pairs. Methods are functions in objects. Destructuring extracts values. Spread copies and merges. Object.freeze prevents changes.', 5, 3),
+(12, 12, 'C Unions', 'union Data {
+    int i;
+    float f;
+    char str[20];
+};
+
+int main() {
+    union Data data;
+    
+    data.i = 10;
+    printf("int: %d\\n", data.i);
+    
+    data.f = 220.5;
+    printf("float: %.2f\\n", data.f);
+    
+    strcpy(data.str, "C Programming");
+    printf("string: %s\\n", data.str);
+    
+    printf("Size: %zu bytes\\n", sizeof(data));
+    // Size is largest member
+}', 'Unions share memory between members. Only one member valid at a time. Memory size equals largest member. Useful for variant types.', 2, 3),
+(12, 13, 'Python File Context', 'class FileManager:
+    def __init__(self, filename, mode):
+        self.filename = filename
+        self.mode = mode
+        self.file = None
+    
+    def __enter__(self):
+        self.file = open(self.filename, self.mode)
+        return self.file
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.file.close()
+        if exc_type:
+            print(f"Error: {exc_val}")
+        return False  # Propagate exception
+
+# Usage
+with FileManager("data.txt", "r") as f:
+    content = f.read()', 'Context managers ensure cleanup. __enter__ sets up resource. __exit__ handles cleanup. with statement manages lifecycle. Exception safe.', 1, 5),
+(12, 14, 'C Recursive Functions', '#include <stdio.h>
+
+int factorial(int n) {
+    if (n <= 1) return 1;
+    return n * factorial(n - 1);
+}
+
+int fibonacci(int n) {
+    if (n <= 1) return n;
+    return fibonacci(n-1) + fibonacci(n-2);
+}
+
+void hanoi(int n, char from, char to, char aux) {
+    if (n == 1) {
+        printf("Move disk from %c to %c\\n", from, to);
+        return;
+    }
+    hanoi(n-1, from, aux, to);
+    hanoi(1, from, to, aux);
+    hanoi(n-1, aux, to, from);
+}', 'Recursion solves problems by self-calling. Base case prevents infinite recursion. Stack space limitation. Elegant for tree/divide-conquer problems.', 2, 4),
+(12, 15, 'Database Transactions', 'BEGIN TRANSACTION;
+
+UPDATE accounts SET balance = balance - 100 WHERE id = 1;
+UPDATE accounts SET balance = balance + 100 WHERE id = 2;
+
+-- Check business rules
+IF (SELECT balance FROM accounts WHERE id = 1) < 0
+    ROLLBACK TRANSACTION;
+ELSE
+    COMMIT TRANSACTION;
+
+-- With savepoint
+BEGIN;
+SAVEPOINT before_risky;
+UPDATE risky_table SET value = 100;
+ROLLBACK TO before_risky;  -- Undo only risky
+COMMIT;', 'Transactions ensure atomicity. All succeed or all fail. ACID properties guaranteed. Savepoints for partial rollback. Essential for data integrity.', 10, 3),
+(12, 16, 'C++ Inheritance', 'class Animal {
+protected:
+    string name;
+public:
+    Animal(string n) : name(n) {}
+    virtual void speak() = 0;  // Pure virtual
+};
+
+class Dog : public Animal {
+public:
+    Dog(string n) : Animal(n) {}
+    void speak() override {
+        cout << name << " barks!\
+";
+    }
+};
+
+class Cat : public Animal {
+public:
+    Cat(string n) : Animal(n) {}
+    void speak() override {
+        cout << name << " meows!\
+";
+    }
+};', 'Inheritance creates class hierarchies. virtual enables polymorphism. Pure virtual makes abstract class. override ensures correct overriding.', 3, 9),
+(12, 17, 'Network Sockets', '#include <sys/socket.h>
+#include <netinet/in.h>
+
+int main() {
+    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    
+    struct sockaddr_in server;
+    server.sin_family = AF_INET;
+    server.sin_port = htons(8080);
+    server.sin_addr.s_addr = INADDR_ANY;
+    
+    bind(sockfd, (struct sockaddr*)&server, sizeof(server));
+    listen(sockfd, 5);
+    
+    int client = accept(sockfd, NULL, NULL);
+    char buffer[1024];
+    recv(client, buffer, sizeof(buffer), 0);
+    send(client, "Hello\
+", 6, 0);
+}', 'Sockets enable network communication. TCP for reliable streams. bind assigns address. listen/accept for servers. send/recv for data transfer.', 2, 11),
+(12, 18, 'Python Generators', 'def fibonacci():
+    a, b = 0, 1
+    while True:
+        yield a
+        a, b = b, a + b
+
+# Use generator
+fib = fibonacci()
+for _ in range(10):
+    print(next(fib), end=" ")
+
+# Generator expression
+squares = (x**2 for x in range(1000000))
+
+# Process large file
+def read_large_file(file):
+    with open(file) as f:
+        for line in f:
+            yield line.strip()', 'Generators produce values lazily. yield pauses and resumes. Memory efficient for sequences. Perfect for streaming data. Infinite sequences possible.', 1, 9),
+(12, 19, 'C Inline Assembly', '#include <stdio.h>
+
+int main() {
+    int a = 10, b = 20, result;
+    
+    // Inline assembly (GCC syntax)
+    asm volatile(
+        "addl %%ebx, %%eax"
+        : "=a" (result)  // Output
+        : "a" (a), "b" (b)  // Input
+    );
+    
+    printf("%d + %d = %d\\n", a, b, result);
+    
+    // CPUID example
+    unsigned int eax, ebx, ecx, edx;
+    asm("cpuid" : "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx) : "a"(0));
+}', 'Inline assembly embeds machine code. Platform specific optimization. Access CPU features directly. Use sparingly for portability.', 2, 4),
+(12, 20, 'Web APIs REST', 'from flask import Flask, jsonify, request
+
+app = Flask(__name__)
+
+@app.route(''/api/users'', methods=[''GET''])
+def get_users():
+    return jsonify([{''id'': 1, ''name'': ''Alice''}])
+
+@app.route(''/api/users/<int:id>'', methods=[''GET''])
+def get_user(id):
+    return jsonify({''id'': id, ''name'': ''User''})
+
+@app.route(''/api/users'', methods=[''POST''])
+def create_user():
+    data = request.json
+    # Create user...
+    return jsonify(data), 201
+
+if __name__ == ''__main__'':
+    app.run(debug=True)', 'REST APIs use HTTP methods. GET reads, POST creates, PUT updates, DELETE removes. JSON for data exchange. Status codes indicate results.', 1, 11),
+(12, 21, 'Winter Solstice Code', '#include <time.h>
+#include <math.h>
+
+// Calculate daylight hours
+double daylight_hours(int day_of_year, double latitude) {
+    double P = asin(0.39795 * cos(0.98563 * (day_of_year - 173) * M_PI / 180));
+    double sunrise = 12 - acos(-tan(latitude * M_PI / 180) * tan(P)) * 180 / M_PI / 15;
+    double sunset = 12 + acos(-tan(latitude * M_PI / 180) * tan(P)) * 180 / M_PI / 15;
+    return sunset - sunrise;
+}
+
+int main() {
+    // Winter solstice: shortest day
+    printf("Daylight on Dec 21: %.2f hours\\n", daylight_hours(355, 48.7));
+}', 'Winter solstice marks shortest day. Calculate sunrise/sunset astronomically. Latitude affects daylight hours. Nancy latitude: 48.7°N.', 2, 4),
+(12, 22, 'C++ STL Containers', '#include <vector>
+#include <set>
+#include <map>
+#include <queue>
+
+int main() {
+    vector<int> vec = {3, 1, 4};
+    vec.push_back(5);
+    
+    set<int> s = {3, 1, 4, 1};  // Unique, sorted
+    
+    map<string, int> m;
+    m["alice"] = 95;
+    
+    priority_queue<int> pq;
+    pq.push(3); pq.push(1); pq.push(4);
+    
+    while (!pq.empty()) {
+        cout << pq.top() << " ";  // 4 3 1
+        pq.pop();
+    }
+}', 'STL provides data structures. vector: dynamic array. set: unique sorted. map: key-value pairs. priority_queue: heap. Choose based on needs.', 3, 3),
+(12, 23, 'Holiday Debugging', '#ifdef DEBUG
+    #define DBG_PRINT(fmt, ...) \\
+        fprintf(stderr, "[%s:%d] " fmt "\\n", __FILE__, __LINE__, ##__VA_ARGS__)
+#else
+    #define DBG_PRINT(fmt, ...)
+#endif
+
+int main() {
+    DBG_PRINT("Starting holiday shopping calculator");
+    
+    int gifts = 5;
+    double budget = 100.0;
+    DBG_PRINT("Gifts: %d, Budget: %.2f", gifts, budget);
+    
+    double per_gift = budget / gifts;
+    DBG_PRINT("Per gift: %.2f", per_gift);
+    
+    printf("You can spend %.2f per gift\\n", per_gift);
+}', 'Debug macros help troubleshooting. Conditional compilation removes debug code. __FILE__ and __LINE__ show location. Variadic macros flexible.', 2, 10),
+(12, 24, 'Christmas Eve Special', '#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+const char* gifts[] = {
+    "Partridge in a pear tree",
+    "Turtle doves",
+    "French hens",
+    "Calling birds",
+    "Golden rings",
+    "Geese a-laying",
+    "Swans a-swimming",
+    "Maids a-milking",
+    "Ladies dancing",
+    "Lords a-leaping",
+    "Pipers piping",
+    "Drummers drumming"
+};
+
+int main() {
+    printf("🎄 Merry Christmas Eve from Epitech! 🎅\\n");
+    srand(time(NULL));
+    printf("Your gift: %s\\n", gifts[rand() % 12]);
+}', 'Christmas tradition meets code! Array of strings for gifts. Random selection for fun. Holiday spirit in programming. Merry coding!', 2, 10),
+(12, 25, 'Christmas Recursion Tree', 'def draw_tree(height, level=0):
+    if level < height:
+        # Draw current level
+        spaces = " " * (height - level - 1)
+        stars = "*" * (2 * level + 1)
+        print(spaces + stars)
+        # Recursive call for next level
+        draw_tree(height, level + 1)
+    else:
+        # Draw trunk
+        trunk_space = " " * (height - 1)
+        print(trunk_space + "|")
+
+print("🎄 Merry Christmas! 🎄")
+draw_tree(7)\nprint("   Happy Coding!")', 'Recursive Christmas tree! Each level adds more stars. Base case at max height. Recursion creates patterns. Holiday fun with algorithms!', 1, 10),
+(12, 26, 'Boxing Day Cleanup', '#!/bin/bash
+# Post-holiday cleanup script
+
+# Remove temporary files
+find /tmp -type f -mtime +7 -delete
+
+# Clean package cache
+apt-get clean
+
+# Remove old logs
+find /var/log -name "*.log" -mtime +30 -delete
+
+# Git cleanup
+git gc --aggressive
+git prune
+
+# Docker cleanup
+docker system prune -f
+
+# Check disk space
+df -h | grep -E ''^/dev/''
+
+echo "System cleaned up! Ready for new year coding!"', 'Boxing Day system cleanup! Remove old files, clean caches. Git garbage collection. Docker prune unused. Start fresh for new projects!', 14, 7),
+(12, 27, 'Data Serialization', 'import json
+import pickle
+import csv
+
+# JSON serialization
+data = {"name": "Alice", "scores": [95, 87, 92]}
+json_str = json.dumps(data)
+loaded = json.loads(json_str)
+
+# Pickle for Python objects
+class Student:
+    def __init__(self, name):
+        self.name = name
+
+student = Student("Bob")
+pickled = pickle.dumps(student)
+unpickled = pickle.loads(pickled)
+
+# CSV for tabular data
+with open("data.csv", "w") as f:
+    writer = csv.writer(f)
+    writer.writerow(["Name", "Score"])
+    writer.writerow(["Alice", 95])', 'Serialization converts objects to storable format. JSON for web APIs. Pickle for Python objects. CSV for spreadsheets. Choose based on use case.', 1, 5),
+(12, 28, 'Parallel Processing', '#include <omp.h>
+#include <stdio.h>
+
+int main() {
+    int sum = 0;
+    
+    #pragma omp parallel for reduction(+:sum)
+    for (int i = 0; i < 1000000; i++) {
+        sum += i;
+    }
+    
+    printf("Sum: %d\\n", sum);
+    
+    #pragma omp parallel
+    {
+        int tid = omp_get_thread_num();
+        printf("Thread %d of %d\\n", tid, omp_get_num_threads());
+    }
+    
+    return 0;
+}', 'OpenMP enables parallel processing. pragma directives parallelize loops. reduction combines results. Multiple threads speed computation. Compile with -fopenmp.', 2, 10),
+(12, 29, 'Year-End Algorithms', '#include <stdio.h>
+#include <stdbool.h>
+
+// Check if year is leap year
+bool is_leap(int year) {
+    return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+}
+
+// Days in month
+int days_in_month(int month, int year) {
+    int days[] = {31,28,31,30,31,30,31,31,30,31,30,31};
+    if (month == 2 && is_leap(year)) return 29;
+    return days[month - 1];
+}
+
+int main() {
+    int year = 2024;
+    printf("%d is %sleap year\\n", year, is_leap(year) ? "" : "not ");
+}', 'Year-end calendar algorithms. Leap year rules handle special cases. Days per month vary. February special case. Essential for date calculations.', 2, 4),
+(12, 30, 'Performance Review', '/* Performance Optimization Checklist:
+ * 1. Profile before optimizing
+ * 2. Optimize algorithms first (O(n²) -> O(n log n))
+ * 3. Cache frequently used values
+ * 4. Minimize memory allocations
+ * 5. Use appropriate data structures
+ * 6. Consider parallelization
+ * 7. Inline small functions
+ * 8. Loop unrolling for critical paths
+ * 9. Avoid premature optimization
+ * 10. Measure improvements
+ */
+
+// Example: Optimized vs Naive
+int sum_naive(int* arr, int n) {
+    int sum = 0;
+    for(int i = 0; i < n; i++) sum += arr[i];
+    return sum;
+}', 'Year-end performance review! Profile first, optimize bottlenecks. Algorithm improvements biggest impact. Measure to verify gains. Balance readability with speed.', 2, 10),
+(12, 31, 'New Year Countdown', '#include <stdio.h>
+#include <time.h>
+#include <unistd.h>
+
+int main() {
+    time_t now = time(NULL);
+    struct tm nye = *localtime(&now);
+    nye.tm_mon = 11; nye.tm_mday = 31;
+    nye.tm_hour = 23; nye.tm_min = 59; nye.tm_sec = 50;
+    
+    time_t target = mktime(&nye);
+    
+    while (time(NULL) < target) {
+        int diff = difftime(target, time(NULL));
+        printf("\\r%02d:%02d:%02d until 2025!", diff/3600, (diff/60)%60, diff%60);
+        fflush(stdout);
+        sleep(1);
+    }
+    
+    for (int i = 10; i > 0; i--) {
+        printf("\\r%d...  ", i);
+        fflush(stdout);
+        sleep(1);
+    }
+    printf("\\r🎆 HAPPY NEW YEAR 2025! 🎆\\n");
+}', 'New Year countdown timer! Calculate time difference. Update display each second. Carriage return for in-place update. Welcome 2025 with code!', 2, 10);

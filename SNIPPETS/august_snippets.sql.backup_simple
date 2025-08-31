@@ -1,0 +1,623 @@
+-- August Snippets: Preparation & Advanced Summer Topics (Complete Month 1-31)
+INSERT INTO snippets (month, day, title, code, explanation, language_id, category_id) VALUES
+(8, 1, 'Summer Prep: C Refresher', '#include <stdio.h>\n#include <stdlib.h>\n\nint main() {
+    // Basic C refresher for new semester\n    printf("Welcome back to Epitech Nancy!\\n");\n    \n    int students = 150;\n    double avg_grade = 85.5;\n    char level[] = "5th year MSc";
+    \n    printf("Class: %s\\n", level);\n    printf("Students: %d\\n", students);\n    printf("Average grade: %.1f%%\\n", avg_grade);\n    \n    // Memory allocation reminder\n    int *grades = malloc(students * sizeof(int));\n    if (grades != NULL) {\n        printf("Memory allocated for %d grades\\n", students);\n        free(grades);\n    }\n    \n    return 0;\n}', 'August preparation for new semester. Review C fundamentals: variables, printf formatting, memory management. Get ready for advanced coursework!', 2, 1),
+(8, 2, 'Internship Experience: Code Style', '// Internship code style guidelines\n\n// GOOD: Clear, descriptive names\nint calculateStudentAverage(int grades[], int count) {
+    int sum = 0;
+    for (int i = 0; i < count; i++) {
+        sum += grades[i];
+    }
+    return sum / count;
+}
+\n// BAD: Unclear names\nint calc(int g[], int c) {
+    int s = 0;
+    for (int i = 0; i < c; i++) s += g[i];
+    return s / c;
+}
+\n// GOOD: Proper spacing and braces\nif (grade >= 90) {
+    printf("Excellent work!");\n} else if (grade >= 70) {\n    printf("Good job!");\n}\n\n// BAD: Poor formatting\nif(grade>=90)printf("Excellent work!");else if(grade>=70)printf("Good job!");', 'Professional code style from internship experience. Clear naming, proper formatting, consistent braces. Good habits for team collaboration.', 2, 7),
+(8, 3, 'Python Data Structures Review', '# Essential Python data structures\n\n# Lists - ordered, mutable\nstudents = ["Alice", "Bob", "Charlie"]\nstudents.append("Diana")\nprint(f"First student: {students[0]}")  # Alice\n\n# Dictionaries - key-value pairs\ngrades = {
+    "Alice": 95,\n    "Bob": 87,\n    "Charlie": 92\n}\nprint(f"Alice''s grade: {grades[''Alice'']}")  # 95\n\n# Sets - unique elements\nlanguages = {"Python", "C", "C++", "JavaScript"}
+languages.add("Go")  # No duplicates allowed\n\n# Tuples - immutable\ncoordinates = (48.6921, 6.1844)  # Nancy, France\nlatitude, longitude = coordinates  # Unpacking\n\nprint(f"Nancy coordinates: {latitude}, {longitude}")', 'Python data structures review. Lists for ordered data, dicts for key-value, sets for uniqueness, tuples for immutable data. Choose the right structure!', 1, 3),
+(8, 4, 'C++ STL Containers Overview', '#include <iostream>\n#include <vector>\n#include <map>\n#include <set>\n#include <string>\nusing namespace std;
+\nint main() {
+    // Vector - dynamic array\n    vector<int> numbers = {1, 2, 3, 4, 5};
+    numbers.push_back(6);
+    cout << "Vector size: " << numbers.size() << endl;\n    \n    // Map - key-value pairs (sorted)\n    map<string, int> ages;\n    ages["Alice"] = 22;
+    ages["Bob"] = 21;
+    cout << "Alice is " << ages["Alice"] << " years old" << endl;\n    \n    // Set - unique elements (sorted)\n    set<string> courses = {"Math", "Physics", "CS"};
+    courses.insert("Chemistry");
+    \n    // Range-based for loop\n    cout << "Courses: ";\n    for (const string& course : courses) {\n        cout << course << " ";\n    }\n    cout << endl;\n    \n    return 0;\n}', 'C++ STL container overview. Vector for dynamic arrays, map for key-value storage, set for unique elements. Modern C++ features included.', 3, 3),
+(8, 5, 'Shell Scripting for Students', '#!/bin/bash\n# Student productivity script\n\necho "📚 Student Productivity Helper"\necho "Date: $(date +''%Y-%m-%d'')")\necho\n\n# Check assignments directory\nASSIGNMENT_DIR="$HOME/epitech/assignments"\nif [ -d "$ASSIGNMENT_DIR" ]; then\n    echo "📁 Assignment files:"\n    ls -1 "$ASSIGNMENT_DIR" | head -5\nelse\n    echo "Creating assignments directory..."\n    mkdir -p "$ASSIGNMENT_DIR"\nfi\n\necho\n\n# Git status check\nif [ -d ".git" ]; then\n    echo "🔧 Git status:"\n    git status --porcelain | wc -l | xargs echo "Modified files:"\nelse\n    echo "💡 Tip: Initialize git repository with ''git init''"\nfi\n\n# Disk usage\necho\necho "💾 Disk usage: $(df -h . | tail -1 | awk ''{print $5}'')"', 'Shell scripting for student productivity. Check assignments, git status, disk usage. Automate daily tasks with bash scripts. Essential system skills.', 14, 7),
+(8, 6, 'Database Design Principles', 'CREATE TABLE students (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    enrollment_date DATE DEFAULT CURRENT_DATE\n);
+\nCREATE TABLE courses (\n    id SERIAL PRIMARY KEY,\n    code VARCHAR(10) UNIQUE NOT NULL,\n    name VARCHAR(100) NOT NULL,\n    credits INTEGER CHECK (credits > 0)\n);
+\nCREATE TABLE enrollments (\n    student_id INTEGER REFERENCES students(id),\n    course_id INTEGER REFERENCES courses(id),\n    grade DECIMAL(3,1) CHECK (grade >= 0 AND grade <= 20),\n    PRIMARY KEY (student_id, course_id)\n);', 'Database design with proper normalization. Primary keys, foreign keys, constraints. Many-to-many relationships through junction tables. Data integrity rules.', 10, 3),
+(8, 7, 'JavaScript ES6+ Features', '// Modern JavaScript features\n\n// Destructuring\nconst student = { name: "Alice", grade: 95 };
+const { name, grade } = student;
+console.log(`${name}: ${grade}%`);
+\n// Arrow functions\nconst students = ["Alice", "Bob"];
+const greetings = students.map(name => `Hello, ${name}!`);
+\n// Spread operator\nconst nums = [1, 2, 3];
+const more = [...nums, 4, 5];
+console.log(Math.max(...more));
+\n// Async/await\nasync function fetchData(id) {
+    try {
+        const response = await fetch(`/api/students/${id}`);
+        return await response.json();
+    } catch (error) {
+        console.error("Error:", error);\n    }\n}\n\n// Optional chaining\nconst url = student.profile?.avatar?.url ?? "default.jpg";', 'Modern JavaScript ES6+ features. Destructuring, template literals, arrow functions, async/await. Essential for web development internships.', 5, 9),
+(8, 8, 'C Memory Management Patterns', '#include <stdio.h>\n#include <stdlib.h>\n\ntypedef struct {
+    void* memory;
+    size_t block_size;
+    void* free_list;
+} MemoryPool;
+\nMemoryPool* pool_create(size_t block_size, size_t num_blocks) {
+    MemoryPool* pool = malloc(sizeof(MemoryPool));
+    pool->memory = malloc(block_size * num_blocks);
+    pool->block_size = block_size;
+    \n    // Link free blocks\n    pool->free_list = pool->memory;
+    char* current = (char*)pool->memory;
+    for (size_t i = 0; i < num_blocks - 1; i++) {
+        *(void**)current = current + block_size;
+        current += block_size;
+    }
+    *(void**)current = NULL;
+    return pool;
+}
+\nvoid* pool_alloc(MemoryPool* pool) {
+    if (!pool->free_list) return NULL;
+    void* block = pool->free_list;
+    pool->free_list = *(void**)block;
+    return block;
+}', 'Advanced C memory management. Memory pool pattern for efficient allocation. Reduces fragmentation, improves performance. Professional programming technique.', 2, 5),
+(8, 9, 'React Component Best Practices', 'import React, { useState, useEffect, useMemo, useCallback } from ''react'';
+\n// Custom hook for data fetching\nfunction useStudentData(studentId) {
+    const [student, setStudent] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    \n    useEffect(() => {
+        let cancelled = false;
+        \n        async function fetchStudent() {
+            try {
+                const response = await fetch(`/api/students/${studentId}`);
+                const data = await response.json();
+                \n                if (!cancelled) {
+                    setStudent(data);
+                    setLoading(false);
+                }
+            } catch (err) {
+                if (!cancelled) {
+                    setError(err.message);
+                    setLoading(false);
+                }
+            }
+        }
+        \n        fetchStudent();
+        \n        return () => { cancelled = true; };
+    }, [studentId]);
+    \n    return { student, loading, error };
+}
+\nfunction StudentProfile({ studentId }) {
+    const { student, loading, error } = useStudentData(studentId);
+    \n    const formattedGrade = useMemo(() => {
+        return student?.grade ? `${student.grade.toFixed(1)}%` : ''N/A'';
+    }, [student?.grade]);
+    \n    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
+    \n    return (\n        <div className="student-profile">\n            <h2>{student?.name}</h2>\n            <p>Grade: {formattedGrade}</p>\n        </div>\n    );
+}', 'React best practices. Custom hooks for data fetching, cleanup to prevent memory leaks, useMemo for expensive calculations. Professional component patterns.', 5, 9),
+(8, 10, 'Algorithm Complexity Analysis', '#include <stdio.h>\n#include <time.h>\n\n// O(n²) - Bubble Sort\nvoid bubble_sort(int arr[], int n) {
+    for (int i = 0; i < n-1; i++) {
+        for (int j = 0; j < n-i-1; j++) {
+            if (arr[j] > arr[j+1]) {
+                int temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+            }
+        }
+    }
+}
+\n// Benchmark function\nvoid benchmark(void (*sort_func)(int[], int), int arr[], int n) {
+    clock_t start = clock();
+    sort_func(arr, n);
+    clock_t end = clock();
+    printf(\"Time: %.6f seconds\\n\", ((double)(end-start))/CLOCKS_PER_SEC);\n}\n\nint main() {\n    int arr[] = {64, 34, 25, 12, 22, 11, 90};\n    benchmark(bubble_sort, arr, 7);\n    return 0;\n}', 'Algorithm complexity analysis. Compare O(n²) bubble sort vs O(n log n) quick sort. Benchmark performance with timing. Understanding Big O notation crucial.', 2, 4),
+(8, 11, 'Git Advanced Techniques', '# Advanced Git techniques for team projects\n\n# Interactive rebase to clean up commit history\ngit rebase -i HEAD~3\n# In editor: pick, squash, reword commits\n\n# Stash work in progress\ngit stash push -m "WIP: feature implementation"\ngit stash list\ngit stash apply stash@{0}
+\n# Cherry-pick specific commits\ngit cherry-pick abc1234\n\n# Find bugs with bisect\ngit bisect start
+git bisect bad HEAD\ngit bisect good v1.0.0\n# Git will checkout commits to test\ngit bisect good  # or git bisect bad\n\n# Advanced branching\ngit checkout -b feature/user-auth\ngit push -u origin feature/user-auth\n\n# Clean up merged branches\ngit branch --merged | grep -v "\\*\\|main\\|master" | xargs -n 1 git branch -d', 'Advanced Git for professional development. Interactive rebase, stashing, cherry-picking, bisecting. Essential skills for internships and team projects.', 14, 7),
+(8, 12, 'C++ Templates Deep Dive', '#include <iostream>\nusing namespace std;
+\n// Function template\ntemplate<typename T>\nT max_value(const T& a, const T& b) {
+    return (a > b) ? a : b;
+}
+\n// Class template\ntemplate<typename T, size_t N>\nclass FixedArray {
+private:\n    T data[N];
+public:\n    constexpr size_t size() const { return N; }
+    T& operator[](size_t index) { return data[index]; }
+    const T& operator[](size_t index) const { return data[index]; }
+};
+\nint main() {
+    cout << max_value(10, 20) << endl;
+    cout << max_value(3.14, 2.71) << endl;
+    \n    FixedArray<int, 3> arr;
+    arr[0] = 42;
+    cout << "Size: " << arr.size() << endl;\n    \n    return 0;\n}', 'C++ templates deep dive. Function templates, class templates, SFINAE. Compile-time polymorphism, type deduction. Advanced C++ programming concepts.', 3, 9),
+(8, 13, 'System Design Principles', '# System Design Principles for Scalable Applications\n\n## 1. Single Responsibility Principle\n# Each component should have one reason to change\n\nclass UserService:\n    def create_user(self, user_data): pass\n    def get_user(self, user_id): pass\n    def update_user(self, user_id, data): pass\n\nclass EmailService:\n    def send_welcome_email(self, user): pass\n    def send_notification(self, user, message): pass\n\n## 2. Database Sharding Strategy\n# Horizontal partitioning for scalability\n# Users 0-999999 → Shard 1\n# Users 1000000-1999999 → Shard 2\n\ndef get_shard_id(user_id):\n    return user_id // 1000000\n\n## 3. Caching Layers\n# L1: Application cache (in-memory)\n# L2: Distributed cache (Redis)\n# L3: CDN for static content\n
+## 4. Load Balancing\n# Round-robin, least connections, geographic', 'System design principles for scalable applications. Microservices, database sharding, caching layers, load balancing. Prepare for technical interviews.', 1, 7),
+(8, 14, 'Security Fundamentals', '// Security best practices for web applications\n\n// 1. Input Validation\nfunction validateEmail(email) {
+    const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+    return emailRegex.test(email) && email.length <= 254;
+}
+\nfunction sanitizeInput(input) {
+    // Remove potential XSS vectors\n    return input.replace(/<script[^>]*>.*?<\\/script>/gi, '''')
+                .replace(/<[^>]*>/g, '''')  // Strip HTML tags\n                .trim();
+}
+\n// 2. Password Security\nconst bcrypt = require(''bcrypt'');
+const saltRounds = 12;
+\nasync function hashPassword(password) {
+    // Validate password strength\n    if (password.length < 8) {
+        throw new Error(''Password too short'');
+    }
+    \n    return await bcrypt.hash(password, saltRounds);
+}
+\n// 3. JWT Token Security\nconst jwt = require(''jsonwebtoken'');
+\nfunction generateSecureToken(payload) {
+    return jwt.sign(\n        payload,\n        process.env.JWT_SECRET,\n        { 
+            expiresIn: ''15m'',  // Short-lived tokens\n            algorithm: ''HS256''\n        }
+    );
+}', 'Security fundamentals for web development. Input validation, password hashing, JWT tokens. Prevent XSS, SQL injection, authentication vulnerabilities.', 5, 8),
+(8, 15, 'Microservices Architecture', 'version: ''3.8''\n\nservices:\n  # API Gateway\n  gateway:\n    build: ./gateway\n    ports:\n      - "8080:8080"\n    environment:
+      - USER_SERVICE_URL=http://user-service:3001\n      - ORDER_SERVICE_URL=http://order-service:3002\n    depends_on:\n      - user-service\n      - order-service\n  \n  # User Service\n  user-service:\n    build: ./services/user\n    environment:\n      - DATABASE_URL=postgres://user:pass@user-db:5432/users\n      - REDIS_URL=redis://redis:6379\n    depends_on:\n      - user-db\n      - redis\n  \n  # Order Service  \n  order-service:\n    build: ./services/order\n    environment:\n      - DATABASE_URL=postgres://user:pass@order-db:5432/orders\n      - MESSAGE_QUEUE_URL=amqp://rabbitmq:5672\n    depends_on:\n      - order-db\n      - rabbitmq\n  \n  # Databases\n  user-db:\n    image: postgres:13\n    environment:\n      POSTGRES_DB: users\n      POSTGRES_USER: user\n      POSTGRES_PASSWORD: pass\n  \n  order-db:\n    image: postgres:13\n    environment:\n      POSTGRES_DB: orders\n      POSTGRES_USER: user\n      POSTGRES_PASSWORD: pass\n  \n  # Message Queue\n  rabbitmq:\n    image: rabbitmq:3-management\n    ports:\n      - "15672:15672"\n  \n  # Cache\n  redis:\n    image: redis:alpine', 'Microservices architecture with Docker Compose. API gateway, service isolation, dedicated databases, message queues. Modern scalable system design.', 16, 7),
+(8, 16, 'Performance Optimization', '#include <stdio.h>\n#include <stdlib.h>\n\ntypedef struct {
+    int id;
+    char name[32];
+    float grade;
+} Student;
+\nvoid process_grades(float* grades, int count) {
+    int simd_count = count & ~3;
+    \n    for (int i = 0; i < simd_count; i += 4) {
+        grades[i] *= 1.1f;
+        grades[i+1] *= 1.1f;
+        grades[i+2] *= 1.1f;
+        grades[i+3] *= 1.1f;
+    }
+    \n    for (int i = simd_count; i < count; i++) {
+        grades[i] *= 1.1f;
+    }
+}
+\nstatic char pool[1024 * 1024];
+static size_t offset = 0;
+\nvoid* fast_alloc(size_t size) {
+    if (offset + size > sizeof(pool)) offset = 0;
+    void* ptr = pool + offset;
+    offset += (size + 7) & ~7;
+    return ptr;
+}', 'Performance optimization techniques. Cache-friendly data structures, SIMD-friendly code, memory pools. Compiler optimizations, alignment. Systems programming skills.', 2, 10),
+(8, 17, 'DevOps Pipeline Creation', 'name: Production Deployment\n\non:\n  push:\n    branches: [ main ]\n    tags: [ ''v*'' ]\n\nenv:\n  REGISTRY: ghcr.io\n  IMAGE_NAME: ${{ github.repository }}
+\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - name: Checkout\n        uses: actions/checkout@v3\n        \n      - name: Setup Node.js\n        uses: actions/setup-node@v3\n        with:\n          node-version: ''18''\n          cache: ''npm''\n          \n      - name: Install dependencies\n        run: npm ci\n        \n      - name: Run tests\n        run: npm test -- --coverage\n        \n      - name: Run security audit\n        run: npm audit --audit-level moderate\n        \n      - name: Build application\n        run: npm run build\n        \n  build-and-push:\n    needs: test\n    runs-on: ubuntu-latest\n    permissions:\n      contents: read\n      packages: write\n    steps:\n      - name: Build and push Docker image\n        uses: docker/build-push-action@v4\n        with:\n          push: true\n          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest\n          \n  deploy:\n    needs: build-and-push\n    runs-on: ubuntu-latest\n    environment: production\n    steps:\n      - name: Deploy to Kubernetes\n        run: |\n          kubectl set image deployment/app app=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest\n          kubectl rollout status deployment/app', 'Complete DevOps pipeline. Automated testing, security audits, Docker builds, Kubernetes deployment. CI/CD best practices for production systems.', 13, 7),
+(8, 18, 'Machine Learning Basics', 'import numpy as np\nimport matplotlib.pyplot as plt\nfrom sklearn.linear_model import LinearRegression\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.metrics import mean_squared_error, r2_score\n\n# Generate sample data - student study hours vs grades\nnp.random.seed(42)\nstudy_hours = np.random.normal(6, 2, 200).reshape(-1, 1)\nnoise = np.random.normal(0, 5, 200)\ngrades = 70 + 3 * study_hours.flatten() + noise\n\n# Ensure realistic grade range\ngrades = np.clip(grades, 0, 100)\n\n# Split data\nX_train, X_test, y_train, y_test = train_test_split(\n    study_hours, grades, test_size=0.2, random_state=42\n)\n\n# Train model\nmodel = LinearRegression()\nmodel.fit(X_train, y_train)\n\n# Make predictions\ny_pred = model.predict(X_test)\n\n# Evaluate model\nmse = mean_squared_error(y_test, y_pred)\nr2 = r2_score(y_test, y_pred)\n\nprint(f"Mean Squared Error: {mse:.2f}")\nprint(f"R-squared Score: {r2:.3f}")\nprint(f"Model equation: Grade = {model.intercept_:.1f} + {model.coef_[0]:.1f} * Hours")\n\n# Visualize results\nplt.figure(figsize=(10, 6))\nplt.scatter(X_test, y_test, alpha=0.6, label=''Actual'')\nplt.plot(X_test, y_pred, color=''red'', linewidth=2, label=''Predicted'')\nplt.xlabel(''Study Hours'')\nplt.ylabel(''Grade'')\nplt.title(''Student Performance Prediction'')\nplt.legend()\nplt.grid(True, alpha=0.3)\nplt.show()', 'Machine learning fundamentals with Python. Linear regression to predict student grades from study hours. Data preprocessing, model training, evaluation metrics.', 1, 4),
+(8, 19, 'REST API Authentication', 'const express = require(''express'');
+const jwt = require(''jsonwebtoken'');
+const bcrypt = require(''bcrypt'');
+const rateLimit = require(''express-rate-limit'');
+\nconst app = express();
+app.use(express.json());
+\n// Rate limiting\nconst authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes\n    max: 5, // 5 attempts per window\n    message: ''Too many authentication attempts'',\n    standardHeaders: true,\n    legacyHeaders: false\n});
+\n// Middleware to verify JWT\nfunction authenticateToken(req, res, next) {
+    const authHeader = req.headers[''authorization''];
+    const token = authHeader && authHeader.split('' '')[1];
+    \n    if (!token) {
+        return res.status(401).json({ error: ''Access token required'' });
+    }
+    \n    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) {
+            return res.status(403).json({ error: ''Invalid or expired token'' });
+        }
+        req.user = user;
+        next();
+    });
+}
+\n// Login endpoint\napp.post(''/auth/login'', authLimiter, async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        \n        // Validate input\n        if (!email || !password) {
+            return res.status(400).json({ error: ''Email and password required'' });
+        }
+        \n        // Find user (implement your database logic)\n        const user = await findUserByEmail(email);
+        if (!user) {
+            return res.status(401).json({ error: ''Invalid credentials'' });
+        }
+        \n        // Verify password\n        const validPassword = await bcrypt.compare(password, user.password_hash);
+        if (!validPassword) {
+            return res.status(401).json({ error: ''Invalid credentials'' });
+        }
+        \n        // Generate tokens\n        const accessToken = jwt.sign(\n            { id: user.id, email: user.email },\n            process.env.JWT_SECRET,\n            { expiresIn: ''15m'' }
+        );
+        \n        const refreshToken = jwt.sign(\n            { id: user.id },\n            process.env.REFRESH_SECRET,\n            { expiresIn: ''7d'' }
+        );
+        \n        res.json({
+            access_token: accessToken,\n            refresh_token: refreshToken,\n            expires_in: 900 // 15 minutes\n        });
+    } catch (error) {
+        res.status(500).json({ error: ''Internal server error'' });
+    }
+});
+\n// Protected route\napp.get(''/api/profile'', authenticateToken, (req, res) => {
+    res.json({
+        id: req.user.id,\n        email: req.user.email,\n        message: ''This is a protected route''\n    });
+});', 'Secure REST API authentication. JWT tokens, password hashing, rate limiting. Refresh token pattern, input validation. Production-ready security practices.', 5, 8),
+(8, 20, 'GraphQL Implementation', 'const { ApolloServer } = require(''apollo-server-express'');
+const { gql } = require(''apollo-server-express'');
+\n// Schema definition\nconst typeDefs = gql`\n    type Student {
+        id: ID!\n        name: String!\n        email: String!\n        grade: Float\n        courses: [Course!]!\n        createdAt: String!\n    }
+    \n    type Course {
+        id: ID!\n        name: String!\n        code: String!\n        credits: Int!\n        students: [Student!]!\n    }
+    \n    type Query {
+        students(limit: Int = 10, offset: Int = 0): [Student!]!\n        student(id: ID!): Student\n        courses: [Course!]!\n        course(id: ID!): Course\n    }
+    \n    type Mutation {
+        createStudent(input: CreateStudentInput!): Student!\n        updateStudent(id: ID!, input: UpdateStudentInput!): Student!\n        deleteStudent(id: ID!): Boolean!\n        enrollStudent(studentId: ID!, courseId: ID!): Boolean!\n    }
+    \n    input CreateStudentInput {
+        name: String!\n        email: String!\n        grade: Float\n    }
+    \n    input UpdateStudentInput {
+        name: String\n        email: String\n        grade: Float\n    }
+    \n    type Subscription {
+        studentAdded: Student!\n        gradeUpdated(studentId: ID!): Student!\n    }
+`;
+\n// Resolvers\nconst resolvers = {
+    Query: {
+        students: async (_, { limit, offset }) => {
+            return await getStudents(limit, offset);
+        },\n        student: async (_, { id }) => {
+            return await getStudentById(id);
+        },\n        courses: async () => {
+            return await getAllCourses();
+        },\n        course: async (_, { id }) => {
+            return await getCourseById(id);
+        }
+    },\n    \n    Mutation: {
+        createStudent: async (_, { input }) => {
+            const student = await createStudent(input);
+            pubsub.publish(''STUDENT_ADDED'', { studentAdded: student });
+            return student;
+        },\n        updateStudent: async (_, { id, input }) => {
+            const student = await updateStudent(id, input);
+            pubsub.publish(''GRADE_UPDATED'', { gradeUpdated: student });
+            return student;
+        },\n        deleteStudent: async (_, { id }) => {
+            return await deleteStudent(id);
+        },\n        enrollStudent: async (_, { studentId, courseId }) => {
+            return await enrollStudentInCourse(studentId, courseId);
+        }
+    },\n    \n    Student: {
+        courses: async (parent) => {
+            return await getCoursesByStudentId(parent.id);
+        }
+    },\n    \n    Course: {
+        students: async (parent) => {
+            return await getStudentsByCourseId(parent.id);
+        }
+    },\n    \n    Subscription: {
+        studentAdded: {
+            subscribe: () => pubsub.asyncIterator([''STUDENT_ADDED''])\n        },\n        gradeUpdated: {
+            subscribe: (_, { studentId }) => {
+                return pubsub.asyncIterator([''GRADE_UPDATED'']);
+            }
+        }
+    }
+};
+\n// Create Apollo Server\nconst server = new ApolloServer({
+    typeDefs,\n    resolvers,\n    context: ({ req }) => {
+        const token = req.headers.authorization || '''';
+        const user = getUser(token);
+        return { user };
+    },\n    introspection: process.env.NODE_ENV !== ''production'',\n    playground: process.env.NODE_ENV !== ''production''\n});', 'Complete GraphQL implementation with Apollo Server. Queries, mutations, subscriptions. Real-time updates, complex relationships. Modern API development approach.', 5, 11),
+(8, 21, 'Blockchain Smart Contract', 'pragma solidity ^0.8.0;
+\ncontract StudentRegistry {
+    mapping(uint256 => string) public students;
+    mapping(address => bool) public teachers;
+    uint256 public nextId = 1;
+    address public admin;
+    \n    event StudentRegistered(uint256 id, string name);
+    \n    modifier onlyAdmin() {
+        require(msg.sender == admin, "Admin only");
+        _;
+    }
+    \n    constructor() {
+        admin = msg.sender;
+    }
+    \n    function addTeacher(address teacher) external onlyAdmin {
+        teachers[teacher] = true;
+    }
+    \n    function registerStudent(string memory name) external returns (uint256) {
+        require(teachers[msg.sender] || msg.sender == admin, "No auth");
+        students[nextId] = name;
+        emit StudentRegistered(nextId, name);
+        return nextId++;
+    }
+}', 'Basic Ethereum smart contract. Solidity syntax, structs, mappings, modifiers, events. Access control and state management on blockchain.', 11, 8),
+(8, 22, 'Cloud Architecture Design', 'import boto3\nimport json\nfrom datetime import datetime\n\n# AWS Lambda function for student data processing\ndef lambda_handler(event, context):\n    # Initialize AWS services\n    dynamodb = boto3.resource(''dynamodb'')\n    s3 = boto3.client(''s3'')\n    sns = boto3.client(''sns'')\n    \n    # Process incoming student data\n    try:\n        # Parse the event\n        records = event.get(''Records'', [])\n        \n        for record in records:\n            # Handle S3 event\n            if ''s3'' in record:\n                bucket = record[''s3''][''bucket''][''name'']\n                key = record[''s3''][''object''][''key'']\n                \n                # Download and process file\n                response = s3.get_object(Bucket=bucket, Key=key)
+                content = response[''Body''].read().decode(''utf-8'')\n                \n                # Parse student data\n                students = json.loads(content)\n                
+                # Store in DynamoDB\n                table = dynamodb.Table(''Students'')\n                
+                with table.batch_writer() as batch:\n                    for student in students:\n                        batch.put_item(\n                            Item={
+                                ''student_id'': student[''id''],\n                                ''name'': student[''name''],\n                                ''email'': student[''email''],\n                                ''grade'': student.get(''grade'', 0),\n                                ''timestamp'': datetime.utcnow().isoformat(),\n                                ''ttl'': int((datetime.utcnow().timestamp() + 86400 * 365))  # 1 year TTL\n                            }
+                        )\n                \n                # Send notification\n                sns.publish(\n                    TopicArn=''arn:aws:sns:region:account:student-updates'',\n                    Message=f''Processed {len(students)} students from {key}'',\n                    Subject=''Student Data Processing Complete''\n                )\n        \n        return {
+            ''statusCode'': 200,\n            ''body'': json.dumps({
+                ''message'': ''Successfully processed student data'',\n                ''timestamp'': datetime.utcnow().isoformat()\n            })\n        }
+        \n    except Exception as e:\n        # Log error and send alert\n        print(f"Error processing student data: {str(e)}")\n        
+        sns.publish(\n            TopicArn=''arn:aws:sns:region:account:alerts'',\n            Message=f''Lambda function error: {str(e)}'',\n            Subject=''Student Processing Error''\n        )\n        \n        return {
+            ''statusCode'': 500,\n            ''body'': json.dumps({
+                ''error'': ''Internal processing error'',\n                ''timestamp'': datetime.utcnow().isoformat()\n            })\n        }
+\n# CloudFormation template snippet\ncloudformation_template = """\nAWSTemplateFormatVersion: ''2010-09-09''\nDescription: ''Student Data Processing Architecture''\n\nResources:\n  StudentDataBucket:\n    Type: AWS::S3::Bucket\n    Properties:\n      BucketName: !Sub ''${AWS::StackName}-student-data''\n      NotificationConfiguration:\n        LambdaConfigurations:\n          - Event: s3:ObjectCreated:*\n            Function: !GetAtt ProcessStudentDataFunction.Arn\n  \n  StudentDataTable:\n    Type: AWS::DynamoDB::Table\n    Properties:\n      TableName: Students\n      BillingMode: PAY_PER_REQUEST\n      AttributeDefinitions:\n        - AttributeName: student_id\n          AttributeType: S\n      KeySchema:\n        - AttributeName: student_id\n          KeyType: HASH\n      TimeToLiveSpecification:\n        AttributeName: ttl\n        Enabled: true\n  \n  ProcessStudentDataFunction:\n    Type: AWS::Lambda::Function\n    Properties:\n      FunctionName: !Sub ''${AWS::StackName}-process-students''\n      Runtime: python3.9\n      Handler: index.lambda_handler\n      Code:\n        ZipFile: |\n          # Lambda function code here\n      Environment:\n        Variables:\n          STUDENT_TABLE: !Ref StudentDataTable\n"""', 'Cloud architecture with AWS Lambda, DynamoDB, S3. Serverless processing, auto-scaling, cost optimization. Modern cloud-native application design.', 1, 7),
+(8, 23, 'Advanced Testing Strategies', 'import pytest\nimport unittest.mock as mock\nfrom unittest.mock import patch, MagicMock\nimport asyncio\nfrom datetime import datetime, timedelta\n\nclass TestStudentService:\n    @pytest.fixture\n    def mock_database(self):\n        """Mock database for testing"""\n        db = MagicMock()\n        db.query.return_value = [\n            {''id'': 1, ''name'': ''Alice'', ''grade'': 95},\n            {''id'': 2, ''name'': ''Bob'', ''grade'': 87}
+        ]\n        return db\n    \n    @pytest.fixture\n    def student_service(self, mock_database):\n        """Student service with mocked dependencies"""\n        return StudentService(database=mock_database)\n    \n    def test_get_students_success(self, student_service, mock_database):\n        """Test successful student retrieval"""\n        # Act\n        students = student_service.get_students()\n        \n        # Assert\n        assert len(students) == 2\n        assert students[0][''name''] == ''Alice''
+        mock_database.query.assert_called_once()\n    \n    def test_get_student_by_id_not_found(self, student_service, mock_database):\n        """Test student not found scenario"""\n        # Arrange\n        mock_database.query.return_value = []\n        \n        # Act & Assert\n        with pytest.raises(StudentNotFoundException):\n            student_service.get_student_by_id(999)\n    \n    @patch(''student_service.email_service'')\n    def test_create_student_sends_welcome_email(self, mock_email, student_service, mock_database):\n        """Test that creating a student sends welcome email"""\n        # Arrange\n        student_data = {''name'': ''Charlie'', ''email'': ''charlie@epitech.eu''}
+        mock_database.insert.return_value = 3\n        \n        # Act\n        student_service.create_student(student_data)\n        \n        # Assert\n        mock_email.send_welcome_email.assert_called_once_with(\n            email=''charlie@epitech.eu'',\n            name=''Charlie''\n        )\n    \n    @pytest.mark.asyncio\n    async def test_async_grade_processing(self, student_service):\n        """Test asynchronous grade processing"""\n        # Arrange\n        grades = [85, 92, 78, 95, 88]\n        \n        # Act\n        with patch.object(student_service, ''process_grade'') as mock_process:\n            mock_process.return_value = asyncio.sleep(0.1)  # Simulate async work\n            await student_service.process_grades_async(grades)\n        \n        # Assert\n        assert mock_process.call_count == len(grades)\n    \n    @pytest.mark.parametrize("grade,expected_letter", [\n        (95, ''A''),\n        (85, ''B''),\n        (75, ''C''),\n        (65, ''D''),\n        (55, ''F'')\n    ])\n    def test_grade_to_letter_conversion(self, student_service, grade, expected_letter):\n        """Parameterized test for grade conversion"""\n        result = student_service.grade_to_letter(grade)\n        assert result == expected_letter\n    \n    def test_concurrent_student_creation(self, student_service, mock_database):\n        """Test concurrent student creation with race conditions"""\n        import threading\n        import time\n        \n        results = []\n        \n        def create_student_thread(student_id):\n            try:\n                result = student_service.create_student({
+                    ''name'': f''Student {student_id}'',\n                    ''email'': f''student{student_id}@epitech.eu''\n                })\n                results.append(result)\n            except Exception as e:\n                results.append(e)\n        \n        # Create multiple threads\n        threads = []\n        for i in range(10):\n            thread = threading.Thread(target=create_student_thread, args=(i,))\n            threads.append(thread)\n            thread.start()\n        \n        # Wait for all threads to complete\n        for thread in threads:\n            thread.join()
+        \n        # Verify no race conditions occurred\n        assert len(results) == 10\n        assert all(not isinstance(r, Exception) for r in results)', 'Advanced testing strategies. Unit tests, mocks, parametrized tests, async testing, race condition testing. Comprehensive test coverage patterns.', 1, 10),
+(8, 24, 'Distributed Systems Concepts', 'import hashlib\nimport json\nimport time\nimport threading\nfrom typing import Dict, List, Optional\n\nclass ConsistentHashRing:\n    """Consistent hashing for distributed systems"""\n    \n    def __init__(self, nodes: List[str], virtual_nodes: int = 150):\n        self.virtual_nodes = virtual_nodes\n        self.ring: Dict[int, str] = {}
+        self.sorted_keys: List[int] = []\n        \n        for node in nodes:\n            self.add_node(node)\n    \n    def _hash(self, key: str) -> int:\n        return int(hashlib.md5(key.encode()).hexdigest(), 16)\n    \n    def add_node(self, node: str) -> None:\n        """Add a node to the hash ring"""\n        for i in range(self.virtual_nodes):\n            virtual_key = f"{node}:{i}"\n            hash_key = self._hash(virtual_key)\n            self.ring[hash_key] = node\n        \n        self.sorted_keys = sorted(self.ring.keys())\n    \n    def remove_node(self, node: str) -> None:\n        """Remove a node from the hash ring"""\n        keys_to_remove = []\n        for key, value in self.ring.items():\n            if value == node:\n                keys_to_remove.append(key)\n        \n        for key in keys_to_remove:\n            del self.ring[key]\n        \n        self.sorted_keys = sorted(self.ring.keys())\n    \n    def get_node(self, key: str) -> str:\n        """Get the node responsible for a key"""\n        if not self.ring:\n            return None\n        \n        hash_key = self._hash(key)\n        \n        # Find the first node clockwise\n        for ring_key in self.sorted_keys:\n            if hash_key <= ring_key:\n                return self.ring[ring_key]\n        \n        # If no node found, wrap around to the first node\n        return self.ring[self.sorted_keys[0]]
+
+class DistributedCache:\n    """Distributed cache with consistent hashing"""\n    \n    def __init__(self, nodes: List[str]):\n        self.hash_ring = ConsistentHashRing(nodes)\n        self.node_clients = {node: {} for node in nodes}  # Simulate node storage\n        self.replication_factor = 2\n    \n    def put(self, key: str, value: any) -> bool:\n        """Store a key-value pair with replication"""\n        primary_node = self.hash_ring.get_node(key)\n        if not primary_node:\n            return False\n        \n        # Store on primary node\n        self.node_clients[primary_node][key] = {
+            ''value'': value,\n            ''timestamp'': time.time(),\n            ''version'': self._get_version(key) + 1\n        }
+        \n        # Replicate to next N nodes\n        replicas = self._get_replica_nodes(key, self.replication_factor - 1)\n        for replica_node in replicas:\n            self.node_clients[replica_node][key] = {
+                ''value'': value,\n                ''timestamp'': time.time(),\n                ''version'': self._get_version(key) + 1\n            }
+        \n        return True\n    \n    def get(self, key: str) -> Optional[any]:\n        """Retrieve a value with read repair"""\n        primary_node = self.hash_ring.get_node(key)\n        if not primary_node:\n            return None\n        \n        # Get from primary and replicas\n        nodes_to_check = [primary_node] + self._get_replica_nodes(key, self.replication_factor - 1)\n        \n        results = []\n        for node in nodes_to_check:\n            if key in self.node_clients[node]:\n                results.append(self.node_clients[node][key])\n        \n        if not results:\n            return None\n        \n        # Find the most recent version (simple conflict resolution)\n        latest = max(results, key=lambda x: x[''version''])\n        \n        # Read repair: update nodes with outdated versions\n        for node in nodes_to_check:\n            if key in self.node_clients[node]:\n                if self.node_clients[node][key][''version''] < latest[''version'']:\n                    self.node_clients[node][key] = latest\n        \n        return latest[''value'']\n    \n    def _get_version(self, key: str) -> int:\n        """Get current version of a key"""\n        primary_node = self.hash_ring.get_node(key)\n        if primary_node and key in self.node_clients[primary_node]:\n            return self.node_clients[primary_node][key][''version'']\n        return 0\n    \n    def _get_replica_nodes(self, key: str, count: int) -> List[str]:\n        """Get replica nodes for a key"""\n        primary_node = self.hash_ring.get_node(key)\n        all_nodes = list(self.node_clients.keys())\n        \n        if primary_node not in all_nodes:\n            return []\n        \n        primary_index = all_nodes.index(primary_node)\n        replicas = []\n        \n        for i in range(1, count + 1):\n            replica_index = (primary_index + i) % len(all_nodes)\n            replicas.append(all_nodes[replica_index])\n        \n        return replicas', 'Distributed systems fundamentals. Consistent hashing, data replication, conflict resolution, read repair. Core concepts for scalable architectures.', 1, 7),
+(8, 25, 'Competitive Programming', '#include <iostream>\n#include <vector>\n#include <algorithm>\n#include <unordered_map>\n#include <queue>\n#include <climits>\n\nusing namespace std;
+\n// Fast I/O for competitive programming\nstatic auto speedup = []() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    return 0;
+}();
+\n// Dijkstra''s algorithm for shortest path\nclass Solution {
+public:\n    vector<int> dijkstra(vector<vector<pair<int, int>>>& graph, int start) {
+        int n = graph.size();
+        vector<int> dist(n, INT_MAX);
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> pq;
+        \n        dist[start] = 0;
+        pq.push({0, start});
+        \n        while (!pq.empty()) {
+            auto [d, u] = pq.top();
+            pq.pop();
+            \n            if (d > dist[u]) continue;
+            \n            for (auto [v, w] : graph[u]) {
+                if (dist[u] + w < dist[v]) {
+                    dist[v] = dist[u] + w;
+                    pq.push({dist[v], v});
+                }
+            }
+        }
+        \n        return dist;
+    }
+    \n    // Union-Find (Disjoint Set Union)\n    class UnionFind {
+    public:\n        vector<int> parent, rank;
+        \n        UnionFind(int n) : parent(n), rank(n, 0) {
+            for (int i = 0; i < n; i++) parent[i] = i;
+        }
+        \n        int find(int x) {
+            if (parent[x] != x) {
+                parent[x] = find(parent[x]);  // Path compression\n            }
+            return parent[x];
+        }
+        \n        bool unite(int x, int y) {
+            int px = find(x), py = find(y);
+            if (px == py) return false;
+            \n            // Union by rank\n            if (rank[px] < rank[py]) {
+                parent[px] = py;
+            } else if (rank[px] > rank[py]) {
+                parent[py] = px;
+            } else {
+                parent[py] = px;
+                rank[px]++;
+            }
+            return true;
+        }
+    };
+    \n    // Segment tree for range queries\n    class SegmentTree {
+        vector<int> tree, lazy;
+        int n;
+        \n    public:\n        SegmentTree(vector<int>& arr) {
+            n = arr.size();
+            tree.resize(4 * n);
+            lazy.resize(4 * n);
+            build(arr, 1, 0, n - 1);
+        }
+        \n        void build(vector<int>& arr, int node, int start, int end) {
+            if (start == end) {
+                tree[node] = arr[start];
+            } else {
+                int mid = (start + end) / 2;
+                build(arr, 2 * node, start, mid);
+                build(arr, 2 * node + 1, mid + 1, end);
+                tree[node] = tree[2 * node] + tree[2 * node + 1];
+            }
+        }
+        \n        int query(int node, int start, int end, int l, int r) {
+            if (r < start || end < l) return 0;
+            if (l <= start && end <= r) return tree[node];
+            \n            int mid = (start + end) / 2;
+            return query(2 * node, start, mid, l, r) +\n                   query(2 * node + 1, mid + 1, end, l, r);
+        }
+        \n        int query(int l, int r) {
+            return query(1, 0, n - 1, l, r);
+        }
+    };
+};', 'Competitive programming algorithms. Dijkstra''s shortest path, Union-Find with path compression, Segment tree for range queries. Contest preparation essentials.', 3, 4),
+(8, 26, 'Mobile App Development', 'import React, { useState, useEffect } from ''react'';
+import { 
+    View, \n    Text, \n    TextInput, \n    TouchableOpacity, \n    FlatList, \n    StyleSheet, \n    Alert,\n    AsyncStorage \n} from ''react-native'';
+import { LinearGradient } from ''expo-linear-gradient'';
+\nconst StudentGradeApp = () => {
+    const [students, setStudents] = useState([]);
+    const [name, setName] = useState('''');
+    const [grade, setGrade] = useState('''');
+    const [loading, setLoading] = useState(false);
+    \n    useEffect(() => {
+        loadStudents();
+    }, []);
+    \n    const loadStudents = async () => {
+        try {
+            const storedStudents = await AsyncStorage.getItem(''students'');
+            if (storedStudents) {
+                setStudents(JSON.parse(storedStudents));
+            }
+        } catch (error) {
+            console.error(''Error loading students:'', error);\n        }\n    };\n    \n    const saveStudents = async (updatedStudents) => {\n        try {\n            await AsyncStorage.setItem(''students'', JSON.stringify(updatedStudents));
+        } catch (error) {
+            console.error(''Error saving students:'', error);\n        }\n    };\n    \n    const addStudent = () => {\n        if (!name.trim() || !grade.trim()) {\n            Alert.alert(''Error'', ''Please enter both name and grade'');
+            return;
+        }
+        \n        const numericGrade = parseFloat(grade);
+        if (isNaN(numericGrade) || numericGrade < 0 || numericGrade > 20) {
+            Alert.alert(''Error'', ''Grade must be between 0 and 20'');
+            return;
+        }
+        \n        const newStudent = {
+            id: Date.now().toString(),\n            name: name.trim(),\n            grade: numericGrade,\n            timestamp: new Date().toLocaleDateString()\n        };
+        \n        const updatedStudents = [...students, newStudent];
+        setStudents(updatedStudents);
+        saveStudents(updatedStudents);
+        \n        // Reset form\n        setName('''');
+        setGrade('''');
+    };
+    \n    const deleteStudent = (id) => {
+        Alert.alert(\n            ''Delete Student'',\n            ''Are you sure you want to delete this student?'',\n            [\n                { text: ''Cancel'', style: ''cancel'' },\n                {
+                    text: ''Delete'',\n                    style: ''destructive'',\n                    onPress: () => {
+                        const updatedStudents = students.filter(s => s.id !== id);
+                        setStudents(updatedStudents);
+                        saveStudents(updatedStudents);
+                    }
+                }
+            ]\n        );
+    };
+    \n    const getGradeColor = (grade) => {
+        if (grade >= 16) return ''#4CAF50'';  // Green\n        if (grade >= 14) return ''#2196F3'';  // Blue\n        if (grade >= 12) return ''#FF9800'';  // Orange\n        if (grade >= 10) return ''#FFC107'';  // Amber\n        return ''#F44336'';  // Red\n    };
+    \n    const renderStudent = ({ item }) => (\n        <View style={styles.studentCard}>\n            <View style={styles.studentInfo}>\n                <Text style={styles.studentName}>{item.name}</Text>\n                <Text style={styles.studentDate}>{item.timestamp}</Text>\n            </View>\n            <View style={styles.gradeContainer}>\n                <View style={[styles.gradeBadge, { backgroundColor: getGradeColor(item.grade) }]}>\n                    <Text style={styles.gradeText}>{item.grade}/20</Text>\n                </View>\n                <TouchableOpacity \n                    style={styles.deleteButton}
+                    onPress={() => deleteStudent(item.id)}
+                >\n                    <Text style={styles.deleteText}>×</Text>\n                </TouchableOpacity>\n            </View>\n        </View>\n    );
+    \n    const averageGrade = students.length > 0 \n        ? (students.reduce((sum, s) => sum + s.grade, 0) / students.length).toFixed(1)\n        : 0;
+    \n    return (\n        <LinearGradient colors={[''#667eea'', ''#764ba2'']} style={styles.container}>\n            <View style={styles.header}>\n                <Text style={styles.title}>Student Grades</Text>\n                <Text style={styles.subtitle}>Average: {averageGrade}/20</Text>\n            </View>\n            \n            <View style={styles.form}>\n                <TextInput\n                    style={styles.input}
+                    placeholder="Student Name"\n                    placeholderTextColor="#999"\n                    value={name}
+                    onChangeText={setName}
+                />\n                <TextInput\n                    style={styles.input}
+                    placeholder="Grade (0-20)"\n                    placeholderTextColor="#999"\n                    value={grade}
+                    onChangeText={setGrade}
+                    keyboardType="numeric"\n                />\n                <TouchableOpacity style={styles.addButton} onPress={addStudent}>\n                    <Text style={styles.addButtonText}>Add Student</Text>\n                </TouchableOpacity>\n            </View>\n            \n            <FlatList\n                data={students}
+                keyExtractor={(item) => item.id}
+                renderItem={renderStudent}
+                style={styles.list}
+                showsVerticalScrollIndicator={false}
+            />\n        </LinearGradient>\n    );
+};
+\nconst styles = StyleSheet.create({
+    container: {
+        flex: 1,\n        padding: 20,\n        paddingTop: 50\n    },\n    header: {
+        alignItems: ''center'',\n        marginBottom: 30\n    },\n    title: {
+        fontSize: 28,\n        fontWeight: ''bold'',\n        color: ''white'',\n        marginBottom: 5\n    },\n    subtitle: {
+        fontSize: 16,\n        color: ''rgba(255,255,255,0.8)''\n    },\n    form: {
+        marginBottom: 20\n    },\n    input: {
+        backgroundColor: ''rgba(255,255,255,0.9)'',\n        borderRadius: 10,\n        padding: 15,\n        fontSize: 16,\n        marginBottom: 10\n    },\n    addButton: {
+        backgroundColor: ''#4CAF50'',\n        borderRadius: 10,\n        padding: 15,\n        alignItems: ''center''\n    },\n    addButtonText: {
+        color: ''white'',\n        fontSize: 16,\n        fontWeight: ''bold''\n    },\n    list: {
+        flex: 1\n    },\n    studentCard: {
+        backgroundColor: ''rgba(255,255,255,0.95)'',\n        borderRadius: 10,\n        padding: 15,\n        marginBottom: 10,\n        flexDirection: ''row'',\n        justifyContent: ''space-between'',\n        alignItems: ''center''\n    },\n    studentInfo: {
+        flex: 1\n    },\n    studentName: {
+        fontSize: 18,\n        fontWeight: ''600'',\n        color: ''#333''\n    },\n    studentDate: {
+        fontSize: 14,\n        color: ''#666'',\n        marginTop: 2\n    },\n    gradeContainer: {
+        flexDirection: ''row'',\n        alignItems: ''center''\n    },\n    gradeBadge: {
+        borderRadius: 20,\n        paddingHorizontal: 12,\n        paddingVertical: 6,\n        marginRight: 10\n    },\n    gradeText: {
+        color: ''white'',\n        fontWeight: ''bold'',\n        fontSize: 14\n    },\n    deleteButton: {
+        backgroundColor: ''#F44336'',\n        borderRadius: 15,\n        width: 30,\n        height: 30,\n        justifyContent: ''center'',\n        alignItems: ''center''\n    },\n    deleteText: {
+        color: ''white'',\n        fontSize: 18,\n        fontWeight: ''bold''\n    }
+});
+\nexport default StudentGradeApp;', 'React Native mobile app for student grade management. Local storage, form validation, gradient UI, touch interactions. Cross-platform development skills.', 5, 9),
+(8, 27, 'API Rate Limiting Advanced', 'import redis\nimport time\nimport json\nfrom datetime import datetime, timedelta\nfrom flask import Flask, request, jsonify, g\nfrom functools import wraps\nfrom typing import Optional, Dict, Any\n\nclass AdvancedRateLimiter:\n    def __init__(self, redis_client):\n        self.redis = redis_client\n        \n    def token_bucket(self, key: str, max_tokens: int, refill_rate: float, \n                     tokens_requested: int = 1) -> Dict[str, Any]:\n        """Token bucket algorithm implementation"""\n        now = time.time()\n        pipeline = self.redis.pipeline()\n        \n        # Get current bucket state\n        bucket_key = f"bucket:{key}"\n        pipeline.hmget(bucket_key, ''tokens'', ''last_refill'')\n        pipeline.expire(bucket_key, 3600)  # Expire after 1 hour\n        results = pipeline.execute()\n        \n        bucket_data = results[0]\n        \n        if bucket_data[0] is None:\n            # Initialize bucket\n            tokens = max_tokens - tokens_requested\n            if tokens >= 0:
+                pipeline = self.redis.pipeline()\n                pipeline.hmset(bucket_key, {''tokens'': tokens, ''last_refill'': now})\n                pipeline.expire(bucket_key, 3600)\n                pipeline.execute()\n                return {''allowed'': True, ''tokens_remaining'': tokens, ''retry_after'': 0}
+            else:\n                return {''allowed'': False, ''tokens_remaining'': 0, ''retry_after'': 60}
+        \n        current_tokens = float(bucket_data[0])\n        last_refill = float(bucket_data[1])\n        \n        # Calculate tokens to add\n        time_passed = now - last_refill\n        tokens_to_add = time_passed * refill_rate\n        current_tokens = min(max_tokens, current_tokens + tokens_to_add)\n        \n        if current_tokens >= tokens_requested:\n            # Allow request\n            current_tokens -= tokens_requested\n            pipeline = self.redis.pipeline()\n            pipeline.hmset(bucket_key, {''tokens'': current_tokens, ''last_refill'': now})\n            pipeline.expire(bucket_key, 3600)\n            pipeline.execute()\n            \n            return {
+                ''allowed'': True,\n                ''tokens_remaining'': int(current_tokens),\n                ''retry_after'': 0\n            }
+        else:\n            # Deny request\n            tokens_needed = tokens_requested - current_tokens\n            retry_after = int(tokens_needed / refill_rate)\n            \n            # Update last_refill even for denied requests\n            pipeline = self.redis.pipeline()
+            pipeline.hset(bucket_key, ''last_refill'', now)\n            pipeline.expire(bucket_key, 3600)\n            pipeline.execute()\n            \n            return {
+                ''allowed'': False,\n                ''tokens_remaining'': int(current_tokens),\n                ''retry_after'': retry_after\n            }
+    \n    def sliding_window_log(self, key: str, window_seconds: int, \n                          max_requests: int) -> Dict[str, Any]:\n        """Sliding window log algorithm"""\n        now = time.time()\n        window_start = now - window_seconds\n        \n        log_key = f"log:{key}"\n        pipeline = self.redis.pipeline()\n        \n        # Remove old entries\n        pipeline.zremrangebyscore(log_key, 0, window_start)\n        \n        # Count current requests\n        pipeline.zcard(log_key)\n        \n        # Add current request
+        pipeline.zadd(log_key, {str(now): now})\n        \n        # Set expiration\n        pipeline.expire(log_key, window_seconds + 1)\n        \n        results = pipeline.execute()\n        current_requests = results[1]\n        \n        if current_requests < max_requests:\n            return {
+                ''allowed'': True,\n                ''requests_remaining'': max_requests - current_requests - 1,\n                ''reset_time'': int(now + window_seconds)\n            }
+        else:\n            # Remove the request we just added since it''s not allowed\n            self.redis.zrem(log_key, str(now))\n            \n            # Find when the oldest request will expire\n            oldest_requests = self.redis.zrange(log_key, 0, 0, withscores=True)\n            if oldest_requests:\n                reset_time = int(oldest_requests[0][1] + window_seconds)\n            else:\n                reset_time = int(now + window_seconds)\n            \n            return {
+                ''allowed'': False,\n                ''requests_remaining'': 0,\n                ''reset_time'': reset_time,\n                ''retry_after'': reset_time - int(now)\n            }
+    \n    def fixed_window_counter(self, key: str, window_seconds: int, \n                           max_requests: int) -> Dict[str, Any]:\n        """Fixed window counter algorithm"""\n        now = time.time()\n        window = int(now // window_seconds)\n        \n        counter_key = f"counter:{key}:{window}"\n        \n        pipeline = self.redis.pipeline()\n        pipeline.incr(counter_key)\n        pipeline.expire(counter_key, window_seconds)\n        results = pipeline.execute()\n        \n        current_requests = results[0]\n        \n        if current_requests <= max_requests:\n            next_reset = (window + 1) * window_seconds\n            return {
+                ''allowed'': True,\n                ''requests_remaining'': max_requests - current_requests,\n                ''reset_time'': int(next_reset)\n            }
+        else:\n            next_reset = (window + 1) * window_seconds\n            return {
+                ''allowed'': False,\n                ''requests_remaining'': 0,\n                ''reset_time'': int(next_reset),\n                ''retry_after'': int(next_reset - now)\n            }
+\n# Flask application with advanced rate limiting\napp = Flask(__name__)\nredis_client = redis.Redis(host=''localhost'', port=6379, db=0)\nrate_limiter = AdvancedRateLimiter(redis_client)\n\ndef rate_limit(algorithm: str = ''token_bucket'', **kwargs):\n    """Rate limiting decorator"""\n    def decorator(f):\n        @wraps(f)\n        def decorated_function(*args, **kwargs_inner):\n            # Get client identifier\n            client_id = request.headers.get(''X-Client-ID'') or request.remote_addr\n            \n            # Get user tier for different limits\n            user_tier = request.headers.get(''X-User-Tier'', ''free'')\n            \n            # Adjust limits based on user tier\n            if user_tier == ''premium'':\n                kwargs[''max_tokens''] = kwargs.get(''max_tokens'', 100) * 5\n                kwargs[''max_requests''] = kwargs.get(''max_requests'', 100) * 5\n            elif user_tier == ''pro'':\n                kwargs[''max_tokens''] = kwargs.get(''max_tokens'', 100) * 2\n                kwargs[''max_requests''] = kwargs.get(''max_requests'', 100) * 2\n            \n            # Apply rate limiting\n            if algorithm == ''token_bucket'':\n                result = rate_limiter.token_bucket(\n                    key=f"{f.__name__}:{client_id}",\n                    max_tokens=kwargs.get(''max_tokens'', 100),\n                    refill_rate=kwargs.get(''refill_rate'', 10)\n                )\n            elif algorithm == ''sliding_window'':\n                result = rate_limiter.sliding_window_log(\n                    key=f"{f.__name__}:{client_id}",\n                    window_seconds=kwargs.get(''window_seconds'', 3600),\n                    max_requests=kwargs.get(''max_requests'', 100)\n                )\n            elif algorithm == ''fixed_window'':\n                result = rate_limiter.fixed_window_counter(\n                    key=f"{f.__name__}:{client_id}",\n                    window_seconds=kwargs.get(''window_seconds'', 3600),\n                    max_requests=kwargs.get(''max_requests'', 100)\n                )\n            else:\n                return jsonify({''error'': ''Unknown rate limiting algorithm''}), 500\n            \n            if not result[''allowed'']:\n                response = jsonify({
+                    ''error'': ''Rate limit exceeded'',\n                    ''retry_after'': result.get(''retry_after'', 60)\n                })\n                response.status_code = 429\n                response.headers[''Retry-After''] = str(result.get(''retry_after'', 60))\n                return response\n            \n            # Add rate limit headers\n            response = f(*args, **kwargs_inner)\n            if hasattr(response, ''headers''):\n                response.headers[''X-RateLimit-Remaining''] = str(result.get(''tokens_remaining'', result.get(''requests_remaining'', 0)))\n                if ''reset_time'' in result:\n                    response.headers[''X-RateLimit-Reset''] = str(result[''reset_time''])\n            \n            return response\n        return decorated_function\n    return decorator\n\n# Example endpoints with different rate limiting strategies\n@app.route(''/api/search'')\n@rate_limit(algorithm=''token_bucket'', max_tokens=1000, refill_rate=10)\ndef search():\n    return jsonify({''results'': [''result1'', ''result2'']})\n\n@app.route(''/api/upload'')\n@rate_limit(algorithm=''sliding_window'', window_seconds=3600, max_requests=10)\ndef upload():\n    return jsonify({''status'': ''uploaded''})\n\n@app.route(''/api/data'')\n@rate_limit(algorithm=''fixed_window'', window_seconds=60, max_requests=100)\ndef get_data():\n    return jsonify({''data'': ''some data''})', 'Advanced API rate limiting with multiple algorithms. Token bucket, sliding window, fixed window. Redis-based, user tiers, comprehensive headers. Production-ready implementation.', 1, 8),
+(8, 28, 'Data Engineering Pipeline', 'import pandas as pd\nfrom sqlalchemy import create_engine\nimport logging\nfrom datetime import datetime\n\nclass DataPipeline:\n    def __init__(self, db_url):\n        self.engine = create_engine(db_url)\n        logging.basicConfig(level=logging.INFO)\n        self.logger = logging.getLogger(__name__)\n    \n    def extract(self, source_path):\n        """Extract data from CSV"""\n        self.logger.info(f"Extracting from {source_path}")\n        df = pd.read_csv(source_path)\n        return df\n    \n    def transform(self, df):\n        """Clean and transform data"""\n        self.logger.info("Starting transformation")\n        \n        # Remove duplicates and nulls\n        df = df.drop_duplicates()\n        df = df.dropna(subset=[''student_id'', ''grade''])\n        \n        # Grade validation\n        df = df[df[''grade''].between(0, 20)]\n        \n        # Add grade categories\n        df[''grade_level''] = pd.cut(\n            df[''grade''], \n            bins=[0, 8, 12, 16, 20],\n            labels=[''F'', ''D'', ''C'', ''A'']\n        )\n        \n        # Date processing\n        df[''processed_date''] = datetime.now()\n        \n        self.logger.info(f"Transformed {len(df)} records")\n        return df\n    \n    def load(self, df, table_name):\n        """Load to database"""\n        try:\n            df.to_sql(\n                table_name,\n                self.engine,\n                if_exists=''replace'',\n                index=False\n            )\n            self.logger.info(f"Loaded {len(df)} records to {table_name}")\n            return True\n        except Exception as e:\n            self.logger.error(f"Load failed: {e}")\n            return False\n    \n    def run_etl(self, source, target_table):\n        """Execute complete ETL pipeline"""\n        try:\n            # Extract\n            raw_data = self.extract(source)\n            \n            # Transform
+            clean_data = self.transform(raw_data)\n            \n            # Load
+            success = self.load(clean_data, target_table)\n            \n            if success:\n                self.logger.info("ETL pipeline finished successfully")\n            else:\n                self.logger.error("ETL pipeline failed")\n                \n            return success\n            \n        except Exception as e:\n            self.logger.error(f"ETL pipeline error: {e}")\n            return False\n\n# Usage example\nif __name__ == "__main__":\n    pipeline = DataPipeline(''postgresql://user:pass@localhost/warehouse'')\n    result = pipeline.run_etl(''/data/students.csv'', ''student_data'')\n    print("ETL finished:", "success" if result else "failed")', 'Data engineering ETL pipeline. Extract from CSV, transform with pandas, load to database. Error handling, logging, data validation. Core data processing workflow.', 1, 4),
+(8, 29, 'Cybersecurity Fundamentals', 'import hashlib\nimport secrets\nimport hmac\nimport base64\nfrom cryptography.fernet import Fernet\nfrom cryptography.hazmat.primitives import hashes, serialization\nfrom cryptography.hazmat.primitives.asymmetric import rsa, padding\nfrom cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC\nimport os\nfrom typing import Tuple, Dict, Any\nimport json\nimport time\n\nclass CyberSecurityToolkit:\n    def __init__(self):\n        self.symmetric_key = None\n        self.private_key = None\n        self.public_key = None\n    \n    # Password Security\n    def hash_password(self, password: str, salt: bytes = None) -> Tuple[str, str]:\n        """Securely hash a password using PBKDF2"""\n        if salt is None:\n            salt = os.urandom(32)  # 32 bytes = 256 bits\n        \n        # Use PBKDF2 with SHA-256\n        kdf = PBKDF2HMAC(\n            algorithm=hashes.SHA256(),
+            length=32,\n            salt=salt,\n            iterations=100000,  # OWASP recommended minimum\n        )\n        key = kdf.derive(password.encode())\n        \n        # Return both the hash and salt (base64 encoded)\n        return (\n            base64.b64encode(key).decode(),\n            base64.b64encode(salt).decode()\n        )\n    \n    def verify_password(self, password: str, stored_hash: str, stored_salt: str) -> bool:\n        """Verify a password against its hash"""\n        try:\n            salt = base64.b64decode(stored_salt.encode())\n            expected_hash, _ = self.hash_password(password, salt)\n            return hmac.compare_digest(expected_hash, stored_hash)\n        except Exception:\n            return False\n    \n    # Symmetric Encryption\n    def generate_symmetric_key(self) -> str:\n        """Generate a new symmetric encryption key"""\n        key = Fernet.generate_key()\n        self.symmetric_key = key\n        return base64.b64encode(key).decode()\n    \n    def encrypt_data(self, data: str, key: str = None) -> str:\n        """Encrypt data using symmetric encryption"""\n        if key:\n            cipher_key = base64.b64decode(key.encode())\n        elif self.symmetric_key:\n            cipher_key = self.symmetric_key\n        else:\n            raise ValueError("No encryption key provided")\n        \n        fernet = Fernet(cipher_key)\n        encrypted_data = fernet.encrypt(data.encode())\n        return base64.b64encode(encrypted_data).decode()\n    \n    def decrypt_data(self, encrypted_data: str, key: str = None) -> str:\n        """Decrypt data using symmetric encryption"""\n        if key:\n            cipher_key = base64.b64decode(key.encode())\n        elif self.symmetric_key:\n            cipher_key = self.symmetric_key\n        else:\n            raise ValueError("No decryption key provided")\n        \n        fernet = Fernet(cipher_key)\n        encrypted_bytes = base64.b64decode(encrypted_data.encode())\n        decrypted_data = fernet.decrypt(encrypted_bytes)\n        return decrypted_data.decode()\n    \n    # Asymmetric Encryption (RSA)\n    def generate_rsa_keypair(self, key_size: int = 2048) -> Tuple[str, str]:\n        """Generate RSA public/private key pair"""\n        self.private_key = rsa.generate_private_key(\n            public_exponent=65537,\n            key_size=key_size\n        )\n        self.public_key = self.private_key.public_key()\n        \n        # Serialize keys\n        private_pem = self.private_key.private_bytes(\n            encoding=serialization.Encoding.PEM,\n            format=serialization.PrivateFormat.PKCS8,\n            encryption_algorithm=serialization.NoEncryption()\n        )\n        \n        public_pem = self.public_key.public_bytes(\n            encoding=serialization.Encoding.PEM,\n            format=serialization.PublicFormat.SubjectPublicKeyInfo\n        )\n        \n        return (\n            base64.b64encode(private_pem).decode(),\n            base64.b64encode(public_pem).decode()\n        )\n    \n    def rsa_encrypt(self, data: str, public_key_b64: str) -> str:\n        """Encrypt data with RSA public key"""\n        public_key_bytes = base64.b64decode(public_key_b64.encode())\n        public_key = serialization.load_pem_public_key(public_key_bytes)\n        \n        encrypted = public_key.encrypt(\n            data.encode(),\n            padding.OAEP(\n                mgf=padding.MGF1(algorithm=hashes.SHA256()),\n                algorithm=hashes.SHA256(),\n                label=None\n            )\n        )\n        \n        return base64.b64encode(encrypted).decode()\n    \n    def rsa_decrypt(self, encrypted_data: str, private_key_b64: str) -> str:\n        """Decrypt data with RSA private key"""\n        private_key_bytes = base64.b64decode(private_key_b64.encode())\n        private_key = serialization.load_pem_private_key(\n            private_key_bytes, \n            password=None\n        )\n        \n        encrypted_bytes = base64.b64decode(encrypted_data.encode())\n        \n        decrypted = private_key.decrypt(\n            encrypted_bytes,\n            padding.OAEP(\n                mgf=padding.MGF1(algorithm=hashes.SHA256()),\n                algorithm=hashes.SHA256(),\n                label=None\n            )\n        )\n        \n        return decrypted.decode()\n    \n    # Digital Signatures\n    def sign_data(self, data: str, private_key_b64: str) -> str:\n        """Create digital signature for data"""\n        private_key_bytes = base64.b64decode(private_key_b64.encode())\n        private_key = serialization.load_pem_private_key(\n            private_key_bytes, \n            password=None\n        )\n        \n        signature = private_key.sign(\n            data.encode(),\n            padding.PSS(\n                mgf=padding.MGF1(hashes.SHA256()),\n                salt_length=padding.PSS.MAX_LENGTH\n            ),\n            hashes.SHA256()\n        )\n        \n        return base64.b64encode(signature).decode()\n    \n    def verify_signature(self, data: str, signature_b64: str, public_key_b64: str) -> bool:\n        """Verify digital signature"""\n        try:\n            public_key_bytes = base64.b64decode(public_key_b64.encode())\n            public_key = serialization.load_pem_public_key(public_key_bytes)\n            \n            signature_bytes = base64.b64decode(signature_b64.encode())\n            \n            public_key.verify(\n                signature_bytes,\n                data.encode(),\n                padding.PSS(\n                    mgf=padding.MGF1(hashes.SHA256()),\n                    salt_length=padding.PSS.MAX_LENGTH\n                ),\n                hashes.SHA256()\n            )\n            return True\n        except Exception:\n            return False\n    \n    # Secure Random Generation\n    def generate_secure_token(self, length: int = 32) -> str:\n        """Generate cryptographically secure random token"""\n        return secrets.token_urlsafe(length)\n    \n    def generate_secure_password(self, length: int = 16) -> str:\n        """Generate secure password with mixed character types"""\n        alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?"\n        return ''''.join(secrets.choice(alphabet) for _ in range(length))
+    \n    # Hash Functions for Data Integrity\n    def calculate_file_hash(self, file_path: str, algorithm: str = ''sha256'') -> str:\n        """Calculate hash of a file for integrity checking"""\n        hash_obj = hashlib.new(algorithm)\n        \n        with open(file_path, ''rb'') as f:\n            for chunk in iter(lambda: f.read(8192), b""):\n                hash_obj.update(chunk)\n        \n        return hash_obj.hexdigest()\n    \n    def calculate_hmac(self, data: str, key: str, algorithm: str = ''sha256'') -> str:\n        """Calculate HMAC for message authentication"""\n        return hmac.new(\n            key.encode(), \n            data.encode(), \n            getattr(hashlib, algorithm)\n        ).hexdigest()\n    \n    # Security Audit Functions\n    def audit_password_strength(self, password: str) -> Dict[str, Any]:
+        """Audit password strength and provide recommendations"""\n        score = 0\n        feedback = []\n        \n        # Length check\n        if len(password) >= 12:\n            score += 25\n        elif len(password) >= 8:\n            score += 15\n            feedback.append("Consider using a longer password (12+ characters)")\n        else:\n            feedback.append("Password too short (minimum 8 characters)")\n        \n        # Character variety checks\n        if any(c.islower() for c in password):\n            score += 15
+        else:\n            feedback.append("Add lowercase letters")\n        \n        if any(c.isupper() for c in password):\n            score += 15\n        else:\n            feedback.append("Add uppercase letters")\n        \n        if any(c.isdigit() for c in password):\n            score += 15\n        else:\n            feedback.append("Add numbers")\n        \n        if any(c in "!@#$%^&*()_+-=[]{}|;:,.<>?" for c in password):\n            score += 20\n        else:\n            feedback.append("Add special characters")\n        \n        # Common patterns check (simplified)\n        common_patterns = [''123'', ''abc'', ''password'', ''admin'']\n        if any(pattern in password.lower() for pattern in common_patterns):\n            score -= 20\n            feedback.append("Avoid common patterns and words")\n        \n        # Determine strength level\n        if score >= 80:\n            strength = "Strong"\n        elif score >= 60:\n            strength = "Moderate"\n        elif score >= 40:\n            strength = "Weak"\n        else:\n            strength = "Very Weak"\n        \n        return {
+            ''score'': max(0, score),\n            ''strength'': strength,\n            ''feedback'': feedback,\n            ''meets_minimum_requirements'': score >= 60\n        }
+\n# Example usage and demonstration\nif __name__ == "__main__":\n    toolkit = CyberSecurityToolkit()\n    \n    print("=== Cybersecurity Toolkit Demo ===")\n    \n    # Password hashing demo\n    print("\\n1. Password Hashing:")\n    password = "MySecurePassword123!"
+    hashed_pw, salt = toolkit.hash_password(password)\n    print(f"Password: {password}")\n    print(f"Hash: {hashed_pw[:20]}...")\n    print(f"Verification: {toolkit.verify_password(password, hashed_pw, salt)}")\n    \n    # Symmetric encryption demo\n    print("\\n2. Symmetric Encryption:")\n    key = toolkit.generate_symmetric_key()\n    message = "This is a secret message from Epitech Nancy!"\n    encrypted = toolkit.encrypt_data(message)\n    decrypted = toolkit.decrypt_data(encrypted)\n    print(f"Original: {message}")\n    print(f"Encrypted: {encrypted[:30]}...")\n    print(f"Decrypted: {decrypted}")\n    \n    # RSA encryption demo\n    print("\\n3. RSA Encryption:")\n    private_key_b64, public_key_b64 = toolkit.generate_rsa_keypair()\n    rsa_message = "RSA encrypted message"\n    rsa_encrypted = toolkit.rsa_encrypt(rsa_message, public_key_b64)\n    rsa_decrypted = toolkit.rsa_decrypt(rsa_encrypted, private_key_b64)\n    print(f"Original: {rsa_message}")\n    print(f"RSA Decrypted: {rsa_decrypted}")\n    \n    # Digital signature demo\n    print("\\n4. Digital Signatures:")\n    document = "This document is authentic."\n    signature = toolkit.sign_data(document, private_key_b64)\n    is_valid = toolkit.verify_signature(document, signature, public_key_b64)\n    print(f"Document: {document}")\n    print(f"Signature valid: {is_valid}")\n    \n    # Password audit demo\n    print("\\n5. Password Audit:")\n    test_passwords = ["123456", "Password1", "MyStr0ng!P@ssw0rd2024"]\n    for pwd in test_passwords:\n        audit = toolkit.audit_password_strength(pwd)\n        print(f"Password: {pwd}")\n        print(f"Strength: {audit[''strength'']} (Score: {audit[''score'']}/100)")\n        if audit[''feedback'']:\n            print(f"Feedback: {'', ''.join(audit[''feedback''][:2])}")\n        print()', 'Comprehensive cybersecurity toolkit. Password hashing, symmetric/asymmetric encryption, digital signatures, secure random generation, password auditing. Production-ready security functions.', 1, 8),
+(8, 30, 'Portfolio Project Demo', '# Student Portfolio Project - Code Snippet Learning Platform\n\n## Project Overview\n**Duration**: Summer 2024 (8 weeks)\n**Role**: Full-Stack Developer\n**Technologies**: React, Node.js, PostgreSQL, Docker, AWS\n\n## Key Features Implemented\n\n### Frontend (React + TypeScript)\n```typescript\ninterface CodeSnippet {
+  id: string;
+  title: string;
+  code: string;
+  explanation: string;
+  language: string;
+  difficulty: ''beginner'' | ''intermediate'' | ''advanced'';
+  createdAt: Date;
+}
+\nconst SnippetCard: React.FC<{ snippet: CodeSnippet }> = ({ snippet }) => {
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  \n  return (\n    <Card className="snippet-card">\n      <CardHeader>\n        <h3>{snippet.title}</h3>\n        <Badge variant={getDifficultyVariant(snippet.difficulty)}>\n          {snippet.difficulty}
+        </Badge>\n      </CardHeader>\n      <CardContent>\n        <SyntaxHighlighter language={snippet.language}>\n          {snippet.code}
+        </SyntaxHighlighter>\n        <p>{snippet.explanation}</p>\n      </CardContent>\n    </Card>\n  );
+};
+```\n\n### Backend API (Node.js + Express)\n```javascript\nconst express = require(''express'');
+const { body, validationResult } = require(''express-validator'');
+const rateLimit = require(''express-rate-limit'');
+\n// Rate limiting\nconst apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes\n  max: 100 // limit each IP to 100 requests per windowMs\n});
+\napp.use(''/api/'', apiLimiter);
+\n// Get daily snippet\napp.get(''/api/snippets/daily'', async (req, res) => {
+  try {
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    \n    const snippet = await db.query(\n      ''SELECT * FROM snippets WHERE month = $1 AND day = $2'',\n      [month, day]\n    );
+    \n    if (snippet.rows.length === 0) {
+      return res.status(404).json({ error: ''No snippet found for today'' });
+    }
+    \n    res.json(snippet.rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: ''Internal server error'' });
+  }
+});
+```\n\n### Database Schema (PostgreSQL)\n```sql\nCREATE TABLE programming_languages (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(50) UNIQUE NOT NULL,\n    color VARCHAR(7) NOT NULL -- Hex color for UI\n);
+\nCREATE TABLE categories (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(100) UNIQUE NOT NULL,\n    description TEXT\n);
+\nCREATE TABLE snippets (\n    id SERIAL PRIMARY KEY,\n    month INTEGER NOT NULL CHECK (month BETWEEN 1 AND 12),\n    day INTEGER NOT NULL CHECK (day BETWEEN 1 AND 31),\n    title VARCHAR(200) NOT NULL,\n    code TEXT NOT NULL,\n    explanation TEXT NOT NULL,\n    language_id INTEGER REFERENCES programming_languages(id),\n    category_id INTEGER REFERENCES categories(id),\n    difficulty VARCHAR(20) DEFAULT ''beginner'',\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    UNIQUE(month, day)\n);
+\n-- Indexes for performance\nCREATE INDEX idx_snippets_date ON snippets(month, day);
+CREATE INDEX idx_snippets_language ON snippets(language_id);
+```\n\n### DevOps & Deployment\n```yaml\n# docker-compose.yml\nversion: ''3.8''\nservices:\n  frontend:\n    build: ./frontend\n    ports:\n      - "3000:3000"\n    environment:\n      - REACT_APP_API_URL=http://localhost:8000\n    \n  backend:\n    build: ./backend\n    ports:\n      - "8000:8000"\n    environment:\n      - DATABASE_URL=postgres://user:pass@db:5432/snippets\n      - JWT_SECRET=your-secret-here\n    depends_on:\n      - db\n    
+  db:\n    image: postgres:13\n    environment:\n      POSTGRES_DB: snippets\n      POSTGRES_USER: user\n      POSTGRES_PASSWORD: pass\n    volumes:\n      - postgres_data:/var/lib/postgresql/data\n\nvolumes:\n  postgres_data:\n```\n\n## Technical Achievements\n\n### Performance Optimization\n- **Lighthouse Score**: 96/100\n- **First Contentful Paint**: < 1.5s\n- **Largest Contentful Paint**: < 2.5s\n- **Database Query Optimization**: 40ms average response time\n\n### Testing Strategy\n```javascript\n// Jest unit tests\ndescribe(''Snippet API'', () => {
+  test(''should return daily snippet'', async () => {
+    const response = await request(app)\n      .get(''/api/snippets/daily'')\n      .expect(200);
+    \n    expect(response.body).toHaveProperty(''title'');
+    expect(response.body).toHaveProperty(''code'');
+    expect(response.body.code.length).toBeLessThanOrEqual(800);
+  });
+});
+\n// Cypress E2E tests\ndescribe(''User Journey'', () => {
+  it(''should display daily snippet'', () => {
+    cy.visit(''/dashboard'');
+    cy.contains(''Today''''s Snippet'');
+    cy.get(''[data-testid="snippet-card"]'').should(''be.visible'');
+  });
+});
+```\n\n### Security Implementation\n- JWT authentication with refresh tokens\n- Rate limiting (100 requests/15 minutes)\n- Input validation and sanitization\n- SQL injection prevention with parameterized queries\n- CORS configuration for production\n- Security headers with Helmet.js\n\n## Learning Outcomes\n\n1. **Full-Stack Development**: Gained experience with modern React patterns, Node.js best practices, and PostgreSQL optimization\n\n2. **DevOps Skills**: Implemented CI/CD with GitHub Actions, containerization with Docker, and AWS deployment\n\n3. **Testing**: Achieved 85% code coverage with unit, integration, and E2E tests\n\n4. **Performance**: Optimized bundle size (< 200KB), implemented code splitting, and database indexing\n\n5. **Security**: Applied OWASP guidelines, implemented authentication, and secured API endpoints\n\n## Metrics & Results\n- **Daily Active Users**: 200+ (during beta)\n- **Code Coverage**: 85%\n- **Performance Score**: 96/100 Lighthouse\n- **Security Score**: A+ (Mozilla Observatory)\n- **Load Time**: < 2 seconds on 3G\n\n## Next Steps\n- Mobile app development (React Native)\n- AI-powered code suggestions\n- Community features (comments, ratings)\n- Advanced analytics dashboard\n\n**Live Demo**: https://code-snippets-daily.vercel.app\n**GitHub**: https://github.com/username/daily-code-snippets\n\n---
+\n*This project demonstrates full-stack development capabilities, DevOps knowledge, and attention to performance and security - ready for internship and entry-level positions!*', 'Portfolio project showcase for internships. Complete full-stack application with modern technologies. Performance metrics, security implementation, testing strategy. Professional presentation format.', 16, 7),
+(8, 31, 'September Preparation', '#include <stdio.h>\n\nint main() {
+    printf("Back to Epitech Nancy!\\n\\n");\n    \n    char* goals[] = {\n        "Master C programming",\n        "Build portfolio projects", \n        "Secure internships",\n        "Open source contributions"\n    };
+    \n    printf("Goals:\\n");\n    for (int i = 0; i < 4; i++) {\n        printf("%d. %s\\n", i+1, goals[i]);\n    }\n    \n    printf("\\nTechnical Focus:\\n");\n    printf("- System Programming\\n");\n    printf("- Web Development\\n");\n    printf("- Database Design\\n");\n    printf("- DevOps & Cloud\\n");\n    printf("- Algorithms\\n");\n    \n    printf("\\nReady for challenges!\\n");\n    \n    return 0;\n}', 'September preparation after summer experience. Set academic goals, technical focus areas. Motivation for new semester. Ready for advanced coursework and challenges!', 2, 7);
