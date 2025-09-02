@@ -123,7 +123,7 @@ class ModernSnippetManager {
         });
 
         // Form inputs for live preview
-        ['title-input', 'code-input', 'explanation-input', 'category-select', 'language-select', 'difficulty-select'].forEach(id => {
+        ['title-input', 'code-input', 'explanation-input', 'category-select', 'language-select'].forEach(id => {
             const element = document.getElementById(id);
             element.addEventListener('input', () => this.updatePreview());
             element.addEventListener('change', () => this.updatePreview());
@@ -278,7 +278,6 @@ class ModernSnippetManager {
             document.getElementById('explanation-input').value = snippet.explanation;
             document.getElementById('category-select').value = snippet.category_id;
             document.getElementById('language-select').value = snippet.language_id;
-            document.getElementById('difficulty-select').value = snippet.difficulty;
             
             this.showMessage(`Snippet chargé pour le jour ${day}`, 'success');
         } else {
@@ -301,7 +300,6 @@ class ModernSnippetManager {
         document.getElementById('explanation-input').value = '';
         document.getElementById('category-select').value = '';
         document.getElementById('language-select').value = '';
-        document.getElementById('difficulty-select').value = 'Intermédiaire';
     }
 
     async saveSnippet() {
@@ -315,8 +313,7 @@ class ModernSnippetManager {
             code: document.getElementById('code-input').value.trim(),
             explanation: document.getElementById('explanation-input').value.trim(),
             category_id: parseInt(document.getElementById('category-select').value),
-            language_id: parseInt(document.getElementById('language-select').value),
-            difficulty: document.getElementById('difficulty-select').value
+            language_id: parseInt(document.getElementById('language-select').value)
         };
 
         try {
@@ -428,7 +425,6 @@ class ModernSnippetManager {
         const explanation = document.getElementById('explanation-input').value.trim() || 'Explication du code...';
         const categoryId = document.getElementById('category-select').value;
         const languageId = document.getElementById('language-select').value;
-        const difficulty = document.getElementById('difficulty-select').value || 'Intermédiaire';
 
         const category = this.categories.find(c => c.id == categoryId) || { name: 'Catégorie', color: '#007bff' };
         const language = this.languages.find(l => l.id == languageId) || { display_name: 'Langage', syntax_highlight: 'javascript', color: '#10b981' };
@@ -441,8 +437,6 @@ class ModernSnippetManager {
                     <div class="snippet-header">
                         <div class="snippet-badges">
                             <span class="snippet-category">${category.name}</span>
-                            <span class="snippet-language" style="background: rgba(${this.hexToRgb(language.color)}, 0.2); color: ${language.color}; border: 1px solid rgba(${this.hexToRgb(language.color)}, 0.4);">${language.display_name}</span>
-                            <span class="snippet-difficulty-badge ${difficulty.toLowerCase()}">${difficulty}</span>
                         </div>
                     </div>
                     <h3 class="snippet-title">${this.escapeHtml(title)}</h3>
@@ -805,11 +799,11 @@ class ModernSnippetManager {
         listContainer.innerHTML = '';
         
         // Calculate language usage percentages
-        const totalSnippets = this.snippets.length;
+        const totalSnippets = this.snippets.size;
         const languageCounts = {};
         
         this.snippets.forEach(snippet => {
-            const langId = snippet.programming_language_id;
+            const langId = snippet.language_id;
             languageCounts[langId] = (languageCounts[langId] || 0) + 1;
         });
         
@@ -831,7 +825,7 @@ class ModernSnippetManager {
                     <div style="width: 20px; height: 20px; background: ${language.color}; border-radius: 4px;"></div>
                     <span style="color: var(--white); font-weight: 500;">${language.display_name}</span>
                     <span style="color: var(--light-grey); font-size: 0.85rem;">(${language.name})</span>
-                    <span style="color: var(--accent-color); font-weight: 600; font-size: 0.85rem;">${percentage}%</span>
+                    <span style="color: var(--accent-color); font-weight: 600; font-size: 0.85rem;">${count} snippets (${percentage}%)</span>
                 </div>
                 <button onclick="window.snippetManager.deleteLanguage(${language.id})" style="
                     background: var(--danger-color);

@@ -349,8 +349,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="snippet-header">
                         <div class="snippet-badges">
                             <span class="snippet-category">${data.categories?.name || 'Code'}</span>
-                            <span class="snippet-language" style="background: rgba(${hexToRgb(data.programming_languages?.color || '#10b981')}, 0.2); color: ${data.programming_languages?.color || '#10b981'}; border: 1px solid rgba(${hexToRgb(data.programming_languages?.color || '#10b981')}, 0.4);">${data.programming_languages?.display_name || 'Langage'}</span>
-                            <span class="snippet-difficulty-badge ${data.difficulty?.toLowerCase() || 'intermédiaire'}">${data.difficulty}</span>
                         </div>
                     </div>
                     <h3 class="snippet-title">${data.title}</h3>
@@ -457,12 +455,6 @@ int partition(std::vector<int>& arr, int low, int high) {
                         <div class="snippet-badges">
                             <span class="snippet-category" style="background: #6c757d">
                                 Exemple
-                            </span>
-                            <span class="snippet-language" style="background: var(--epitech-blue)20; color: var(--epitech-blue); border: 1px solid var(--epitech-blue)">
-                                ${exampleSnippet.language}
-                            </span>
-                            <span class="snippet-difficulty-badge ${exampleSnippet.difficulty?.toLowerCase() || 'intermediate'}">
-                                ${exampleSnippet.difficulty}
                             </span>
                         </div>
                     </div>
